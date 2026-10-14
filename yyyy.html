@@ -1,0 +1,2357 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark-theme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лаборатория навыков | Атлас новых профессий 2035+</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Цветовая палитра из предыдущих страниц */
+            --cosmic-black: #0a0a1a;
+            --deep-space: #121230;
+            --nebula-purple: #7c4dff;
+            --quantum-blue: #00e5ff;
+            --cyber-green: #00ff88;
+            --ai-magenta: #ff00d4;
+            --bio-gold: #ffc107;
+            --neon-pink: #ff2e97;
+            --star-white: #ffffff;
+            --cosmic-dust: rgba(255, 255, 255, 0.1);
+            
+            --galaxy-gradient: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 50%, #0a0a1a 100%);
+            --hero-gradient: linear-gradient(120deg, var(--nebula-purple), var(--quantum-blue), var(--cyber-green));
+            --card-gradient: linear-gradient(145deg, rgba(124, 77, 255, 0.1), rgba(0, 229, 255, 0.05));
+            
+            --glow-effect: 0 0 30px rgba(124, 77, 255, 0.5);
+            --soft-glow: 0 0 60px rgba(0, 229, 255, 0.3);
+            --hover-glow: 0 0 40px rgba(0, 255, 136, 0.4);
+            --success-glow: 0 0 40px rgba(0, 255, 136, 0.6);
+            --warning-glow: 0 0 40px rgba(255, 193, 7, 0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--cosmic-black);
+            color: var(--star-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 25%, rgba(124, 77, 255, 0.15) 0%, transparent 25%),
+                radial-gradient(circle at 85% 75%, rgba(0, 229, 255, 0.1) 0%, transparent 25%),
+                radial-gradient(circle at 35% 65%, rgba(255, 46, 151, 0.08) 0%, transparent 25%);
+        }
+
+        /* Анимированный фон */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: var(--galaxy-gradient);
+            overflow: hidden;
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--nebula-purple), transparent);
+            filter: blur(40px);
+            opacity: 0.15;
+            animation: float 35s infinite ease-in-out;
+        }
+
+        .shape:nth-child(1) {
+            width: 350px;
+            height: 350px;
+            top: 15%;
+            left: 8%;
+            animation-delay: 0s;
+            background: radial-gradient(circle, var(--quantum-blue), transparent);
+        }
+
+        .shape:nth-child(2) {
+            width: 450px;
+            height: 450px;
+            top: 65%;
+            right: 8%;
+            animation-delay: -12s;
+            background: radial-gradient(circle, var(--ai-magenta), transparent);
+        }
+
+        .shape:nth-child(3) {
+            width: 300px;
+            height: 300px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: -24s;
+            background: radial-gradient(circle, var(--cyber-green), transparent);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+            33% { transform: translateY(-50px) rotate(120deg) scale(1.1); }
+            66% { transform: translateY(50px) rotate(240deg) scale(0.9); }
+        }
+
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Навигация */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 10, 26, 0.85);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(124, 77, 255, 0.3);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .navbar.scrolled {
+            padding: 0.8rem 5%;
+            background: rgba(10, 10, 26, 0.95);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--nebula-purple), var(--quantum-blue));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: logoFloat 3s ease-in-out infinite;
+            box-shadow: var(--glow-effect);
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--nebula-purple), var(--quantum-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-link:hover {
+            background: rgba(124, 77, 255, 0.15);
+            color: var(--star-white);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background: linear-gradient(135deg, rgba(124, 77, 255, 0.3), rgba(0, 229, 255, 0.2));
+            color: var(--star-white);
+            box-shadow: var(--glow-effect);
+            border: 1px solid rgba(124, 77, 255, 0.5);
+        }
+
+        .nav-link i {
+            font-size: 1.1rem;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-left: 2rem;
+        }
+
+        .btn-outline {
+            padding: 0.8rem 1.8rem;
+            background: transparent;
+            border: 2px solid var(--quantum-blue);
+            color: var(--quantum-blue);
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline:hover {
+            background: rgba(0, 229, 255, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 229, 255, 0.3);
+        }
+
+        /* Основной контент */
+        .main-container {
+            margin-top: 100px;
+            padding: 2rem 5%;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Хедер страницы */
+        .page-header {
+            text-align: center;
+            margin: 3rem auto 5rem;
+            max-width: 1000px;
+        }
+
+        .page-title {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            background: linear-gradient(90deg, var(--quantum-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 200% auto;
+            animation: gradientFlow 3s ease-in-out infinite;
+        }
+
+        @keyframes gradientFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .page-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.85);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+
+        /* Статистика пользователя */
+        .user-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .stat-card {
+            background: var(--card-gradient);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(124, 77, 255, 0.3);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--nebula-purple), var(--quantum-blue));
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, rgba(124, 77, 255, 0.2), rgba(0, 229, 255, 0.1));
+            color: var(--quantum-blue);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--quantum-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Фильтры навыков */
+        .filters-section {
+            margin: 3rem 0;
+            padding: 2.5rem;
+            background: rgba(18, 18, 48, 0.6);
+            border-radius: 25px;
+            border: 1px solid rgba(124, 77, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .filters-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .filters-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--cyber-green);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .filters-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-container {
+            position: relative;
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.8rem 1rem 0.8rem 3rem;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(124, 77, 255, 0.3);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--quantum-blue);
+        }
+
+        .filter-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+        }
+
+        .filter-tag {
+            padding: 0.6rem 1.2rem;
+            background: rgba(124, 77, 255, 0.1);
+            border: 1px solid rgba(124, 77, 255, 0.3);
+            border-radius: 20px;
+            color: rgba(255, 255, 255, 0.9);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-tag:hover {
+            background: rgba(124, 77, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .filter-tag.active {
+            background: linear-gradient(135deg, var(--nebula-purple), var(--ai-magenta));
+            color: white;
+            border-color: transparent;
+            box-shadow: var(--glow-effect);
+        }
+
+        /* Сетка навыков */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .skill-card {
+            background: var(--card-gradient);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(124, 77, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--nebula-purple), var(--quantum-blue));
+        }
+
+        .skill-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--nebula-purple);
+            box-shadow: 
+                var(--hover-glow),
+                0 25px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .skill-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .skill-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            background: linear-gradient(135deg, rgba(124, 77, 255, 0.2), rgba(0, 229, 255, 0.1));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-card:hover .skill-icon::before {
+            opacity: 1;
+        }
+
+        .skill-icon i {
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .skill-card:hover .skill-icon i {
+            transform: scale(1.2);
+        }
+
+        .skill-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--star-white);
+            line-height: 1.3;
+        }
+
+        .skill-category {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            background: rgba(0, 229, 255, 0.1);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: var(--quantum-blue);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            margin-bottom: 1rem;
+        }
+
+        .skill-description {
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .skill-progress {
+            margin-bottom: 2rem;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .progress-label {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .progress-percentage {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--cyber-green);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--cyber-green), var(--quantum-blue));
+            border-radius: 4px;
+            width: 0%;
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: progressShine 2s infinite;
+        }
+
+        @keyframes progressShine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(200%); }
+        }
+
+        .skill-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-bottom: 2rem;
+        }
+
+        .feature-tag {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .skill-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .skill-btn {
+            flex: 1;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            border: none;
+            font-size: 0.95rem;
+        }
+
+        .btn-learn {
+            background: linear-gradient(135deg, var(--nebula-purple), var(--ai-magenta));
+            color: white;
+            box-shadow: var(--glow-effect);
+        }
+
+        .btn-learn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(124, 77, 255, 0.5);
+        }
+
+        .btn-practice {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(124, 77, 255, 0.3);
+        }
+
+        .btn-practice:hover {
+            background: rgba(124, 77, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        /* Секция микро-курсов */
+        .micro-courses {
+            margin: 6rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--quantum-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .course-card {
+            background: var(--card-gradient);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(124, 77, 255, 0.2);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--quantum-blue);
+            box-shadow: var(--hover-glow);
+        }
+
+        .course-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.4rem 0.8rem;
+            background: linear-gradient(135deg, var(--cyber-green), var(--quantum-blue));
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .course-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, rgba(124, 77, 255, 0.2), rgba(0, 229, 255, 0.1));
+            color: var(--quantum-blue);
+        }
+
+        .course-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            color: var(--star-white);
+        }
+
+        .course-duration {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .course-description {
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .course-progress {
+            margin-bottom: 1.5rem;
+        }
+
+        .course-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        /* Игровые элементы */
+        .gamification-section {
+            margin: 6rem 0;
+            padding: 3rem;
+            background: linear-gradient(135deg, rgba(124, 77, 255, 0.1), rgba(0, 229, 255, 0.05));
+            border-radius: 25px;
+            border: 1px solid rgba(124, 77, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .achievement-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(124, 77, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .achievement-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--quantum-blue);
+        }
+
+        .achievement-card.locked {
+            opacity: 0.5;
+            filter: grayscale(1);
+        }
+
+        .achievement-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--nebula-purple), var(--ai-magenta));
+            color: white;
+        }
+
+        .achievement-card.locked .achievement-icon {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .achievement-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--star-white);
+        }
+
+        .achievement-desc {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Интерактивные тесты */
+        .tests-section {
+            margin: 6rem 0;
+        }
+
+        .test-card {
+            background: var(--card-gradient);
+            border-radius: 20px;
+            padding: 3rem;
+            border: 1px solid rgba(124, 77, 255, 0.3);
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .test-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--cyber-green), var(--quantum-blue));
+        }
+
+        .test-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .test-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--star-white);
+        }
+
+        .test-difficulty {
+            padding: 0.5rem 1.5rem;
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 20px;
+            color: var(--bio-gold);
+            font-weight: 600;
+        }
+
+        .test-description {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .test-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .test-stat {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+        }
+
+        .test-stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--quantum-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .test-stat-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Футер */
+        .footer {
+            margin-top: 8rem;
+            padding: 5rem 5% 3rem;
+            background: rgba(10, 10, 26, 0.9);
+            border-top: 1px solid rgba(124, 77, 255, 0.3);
+            position: relative;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-section h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1.8rem;
+            color: var(--cyber-green);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--quantum-blue);
+            transform: translateX(5px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .social-link:hover {
+            background: var(--nebula-purple);
+            transform: translateY(-5px);
+            box-shadow: var(--glow-effect);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Анимации */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Модальные окна */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a3a, #0a0a1a);
+            border-radius: 25px;
+            width: 100%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid rgba(124, 77, 255, 0.3);
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.5),
+                var(--glow-effect);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-header {
+            padding: 2rem 3rem;
+            border-bottom: 1px solid rgba(124, 77, 255, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--star-white);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+
+        .modal-close:hover {
+            color: var(--neon-pink);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Мобильная адаптация */
+        @media (max-width: 1024px) {
+            .page-title {
+                font-size: 3rem;
+            }
+            
+            .skills-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+            
+            .courses-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+                flex-wrap: wrap;
+            }
+
+            .nav-links {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .auth-buttons {
+                margin-left: 0;
+                order: 2;
+            }
+
+            .page-title {
+                font-size: 2.5rem;
+            }
+
+            .filters-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-container {
+                max-width: 100%;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .skill-actions {
+                flex-direction: column;
+            }
+
+            .skill-btn {
+                width: 100%;
+            }
+
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .achievements-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+
+            .test-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .modal-content {
+                padding: 1rem;
+            }
+
+            .modal-header {
+                padding: 1.5rem;
+            }
+
+            .modal-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Скроллбар */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(10, 10, 26, 0.8);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--nebula-purple), var(--quantum-blue));
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(var(--quantum-blue), var(--cyber-green));
+        }
+
+        /* Плавный скролл */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Анимация загрузки */
+        .loading-spinner {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(124, 77, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--nebula-purple);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Анимированный фон -->
+    <div class="animated-bg">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+    </div>
+    <div id="particles-js"></div>
+
+    <!-- Навигация -->
+    <nav class="navbar" id="navbar">
+        <a href="index.html" class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-rocket"></i>
+            </div>
+            <div class="logo-text">Атлас 2035+</div>
+        </a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link"><i class="fas fa-home"></i> Галактика</a>
+            <a href="professions.html" class="nav-link"><i class="fas fa-user-astronaut"></i> Профессии</a>
+            <a href="career-simulator.html" class="nav-link"><i class="fas fa-chess-board"></i> Симулятор</a>
+            <a href="skills-lab.html" class="nav-link active"><i class="fas fa-brain"></i> Навыки</a>
+            <a href="industries.html" class="nav-link"><i class="fas fa-industry"></i> Индустрии</a>
+            <a href="connections.html" class="nav-link"><i class="fas fa-project-diagram"></i> Связи</a>
+        </div>
+        <div class="auth-buttons">
+            <button class="btn-outline" onclick="openModal('login')">Войти</button>
+            <button class="btn-outline" onclick="openModal('register')" style="background: linear-gradient(135deg, var(--nebula-purple), var(--ai-magenta)); color: white; border: none;">Регистрация</button>
+        </div>
+    </nav>
+
+    <!-- Основной контент -->
+    <main class="main-container">
+        <!-- Заголовок страницы -->
+        <section class="page-header fade-in">
+            <h1 class="page-title">Лаборатория навыков будущего</h1>
+            <p class="page-subtitle">
+                Освойте 50+ навыков, которые будут определять успех в 2035 году. 
+                Интерактивное обучение, микро-курсы, тесты и геймификация.
+            </p>
+        </section>
+
+        <!-- Статистика пользователя -->
+        <section class="user-stats fade-in">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div class="stat-value" id="skillsLearned">0</div>
+                <div class="stat-label">Навыков освоено</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div class="stat-value" id="coursesCompleted">0</div>
+                <div class="stat-label">Курсов завершено</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div class="stat-value" id="achievementsUnlocked">0</div>
+                <div class="stat-label">Достижений открыто</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-fire"></i>
+                </div>
+                <div class="stat-value" id="learningStreak">0</div>
+                <div class="stat-label">Дней подряд</div>
+            </div>
+        </section>
+
+        <!-- Фильтры навыков -->
+        <section class="filters-section fade-in">
+            <div class="filters-header">
+                <h2 class="filters-title">
+                    <i class="fas fa-filter"></i>
+                    Каталог навыков будущего
+                </h2>
+                
+                <div class="filters-actions">
+                    <div class="search-container">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" class="search-input" placeholder="Поиск навыка..." id="skillSearch">
+                    </div>
+                    
+                    <select class="filter-select" id="categoryFilter" style="padding: 0.8rem 1rem; background: rgba(255,255,255,0.08); border: 1px solid rgba(124,77,255,0.3); border-radius: 12px; color: white; cursor: pointer;">
+                        <option value="all">Все категории</option>
+                        <option value="tech">Технические</option>
+                        <option value="creative">Креативные</option>
+                        <option value="social">Социальные</option>
+                        <option value="strategic">Стратегические</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="filter-tags">
+                <span class="filter-tag active" data-filter="all">
+                    <i class="fas fa-star"></i> Все навыки
+                </span>
+                <span class="filter-tag" data-filter="trending">
+                    <i class="fas fa-fire"></i> Трендовые
+                </span>
+                <span class="filter-tag" data-filter="beginner">
+                    <i class="fas fa-seedling"></i> Для начинающих
+                </span>
+                <span class="filter-tag" data-filter="advanced">
+                    <i class="fas fa-rocket"></i> Продвинутые
+                </span>
+                <span class="filter-tag" data-filter="in-progress">
+                    <i class="fas fa-spinner"></i> В процессе
+                </span>
+                <span class="filter-tag" data-filter="completed">
+                    <i class="fas fa-check-circle"></i> Завершено
+                </span>
+            </div>
+        </section>
+
+        <!-- Сетка навыков -->
+        <section class="skills-grid" id="skillsGrid">
+            <!-- Навыки будут загружены через JavaScript -->
+        </section>
+
+        <!-- Секция микро-курсов -->
+        <section class="micro-courses fade-in">
+            <div class="section-header">
+                <h2 class="section-title">Микро-курсы по навыкам</h2>
+                <p class="section-subtitle">
+                    Короткие интенсивные курсы для быстрого освоения ключевых навыков будущего
+                </p>
+            </div>
+            
+            <div class="courses-grid" id="coursesGrid">
+                <!-- Курсы будут загружены через JavaScript -->
+            </div>
+        </section>
+
+        <!-- Игровые элементы -->
+        <section class="gamification-section fade-in">
+            <div class="section-header">
+                <h2 class="section-title">Ваши достижения</h2>
+                <p class="section-subtitle">
+                    Зарабатывайте бейджи и открывайте достижения за освоение навыков
+                </p>
+            </div>
+            
+            <div class="achievements-grid" id="achievementsGrid">
+                <!-- Достижения будут загружены через JavaScript -->
+            </div>
+        </section>
+
+        <!-- Интерактивные тесты -->
+        <section class="tests-section fade-in">
+            <div class="section-header">
+                <h2 class="section-title">Проверьте свои знания</h2>
+                <p class="section-subtitle">
+                    Пройдите тесты, чтобы оценить уровень владения навыками и получить рекомендации
+                </p>
+            </div>
+            
+            <div class="test-card">
+                <div class="test-header">
+                    <h3 class="test-title">Тест: Эмоциональный интеллект в цифровую эпоху</h3>
+                    <span class="test-difficulty">Средняя сложность</span>
+                </div>
+                
+                <p class="test-description">
+                    Оцените свое понимание эмоционального интеллекта в контексте работы с AI, 
+                    удаленной коммуникации и цифровых взаимодействий. Тест состоит из 15 вопросов.
+                </p>
+                
+                <div class="test-stats">
+                    <div class="test-stat">
+                        <div class="test-stat-value">15</div>
+                        <div class="test-stat-label">Вопросов</div>
+                    </div>
+                    <div class="test-stat">
+                        <div class="test-stat-value">20 мин</div>
+                        <div class="test-stat-label">Время прохождения</div>
+                    </div>
+                    <div class="test-stat">
+                        <div class="test-stat-value">85%</div>
+                        <div class="test-stat-label">Прошли успешно</div>
+                    </div>
+                </div>
+                
+                <button class="skill-btn btn-learn" style="width: 100%; padding: 1.2rem;" onclick="startTest('emotional-intelligence')">
+                    <i class="fas fa-play-circle"></i>
+                    Начать тест
+                </button>
+            </div>
+            
+            <div class="test-card">
+                <div class="test-header">
+                    <h3 class="test-title">Тест: Критическое мышление и анализ данных</h3>
+                    <span class="test-difficulty">Высокая сложность</span>
+                </div>
+                
+                <p class="test-description">
+                    Проверьте навыки анализа информации, работы с большими данными и принятия 
+                    решений в условиях неопределенности. Тест включает кейсы и практические задачи.
+                </p>
+                
+                <div class="test-stats">
+                    <div class="test-stat">
+                        <div class="test-stat-value">20</div>
+                        <div class="test-stat-label">Вопросов</div>
+                    </div>
+                    <div class="test-stat">
+                        <div class="test-stat-value">30 мин</div>
+                        <div class="test-stat-label">Время прохождения</div>
+                    </div>
+                    <div class="test-stat">
+                        <div class="test-stat-value">72%</div>
+                        <div class="test-stat-label">Прошли успешно</div>
+                    </div>
+                </div>
+                
+                <button class="skill-btn btn-learn" style="width: 100%; padding: 1.2rem;" onclick="startTest('critical-thinking')">
+                    <i class="fas fa-play-circle"></i>
+                    Начать тест
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Атлас 2035+</h3>
+                <p>Живая экосистема знаний о будущем труда. Исследуйте, обучайтесь, создавайте будущее вместе с нами.</p>
+                <div style="margin-top: 2rem;">
+                    <div style="display: flex; gap: 0.5rem;">
+                        <input type="email" placeholder="Ваш email" style="flex: 1; padding: 0.8rem 1rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(124,77,255,0.3); border-radius: 10px; color: white;">
+                        <button class="btn-outline" style="padding: 0.8rem 1.5rem; background: linear-gradient(135deg, var(--nebula-purple), var(--ai-magenta)); color: white; border: none;">Подписаться</button>
+                    </div>
+                    <p style="font-size: 0.85rem; color: rgba(255,255,255,0.5); margin-top: 0.5rem;">Только полезные новости о будущем</p>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Разделы</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html"><i class="fas fa-chevron-right"></i> Галактика профессий</a></li>
+                    <li><a href="professions.html"><i class="fas fa-chevron-right"></i> Карта профессий</a></li>
+                    <li><a href="career-simulator.html"><i class="fas fa-chevron-right"></i> Симулятор карьеры</a></li>
+                    <li><a href="skills-lab.html"><i class="fas fa-chevron-right"></i> Лаборатория навыков</a></li>
+                    <li><a href="connections.html"><i class="fas fa-chevron-right"></i> Динамические связи</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Партнеры</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Сколково</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> WorldSkills</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> НИУ ВШЭ</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Кружковое движение</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Росатом</a></li>
+                </ul>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-vk"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2024 Атлас новых профессий 2035+. Все права защищены. Будущее создается сегодня.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem;">
+                <a href="#" style="color: rgba(255,255,255,0.5); text-decoration: none; margin: 0 1rem;">Политика конфиденциальности</a>
+                <a href="#" style="color: rgba(255,255,255,0.5); text-decoration: none; margin: 0 1rem;">Условия использования</a>
+                <a href="#" style="color: rgba(255,255,255,0.5); text-decoration: none; margin: 0 1rem;">Контакты</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Модальное окно навыка -->
+    <div class="modal-overlay" id="skillModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalSkillTitle">Эмоциональный интеллект</h2>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+            <div class="modal-body" id="modalSkillBody">
+                <!-- Контент будет загружен динамически -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Данные навыков
+        const skillsData = [
+            {
+                id: 1,
+                name: "Эмоциональный интеллект",
+                icon: "fas fa-heart",
+                category: "social",
+                color: "#ff2e97",
+                description: "Способность понимать и управлять своими эмоциями, а также распознавать и влиять на эмоции других людей в цифровой среде.",
+                progress: 65,
+                difficulty: "Средний",
+                importance: "Критический",
+                features: ["Эмпатия", "Саморегуляция", "Социальная осведомленность", "Цифровая коммуникация"],
+                details: {
+                    overview: "В эпоху AI и удаленной работы эмоциональный интеллект становится ключевым навыком для эффективной коммуникации, лидерства и психологического благополучия.",
+                    modules: [
+                        "Основы эмоционального интеллекта",
+                        "Эмоции в цифровых коммуникациях",
+                        "Эмпатия в работе с AI-системами",
+                        "Управление эмоциями в стрессовых ситуациях"
+                    ],
+                    resources: [
+                        "Книга 'Цифровой EQ' Дэниела Гоулмана",
+                        "Курс 'Emotional Intelligence' на Coursera",
+                        "Приложение для тренировки эмпатии 'Empathy Builder'"
+                    ],
+                    careers: ["Дизайнер эмоций", "Киберпсихолог", "HR-аналитик", "Менеджер по клиентскому опыту"],
+                    stats: {
+                        demand: "+200%",
+                        salaryImpact: "+30%",
+                        automationRisk: "Низкий"
+                    }
+                }
+            },
+            {
+                id: 2,
+                name: "Критическое мышление",
+                icon: "fas fa-brain",
+                category: "strategic",
+                color: "#00e5ff",
+                description: "Способность анализировать информацию, оценивать аргументы и принимать обоснованные решения в условиях неопределенности.",
+                progress: 40,
+                difficulty: "Высокий",
+                importance: "Критический",
+                features: ["Анализ данных", "Логическое мышление", "Решение проблем", "Оценка информации"],
+                details: {
+                    overview: "В мире переизбытка информации и дезинформации критическое мышление становится ключевым навыком для фильтрации данных и принятия взвешенных решений.",
+                    modules: [
+                        "Основы логики и аргументации",
+                        "Работа с источниками информации",
+                        "Анализ больших данных",
+                        "Принятие решений в условиях неопределенности"
+                    ],
+                    resources: [
+                        "Курс 'Critical Thinking' от Stanford",
+                        "Книга 'Мыслить медленно... решать быстро'",
+                        "Платформа для анализа аргументов 'Argumentful'"
+                    ],
+                    careers: ["AI-этик", "Аналитик данных", "Стратегический консультант", "Исследователь"],
+                    stats: {
+                        demand: "+180%",
+                        salaryImpact: "+25%",
+                        automationRisk: "Средний"
+                    }
+                }
+            },
+            {
+                id: 3,
+                name: "Цифровая грамотность",
+                icon: "fas fa-laptop-code",
+                category: "tech",
+                color: "#7c4dff",
+                description: "Умение эффективно использовать цифровые технологии, понимать принципы их работы и безопасно взаимодействовать в цифровой среде.",
+                progress: 80,
+                difficulty: "Начальный",
+                importance: "Высокий",
+                features: ["Основы программирования", "Кибербезопасность", "Цифровая этика", "Работа с данными"],
+                details: {
+                    overview: "Базовый навык для жизни и работы в цифровом мире, включающий понимание технологий, безопасность и этичное использование цифровых инструментов.",
+                    modules: [
+                        "Основы программирования",
+                        "Кибербезопасность для начинающих",
+                        "Цифровая этика и приватность",
+                        "Работа с облачными технологиями"
+                    ],
+                    resources: [
+                        "Курс 'Digital Literacy' от Google",
+                        "Платформа для обучения программированию 'Codecademy'",
+                        "Игра по кибербезопасности 'CyberSafe'"
+                    ],
+                    careers: ["Цифровой координатор", "Специалист по кибербезопасности", "Аналитик данных", "Контент-менеджер"],
+                    stats: {
+                        demand: "+150%",
+                        salaryImpact: "+20%",
+                        automationRisk: "Низкий"
+                    }
+                }
+            },
+            {
+                id: 4,
+                name: "Экологическая грамотность",
+                icon: "fas fa-leaf",
+                category: "strategic",
+                color: "#00ff88",
+                description: "Понимание экологических систем, принципов устойчивого развития и умение принимать экологически ответственные решения.",
+                progress: 30,
+                difficulty: "Средний",
+                importance: "Высокий",
+                features: ["Устойчивое развитие", "Экосистемное мышление", "Климатические решения", "Циркулярная экономика"],
+                details: {
+                    overview: "Ключевой навык для решения глобальных экологических вызовов и создания устойчивого будущего в условиях климатических изменений.",
+                    modules: [
+                        "Основы экосистемного мышления",
+                        "Принципы устойчивого развития",
+                        "Климатические решения и технологии",
+                        "Циркулярная экономика"
+                    ],
+                    resources: [
+                        "Курс 'Environmental Literacy' от UN",
+                        "Платформа 'Climate Solutions Hub'",
+                        "Симулятор устойчивого развития 'EcoSim'"
+                    ],
+                    careers: ["Экоурбанист", "Специалист по ESG", "Инженер зеленой энергетики", "Экологический аналитик"],
+                    stats: {
+                        demand: "+250%",
+                        salaryImpact: "+35%",
+                        automationRisk: "Низкий"
+                    }
+                }
+            },
+            {
+                id: 5,
+                name: "Креативное мышление",
+                icon: "fas fa-palette",
+                category: "creative",
+                color: "#ffc107",
+                description: "Способность генерировать оригинальные идеи, решать проблемы нестандартными способами и создавать инновационные решения.",
+                progress: 55,
+                difficulty: "Средний",
+                importance: "Высокий",
+                features: ["Дивергентное мышление", "Дизайн-мышление", "Визуализация", "Инновационный процесс"],
+                details: {
+                    overview: "Навык, который невозможно автоматизировать полностью. Креативное мышление становится ключевым для создания прорывных решений в любой области.",
+                    modules: [
+                        "Основы дизайн-мышления",
+                        "Техники генерации идей",
+                        "Визуальное мышление",
+                        "Прототипирование и тестирование решений"
+                    ],
+                    resources: [
+                        "Курс 'Creative Thinking' от IDEO",
+                        "Книга 'Кради как художник'",
+                        "Приложение для мозгового штурма 'IdeaFlow'"
+                    ],
+                    careers: ["Дизайнер UX/UI", "Архитектор метавселенных", "Инновационный менеджер", "Контент-стратег"],
+                    stats: {
+                        demand: "+220%",
+                        salaryImpact: "+40%",
+                        automationRisk: "Низкий"
+                    }
+                }
+            },
+            {
+                id: 6,
+                name: "Кросс-культурная коммуникация",
+                icon: "fas fa-globe-americas",
+                category: "social",
+                color: "#00e5ff",
+                description: "Способность эффективно общаться и сотрудничать с людьми из разных культурных и географических контекстов.",
+                progress: 45,
+                difficulty: "Средний",
+                importance: "Высокий",
+                features: ["Культурная осведомленность", "Языковые навыки", "Межкультурная эмпатия", "Глобальное сотрудничество"],
+                details: {
+                    overview: "Ключевой навык для работы в глобальных командах, управления международными проектами и создания продуктов для мирового рынка.",
+                    modules: [
+                        "Основы межкультурной коммуникации",
+                        "Глобальная деловая этика",
+                        "Языковые стратегии",
+                        "Виртуальное международное сотрудничество"
+                    ],
+                    resources: [
+                        "Курс 'Global Communication' от Harvard",
+                        "Платформа для языкового обмена 'Tandem'",
+                        "Система оценки культурного интеллекта 'Cultural IQ'"
+                    ],
+                    careers: ["Глобальный менеджер", "Международный консультант", "Дизайнер для глобального рынка", "Координатор удаленных команд"],
+                    stats: {
+                        demand: "+190%",
+                        salaryImpact: "+28%",
+                        automationRisk: "Низкий"
+                    }
+                }
+            },
+            {
+                id: 7,
+                name: "Адаптивность и гибкость",
+                icon: "fas fa-sync-alt",
+                category: "strategic",
+                color: "#7c4dff",
+                description: "Способность быстро адаптироваться к изменениям, осваивать новые навыки и эффективно работать в условиях неопределенности.",
+                progress: 70,
+                difficulty: "Средний",
+                importance: "Критический",
+                features: ["Адаптивное мышление", "Обучение на ходу", "Устойчивость к стрессу", "Гибкость в планировании"],
+                details: {
+                    overview: "В мире постоянных изменений способность адаптироваться становится одним из самых важных навыков для профессионального выживания и роста.",
+                    modules: [
+                        "Нейропластичность и обучение",
+                        "Стратегии адаптации к изменениям",
+                        "Управление неопределенностью",
+                        "Развитие психологической устойчивости"
+                    ],
+                    resources: [
+                        "Курс 'Adaptive Leadership' от MIT",
+                        "Приложение для развития гибкости 'FlexMind'",
+                        "Книга 'Антихрупкость' Нассима Талеба"
+                    ],
+                    careers: ["Адаптивный менеджер", "Коуч по изменениям", "Специалист по трансформации", "Проектный менеджер"],
+                    stats: {
+                        demand: "+210%",
+                        salaryImpact: "+32%",
+                        automationRisk: "Низкий"
+                    }
+                }
+            },
+            {
+                id: 8,
+                name: "Системное мышление",
+                icon: "fas fa-project-diagram",
+                category: "strategic",
+                color: "#00ff88",
+                description: "Способность видеть взаимосвязи в сложных системах, понимать причинно-следственные связи и прогнозировать последствия решений.",
+                progress: 35,
+                difficulty: "Высокий",
+                importance: "Критический",
+                features: ["Анализ систем", "Моделирование процессов", "Прогнозирование", "Стратегическое планирование"],
+                details: {
+                    overview: "Ключевой навык для решения сложных проблем, управления крупными проектами и создания устойчивых систем в условиях взаимосвязанного мира.",
+                    modules: [
+                        "Основы системного анализа",
+                        "Моделирование сложных систем",
+                        "Анализ причинно-следственных связей",
+                        "Системная динамика и прогнозирование"
+                    ],
+                    resources: [
+                        "Курс 'Systems Thinking' от Cornell",
+                        "Программное обеспечение для системного моделирования 'Stella'",
+                        "Книга 'Пятая дисциплина' Питера Сенге"
+                    ],
+                    careers: ["Системный архитектор", "Стратегический аналитик", "Консультант по трансформации", "Исследователь сложных систем"],
+                    stats: {
+                        demand: "+230%",
+                        salaryImpact: "+38%",
+                        automationRisk: "Средний"
+                    }
+                }
+            }
+        ];
+
+        // Данные курсов
+        const coursesData = [
+            {
+                id: 1,
+                name: "Основы эмоционального интеллекта",
+                skillId: 1,
+                duration: "2 недели",
+                lessons: 8,
+                level: "Начальный",
+                description: "Практический курс по развитию эмоционального интеллекта для работы с AI и цифровыми командами."
+            },
+            {
+                id: 2,
+                name: "Критическое мышление в эпоху данных",
+                skillId: 2,
+                duration: "3 недели",
+                lessons: 12,
+                level: "Средний",
+                description: "Научитесь анализировать информацию и принимать решения на основе данных."
+            },
+            {
+                id: 3,
+                name: "Цифровая грамотность для всех",
+                skillId: 3,
+                duration: "4 недели",
+                lessons: 10,
+                level: "Начальный",
+                description: "Базовый курс по безопасному и эффективному использованию цифровых технологий."
+            },
+            {
+                id: 4,
+                name: "Экология для инноваторов",
+                skillId: 4,
+                duration: "3 недели",
+                lessons: 9,
+                level: "Средний",
+                description: "Как создавать устойчивые решения и продукты с учетом экологических факторов."
+            },
+            {
+                id: 5,
+                name: "Креативные методы решения проблем",
+                skillId: 5,
+                duration: "2 недели",
+                lessons: 7,
+                level: "Начальный",
+                description: "Освойте техники дизайн-мышления и генерации инновационных идей."
+            }
+        ];
+
+        // Данные достижений
+        const achievementsData = [
+            {
+                id: 1,
+                name: "Первый шаг",
+                description: "Освоили первый навык",
+                icon: "fas fa-footsteps",
+                unlocked: true
+            },
+            {
+                id: 2,
+                name: "Любознательный",
+                description: "Завершили 3 курса",
+                icon: "fas fa-book-open",
+                unlocked: true
+            },
+            {
+                id: 3,
+                name: "Эксперт по EQ",
+                description: "Освоили эмоциональный интеллект на 100%",
+                icon: "fas fa-heart",
+                unlocked: false
+            },
+            {
+                id: 4,
+                name: "Критический мыслитель",
+                description: "Сдали тест по критическому мышлению",
+                icon: "fas fa-brain",
+                unlocked: false
+            },
+            {
+                id: 5,
+                name: "Цифровой пионер",
+                description: "Освоили 5 цифровых навыков",
+                icon: "fas fa-laptop-code",
+                unlocked: false
+            },
+            {
+                id: 6,
+                name: "Эко-герой",
+                description: "Завершили курс по экологической грамотности",
+                icon: "fas fa-leaf",
+                unlocked: false
+            }
+        ];
+
+        // Инициализация страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Частицы фона
+            particlesJS("particles-js", {
+                particles: {
+                    number: { value: 80, density: { enable: true, value_area: 800 } },
+                    color: { value: ["#7c4dff", "#00e5ff", "#00ff88", "#ff00d4"] },
+                    shape: { type: "circle" },
+                    opacity: { value: 0.25, random: true },
+                    size: { value: 3, random: true },
+                    line_linked: {
+                        enable: true,
+                        distance: 120,
+                        color: "#7c4dff",
+                        opacity: 0.2,
+                        width: 1
+                    },
+                    move: {
+                        enable: true,
+                        speed: 1.2,
+                        direction: "none",
+                        random: true,
+                        straight: false,
+                        out_mode: "out",
+                        bounce: false
+                    }
+                },
+                interactivity: {
+                    detect_on: "canvas",
+                    events: {
+                        onhover: { enable: true, mode: "repulse" },
+                        onclick: { enable: true, mode: "push" }
+                    }
+                }
+            });
+
+            // Анимация появления элементов
+            const fadeElements = document.querySelectorAll('.fade-in');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            fadeElements.forEach(el => observer.observe(el));
+
+            // Эффект навигации при скролле
+            window.addEventListener('scroll', () => {
+                const navbar = document.getElementById('navbar');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // Инициализация лаборатории навыков
+            initSkillsLab();
+        });
+
+        // Инициализация лаборатории навыков
+        function initSkillsLab() {
+            // Загрузка статистики
+            updateUserStats();
+            
+            // Загрузка навыков
+            loadSkills();
+            
+            // Загрузка курсов
+            loadCourses();
+            
+            // Загрузка достижений
+            loadAchievements();
+            
+            // Настройка фильтров
+            setupFilters();
+            
+            // Настройка поиска
+            setupSearch();
+        }
+
+        // Обновление статистики пользователя
+        function updateUserStats() {
+            const completedSkills = skillsData.filter(skill => skill.progress === 100).length;
+            const completedCourses = coursesData.filter(course => true).length; // В реальном проекте будет проверка завершения
+            const unlockedAchievements = achievementsData.filter(ach => ach.unlocked).length;
+            const learningStreak = Math.floor(Math.random() * 30) + 1; // Временная логика
+            
+            document.getElementById('skillsLearned').textContent = completedSkills;
+            document.getElementById('coursesCompleted').textContent = completedCourses;
+            document.getElementById('achievementsUnlocked').textContent = unlockedAchievements;
+            document.getElementById('learningStreak').textContent = learningStreak;
+            
+            // Анимация счетчиков
+            animateCounter('skillsLearned', completedSkills);
+            animateCounter('coursesCompleted', completedCourses);
+            animateCounter('achievementsUnlocked', unlockedAchievements);
+            animateCounter('learningStreak', learningStreak);
+        }
+
+        function animateCounter(elementId, target) {
+            const element = document.getElementById(elementId);
+            const start = 0;
+            const duration = 1500;
+            const increment = target / (duration / 16);
+            let current = start;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target;
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current);
+                }
+            }, 16);
+        }
+
+        // Загрузка навыков
+        function loadSkills(filteredData = skillsData) {
+            const grid = document.getElementById('skillsGrid');
+            grid.innerHTML = '';
+
+            filteredData.forEach(skill => {
+                const card = createSkillCard(skill);
+                grid.appendChild(card);
+            });
+        }
+
+        // Создание карточки навыка
+        function createSkillCard(skill) {
+            const card = document.createElement('div');
+            card.className = 'skill-card fade-in';
+            card.dataset.id = skill.id;
+            card.dataset.category = skill.category;
+            card.dataset.progress = skill.progress;
+            
+            // Определение цвета иконки
+            let iconColor = skill.color;
+            if (skill.progress === 100) {
+                iconColor = '#00ff88';
+            } else if (skill.progress >= 70) {
+                iconColor = '#00e5ff';
+            }
+            
+            card.innerHTML = `
+                <div class="skill-header">
+                    <div class="skill-icon" style="background: linear-gradient(135deg, ${skill.color}40, rgba(0, 229, 255, 0.1));">
+                        <i class="${skill.icon}" style="color: ${iconColor}"></i>
+                    </div>
+                    <div>
+                        <h3 class="skill-title">${skill.name}</h3>
+                        <span class="skill-category">${getCategoryName(skill.category)}</span>
+                    </div>
+                </div>
+                
+                <p class="skill-description">${skill.description}</p>
+                
+                <div class="skill-progress">
+                    <div class="progress-header">
+                        <span class="progress-label">Прогресс освоения</span>
+                        <span class="progress-percentage">${skill.progress}%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${skill.progress}%"></div>
+                    </div>
+                </div>
+                
+                <div class="skill-features">
+                    <span class="feature-tag">${skill.difficulty}</span>
+                    <span class="feature-tag">${skill.importance}</span>
+                    ${skill.features.map(feature => 
+                        `<span class="feature-tag">${feature}</span>`
+                    ).slice(0, 2).join('')}
+                </div>
+                
+                <div class="skill-actions">
+                    <button class="skill-btn btn-learn" onclick="openSkillModal(${skill.id})">
+                        <i class="fas fa-graduation-cap"></i>
+                        Изучить
+                    </button>
+                    <button class="skill-btn btn-practice" onclick="startPractice(${skill.id})">
+                        <i class="fas fa-dumbbell"></i>
+                        Практика
+                    </button>
+                </div>
+            `;
+
+            // Добавляем анимацию появления
+            setTimeout(() => {
+                card.classList.add('visible');
+            }, 100);
+
+            return card;
+        }
+
+        function getCategoryName(category) {
+            const categories = {
+                'tech': 'Технические',
+                'creative': 'Креативные',
+                'social': 'Социальные',
+                'strategic': 'Стратегические'
+            };
+            return categories[category] || 'Другие';
+        }
+
+        // Загрузка курсов
+        function loadCourses() {
+            const grid = document.getElementById('coursesGrid');
+            grid.innerHTML = '';
+
+            coursesData.forEach(course => {
+                const skill = skillsData.find(s => s.id === course.skillId);
+                const card = document.createElement('div');
+                card.className = 'course-card fade-in';
+                
+                card.innerHTML = `
+                    <span class="course-badge">${course.level}</span>
+                    <div class="course-icon">
+                        <i class="${skill?.icon || 'fas fa-graduation-cap'}" style="color: ${skill?.color || '#7c4dff'}"></i>
+                    </div>
+                    <h3 class="course-title">${course.name}</h3>
+                    <div class="course-duration">
+                        <i class="fas fa-clock"></i>
+                        ${course.duration} • ${course.lessons} уроков
+                    </div>
+                    <p class="course-description">${course.description}</p>
+                    <div class="course-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${Math.random() * 100}%"></div>
+                        </div>
+                        <div class="course-stats">
+                            <div class="stat">
+                                <i class="fas fa-users"></i>
+                                ${Math.floor(Math.random() * 1000) + 100} студентов
+                            </div>
+                            <div class="stat">
+                                <i class="fas fa-star"></i>
+                                4.${Math.floor(Math.random() * 5) + 5}
+                            </div>
+                        </div>
+                    </div>
+                    <button class="skill-btn btn-learn" style="width: 100%; margin-top: 1rem;" onclick="startCourse(${course.id})">
+                        <i class="fas fa-play"></i>
+                        Начать курс
+                    </button>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        // Загрузка достижений
+        function loadAchievements() {
+            const grid = document.getElementById('achievementsGrid');
+            grid.innerHTML = '';
+
+            achievementsData.forEach(achievement => {
+                const card = document.createElement('div');
+                card.className = `achievement-card ${achievement.unlocked ? '' : 'locked'} fade-in`;
+                
+                card.innerHTML = `
+                    <div class="achievement-icon">
+                        <i class="${achievement.icon}"></i>
+                    </div>
+                    <h4 class="achievement-title">${achievement.name}</h4>
+                    <p class="achievement-desc">${achievement.description}</p>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        // Настройка фильтров
+        function setupFilters() {
+            const filterTags = document.querySelectorAll('.filter-tag');
+            const categoryFilter = document.getElementById('categoryFilter');
+
+            // Обработка тегов фильтров
+            filterTags.forEach(tag => {
+                tag.addEventListener('click', function() {
+                    filterTags.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    applyFilters();
+                });
+            });
+
+            // Обработка выпадающего фильтра
+            categoryFilter.addEventListener('change', applyFilters);
+        }
+
+        // Применение фильтров
+        function applyFilters() {
+            const activeTag = document.querySelector('.filter-tag.active');
+            const categoryValue = document.getElementById('categoryFilter').value;
+            const tagFilter = activeTag?.dataset.filter || 'all';
+
+            let filteredSkills = skillsData;
+
+            // Фильтр по категории
+            if (categoryValue !== 'all') {
+                filteredSkills = filteredSkills.filter(skill => skill.category === categoryValue);
+            }
+
+            // Фильтр по тегам
+            switch (tagFilter) {
+                case 'trending':
+                    filteredSkills = filteredSkills.filter(skill => 
+                        skill.importance === 'Критический' || skill.difficulty === 'Высокий'
+                    );
+                    break;
+                case 'beginner':
+                    filteredSkills = filteredSkills.filter(skill => skill.difficulty === 'Начальный');
+                    break;
+                case 'advanced':
+                    filteredSkills = filteredSkills.filter(skill => skill.difficulty === 'Высокий');
+                    break;
+                case 'in-progress':
+                    filteredSkills = filteredSkills.filter(skill => 
+                        skill.progress > 0 && skill.progress < 100
+                    );
+                    break;
+                case 'completed':
+                    filteredSkills = filteredSkills.filter(skill => skill.progress === 100);
+                    break;
+            }
+
+            loadSkills(filteredSkills);
+        }
+
+        // Настройка поиска
+        function setupSearch() {
+            const searchInput = document.getElementById('skillSearch');
+            let searchTimeout;
+
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    const searchTerm = this.value.toLowerCase().trim();
+                    
+                    if (searchTerm.length === 0) {
+                        loadSkills(skillsData);
+                        return;
+                    }
+
+                    const filteredSkills = skillsData.filter(skill => {
+                        return skill.name.toLowerCase().includes(searchTerm) ||
+                               skill.description.toLowerCase().includes(searchTerm) ||
+                               skill.features.some(feature => feature.toLowerCase().includes(searchTerm));
+                    });
+
+                    loadSkills(filteredSkills);
+                }, 300);
+            });
+        }
+
+        // Открытие модального окна навыка
+        function openSkillModal(id) {
+            const skill = skillsData.find(s => s.id === id);
+            if (!skill) return;
+
+            const modal = document.getElementById('skillModal');
+            const title = document.getElementById('modalSkillTitle');
+            const body = document.getElementById('modalSkillBody');
+
+            title.textContent = skill.name;
+            body.innerHTML = createModalContent(skill);
+
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                modal.style.opacity = '1';
+                modal.querySelector('.modal-content').style.transform = 'scale(1)';
+            }, 10);
+
+            // Блокируем прокрутку фона
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Создание контента модального окна
+        function createModalContent(skill) {
+            return `
+                <div style="padding: 2rem 3rem;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-bottom: 3rem;">
+                        <div>
+                            <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem;">
+                                <div class="skill-icon" style="width: 80px; height: 80px; font-size: 2.5rem; background: linear-gradient(135deg, ${skill.color}40, rgba(0, 229, 255, 0.1));">
+                                    <i class="${skill.icon}" style="color: ${skill.color}"></i>
+                                </div>
+                                <div>
+                                    <h3 style="font-size: 1.8rem; color: white; margin-bottom: 0.5rem;">${skill.name}</h3>
+                                    <span class="skill-category">${getCategoryName(skill.category)}</span>
+                                </div>
+                            </div>
+                            
+                            <div style="background: rgba(124, 77, 255, 0.1); padding: 1.5rem; border-radius: 15px; border: 1px solid rgba(124,77,255,0.3); margin-bottom: 2rem;">
+                                <h4 style="font-size: 1.2rem; margin-bottom: 1rem; color: var(--quantum-blue);">Прогресс освоения</h4>
+                                <div class="progress-bar" style="height: 10px; margin-bottom: 1rem;">
+                                    <div class="progress-fill" style="width: ${skill.progress}%"></div>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; color: rgba(255,255,255,0.8);">
+                                    <span>${skill.progress}% освоено</span>
+                                    <span>${100 - skill.progress}% осталось</span>
+                                </div>
+                            </div>
+                            
+                            <h4 style="font-size: 1.3rem; margin-bottom: 1rem; color: var(--cyber-green);">Описание навыка</h4>
+                            <p style="color: rgba(255,255,255,0.8); line-height: 1.7; margin-bottom: 2rem;">${skill.details.overview}</p>
+                        </div>
+                        
+                        <div>
+                            <div style="background: rgba(0, 229, 255, 0.1); padding: 2rem; border-radius: 15px; border: 1px solid rgba(0,229,255,0.3); margin-bottom: 2rem;">
+                                <h4 style="font-size: 1.2rem; margin-bottom: 1rem; color: var(--quantum-blue);">Статистика навыка</h4>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                    <div>
+                                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--cyber-green);">${skill.details.stats.demand}</div>
+                                        <div style="font-size: 0.9rem; color: rgba(255,255,255,0.6);">Рост спроса до 2030</div>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--cyber-green);">${skill.details.stats.salaryImpact}</div>
+                                        <div style="font-size: 0.9rem; color: rgba(255,255,255,0.6);">Влияние на зарплату</div>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--cyber-green);">${skill.details.stats.automationRisk}</div>
+                                        <div style="font-size: 0.9rem; color: rgba(255,255,255,0.6);">Риск автоматизации</div>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--cyber-green);">${skill.difficulty}</div>
+                                        <div style="font-size: 0.9rem; color: rgba(255,255,255,0.6);">Сложность освоения</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <h4 style="font-size: 1.3rem; margin-bottom: 1rem; color: var(--cyber-green);">Модули обучения</h4>
+                            <div style="display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 2rem;">
+                                ${skill.details.modules.map((module, index) => 
+                                    `<div style="padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 10px; border: 1px solid rgba(124, 77, 255, 0.2); display: flex; align-items: center; gap: 1rem;">
+                                        <div style="width: 30px; height: 30px; border-radius: 50%; background: rgba(124,77,255,0.2); display: flex; align-items: center; justify-content: center; color: var(--quantum-blue); font-weight: 600;">${index + 1}</div>
+                                        <div>${module}</div>
+                                    </div>`
+                                ).join('')}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: linear-gradient(135deg, rgba(0, 229, 255, 0.1), rgba(0, 255, 136, 0.05)); padding: 2rem; border-radius: 15px; border: 1px solid rgba(0, 229, 255, 0.3); margin-bottom: 2rem;">
+                        <h4 style="font-size: 1.3rem; margin-bottom: 1rem; color: var(--cyber-green);">Профессии, где нужен этот навык</h4>
+                        <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
+                            ${skill.details.careers.map(career => 
+                                `<span style="padding: 0.8rem 1.5rem; background: rgba(0, 229, 255, 0.1); border-radius: 10px; color: white; border: 1px solid rgba(0, 229, 255, 0.3);">${career}</span>`
+                            ).join('')}
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem; margin-top: 3rem;">
+                        <button style="flex: 1; padding: 1rem; background: linear-gradient(135deg, var(--nebula-purple), var(--ai-magenta)); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: var(--glow-effect);">
+                            <i class="fas fa-play-circle"></i> Начать обучение
+                        </button>
+                        <button style="flex: 1; padding: 1rem; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(124,77,255,0.3); border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+                            <i class="fas fa-dumbbell"></i> Практические задания
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Закрытие модального окна
+        function closeModal() {
+            const modal = document.getElementById('skillModal');
+            modal.style.opacity = '0';
+            modal.querySelector('.modal-content').style.transform = 'scale(0.9)';
+            
+            setTimeout(() => {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }, 300);
+        }
+
+        // Функции для кнопок
+        function openModal(type) {
+            if (type === 'login') {
+                alert('Форма входа (будет реализовано в полной версии)');
+            } else {
+                alert('Форма регистрации (будет реализовано в полной версии)');
+            }
+        }
+
+        function startPractice(skillId) {
+            alert(`Начало практики по навыку #${skillId} (будет реализовано в полной версии)`);
+        }
+
+        function startCourse(courseId) {
+            alert(`Начало курса #${courseId} (будет реализовано в полной версии)`);
+        }
+
+        function startTest(testId) {
+            alert(`Начало теста "${testId}" (будет реализовано в полной версии)`);
+        }
+
+        // Закрытие модального окна при клике вне его
+        document.getElementById('skillModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Закрытие модального окна на Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

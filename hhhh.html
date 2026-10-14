@@ -1,0 +1,1625 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark-theme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Карта профессий | Атлас новых профессий 2035+</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Цветовая палитра из главной страницы */
+            --cosmic-black: #0a0a1a;
+            --deep-space: #121230;
+            --nebula-purple: #7c4dff;
+            --quantum-blue: #00e5ff;
+            --cyber-green: #00ff88;
+            --ai-magenta: #ff00d4;
+            --bio-gold: #ffc107;
+            --neon-pink: #ff2e97;
+            --star-white: #ffffff;
+            --cosmic-dust: rgba(255, 255, 255, 0.1);
+            
+            --galaxy-gradient: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 50%, #0a0a1a 100%);
+            --hero-gradient: linear-gradient(120deg, var(--nebula-purple), var(--quantum-blue), var(--cyber-green));
+            --card-gradient: linear-gradient(145deg, rgba(124, 77, 255, 0.1), rgba(0, 229, 255, 0.05));
+            
+            --glow-effect: 0 0 30px rgba(124, 77, 255, 0.5);
+            --soft-glow: 0 0 60px rgba(0, 229, 255, 0.3);
+            --hover-glow: 0 0 40px rgba(0, 255, 136, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--cosmic-black);
+            color: var(--star-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(124, 77, 255, 0.15) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 229, 255, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 30% 70%, rgba(255, 46, 151, 0.08) 0%, transparent 20%);
+        }
+
+        /* Анимированный фон */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: var(--galaxy-gradient);
+            overflow: hidden;
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--nebula-purple), transparent);
+            filter: blur(40px);
+            opacity: 0.2;
+            animation: float 25s infinite ease-in-out;
+        }
+
+        .shape:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: 5%;
+            left: 15%;
+            animation-delay: 0s;
+            background: radial-gradient(circle, var(--quantum-blue), transparent);
+        }
+
+        .shape:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            top: 70%;
+            right: 5%;
+            animation-delay: -8s;
+            background: radial-gradient(circle, var(--ai-magenta), transparent);
+        }
+
+        .shape:nth-child(3) {
+            width: 250px;
+            height: 250px;
+            bottom: 10%;
+            left: 25%;
+            animation-delay: -15s;
+            background: radial-gradient(circle, var(--cyber-green), transparent);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            33% { transform: translateY(-40px) rotate(120deg); }
+            66% { transform: translateY(40px) rotate(240deg); }
+        }
+
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Навигация */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 10, 26, 0.85);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(124, 77, 255, 0.3);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .navbar.scrolled {
+            padding: 0.8rem 5%;
+            background: rgba(10, 10, 26, 0.95);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--nebula-purple), var(--quantum-blue));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: logoFloat 3s ease-in-out infinite;
+            box-shadow: var(--glow-effect);
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--nebula-purple), var(--quantum-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-link:hover {
+            background: rgba(124, 77, 255, 0.15);
+            color: var(--star-white);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background: linear-gradient(135deg, rgba(124, 77, 255, 0.3), rgba(0, 229, 255, 0.2));
+            color: var(--star-white);
+            box-shadow: var(--glow-effect);
+            border: 1px solid rgba(124, 77, 255, 0.5);
+        }
+
+        .nav-link i {
+            font-size: 1.1rem;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-left: 2rem;
+        }
+
+        .btn-outline {
+            padding: 0.8rem 1.8rem;
+            background: transparent;
+            border: 2px solid var(--quantum-blue);
+            color: var(--quantum-blue);
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline:hover {
+            background: rgba(0, 229, 255, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 229, 255, 0.3);
+        }
+
+        /* Основной контент */
+        .main-container {
+            margin-top: 100px;
+            padding: 2rem 5%;
+        }
+
+        /* Хедер страницы */
+        .page-header {
+            text-align: center;
+            margin: 3rem auto 5rem;
+            max-width: 1000px;
+        }
+
+        .page-title {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            background: linear-gradient(90deg, var(--quantum-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 200% auto;
+            animation: gradientFlow 3s ease-in-out infinite;
+        }
+
+        @keyframes gradientFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .page-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.85);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+
+        .search-container {
+            max-width: 600px;
+            margin: 3rem auto;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1.2rem 2rem 1.2rem 4rem;
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(124, 77, 255, 0.3);
+            border-radius: 15px;
+            color: white;
+            font-size: 1.1rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--nebula-purple);
+            box-shadow: var(--glow-effect);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--quantum-blue);
+            font-size: 1.2rem;
+        }
+
+        /* Фильтры */
+        .filters-section {
+            margin: 3rem 0;
+            padding: 2rem;
+            background: rgba(18, 18, 48, 0.6);
+            border-radius: 20px;
+            border: 1px solid rgba(124, 77, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .filters-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--cyber-green);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .filter-group {
+            margin-bottom: 1rem;
+        }
+
+        .filter-label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .filter-select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(124, 77, 255, 0.3);
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--quantum-blue);
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);
+        }
+
+        .filter-select option {
+            background: var(--deep-space);
+            color: white;
+        }
+
+        .filter-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .filter-tag {
+            padding: 0.5rem 1.2rem;
+            background: rgba(124, 77, 255, 0.1);
+            border: 1px solid rgba(124, 77, 255, 0.3);
+            border-radius: 20px;
+            color: rgba(255, 255, 255, 0.9);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-tag:hover {
+            background: rgba(124, 77, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .filter-tag.active {
+            background: linear-gradient(135deg, var(--nebula-purple), var(--ai-magenta));
+            color: white;
+            border-color: transparent;
+            box-shadow: var(--glow-effect);
+        }
+
+        .filter-tag i {
+            font-size: 0.8rem;
+        }
+
+        /* Сетка профессий */
+        .professions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .profession-card {
+            background: var(--card-gradient);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(124, 77, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .profession-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--nebula-purple), var(--quantum-blue));
+        }
+
+        .profession-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--nebula-purple);
+            box-shadow: 
+                var(--hover-glow),
+                0 25px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .profession-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .profession-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            background: linear-gradient(135deg, rgba(124, 77, 255, 0.2), rgba(0, 229, 255, 0.1));
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .profession-icon::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--nebula-purple), var(--quantum-blue));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .profession-card:hover .profession-icon::before {
+            opacity: 1;
+        }
+
+        .profession-icon i {
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .profession-card:hover .profession-icon i {
+            transform: scale(1.2);
+            color: white;
+        }
+
+        .profession-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--star-white);
+            line-height: 1.3;
+        }
+
+        .profession-sphere {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            background: rgba(0, 229, 255, 0.1);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: var(--quantum-blue);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            margin-bottom: 1rem;
+        }
+
+        .profession-description {
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            flex-grow: 1;
+        }
+
+        .profession-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--quantum-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 0.3rem;
+        }
+
+        .profession-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-bottom: 2rem;
+        }
+
+        .feature-tag {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--nebula-purple), var(--ai-magenta));
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: auto;
+            border: none;
+            cursor: pointer;
+        }
+
+        .card-link:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--glow-effect);
+            gap: 1.2rem;
+        }
+
+        .card-link i {
+            transition: transform 0.3s ease;
+        }
+
+        .card-link:hover i {
+            transform: translateX(5px);
+        }
+
+        /* Секция пагинации */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 4rem 0;
+        }
+
+        .page-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(124, 77, 255, 0.3);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .page-btn:hover {
+            background: rgba(124, 77, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .page-btn.active {
+            background: linear-gradient(135deg, var(--nebula-purple), var(--ai-magenta));
+            border-color: transparent;
+            box-shadow: var(--glow-effect);
+        }
+
+        .page-btn.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .page-btn.disabled:hover {
+            transform: none;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Футер */
+        .footer {
+            margin-top: 8rem;
+            padding: 5rem 5% 3rem;
+            background: rgba(10, 10, 26, 0.9);
+            border-top: 1px solid rgba(124, 77, 255, 0.3);
+            position: relative;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-section h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1.8rem;
+            color: var(--cyber-green);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--quantum-blue);
+            transform: translateX(5px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .social-link:hover {
+            background: var(--nebula-purple);
+            transform: translateY(-5px);
+            box-shadow: var(--glow-effect);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Модальное окно профессии */
+        .profession-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a3a, #0a0a1a);
+            border-radius: 25px;
+            width: 100%;
+            max-width: 1000px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid rgba(124, 77, 255, 0.3);
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.5),
+                var(--glow-effect);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-header {
+            padding: 2.5rem 3rem;
+            border-bottom: 1px solid rgba(124, 77, 255, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--quantum-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+
+        .modal-close:hover {
+            color: var(--neon-pink);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .modal-body {
+            padding: 3rem;
+        }
+
+        /* Анимации */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Мобильная адаптация */
+        @media (max-width: 1024px) {
+            .page-title {
+                font-size: 3rem;
+            }
+            
+            .professions-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+                flex-wrap: wrap;
+            }
+
+            .nav-links {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .auth-buttons {
+                margin-left: 0;
+                order: 2;
+            }
+
+            .page-title {
+                font-size: 2.5rem;
+            }
+
+            .search-container {
+                margin: 2rem auto;
+            }
+
+            .professions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                padding: 1rem;
+                max-height: 95vh;
+            }
+
+            .modal-header {
+                padding: 1.5rem;
+            }
+
+            .modal-title {
+                font-size: 2rem;
+            }
+
+            .modal-body {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Скроллбар */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(10, 10, 26, 0.8);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--nebula-purple), var(--quantum-blue));
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(var(--quantum-blue), var(--cyber-green));
+        }
+    </style>
+</head>
+<body>
+    <!-- Анимированный фон -->
+    <div class="animated-bg">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+    </div>
+    <div id="particles-js"></div>
+
+    <!-- Навигация -->
+    <nav class="navbar" id="navbar">
+        <a href="index.html" class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-rocket"></i>
+            </div>
+            <div class="logo-text">Атлас 2035+</div>
+        </a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link"><i class="fas fa-home"></i> Галактика</a>
+            <a href="professions.html" class="nav-link active"><i class="fas fa-user-astronaut"></i> Профессии</a>
+            <a href="career-simulator.html" class="nav-link"><i class="fas fa-chess-board"></i> Симулятор</a>
+            <a href="skills-lab.html" class="nav-link"><i class="fas fa-brain"></i> Навыки</a>
+            <a href="industries.html" class="nav-link"><i class="fas fa-industry"></i> Индустрии</a>
+            <a href="connections.html" class="nav-link"><i class="fas fa-project-diagram"></i> Связи</a>
+        </div>
+        <div class="auth-buttons">
+            <button class="btn-outline" onclick="openModal('login')">Войти</button>
+            <button class="btn-outline" onclick="openModal('register')" style="background: linear-gradient(135deg, var(--nebula-purple), var(--ai-magenta)); color: white; border: none;">Регистрация</button>
+        </div>
+    </nav>
+
+    <!-- Основной контент -->
+    <main class="main-container">
+        <!-- Заголовок страницы -->
+        <section class="page-header fade-in">
+            <h1 class="page-title">Карта профессий будущего</h1>
+            <p class="page-subtitle">
+                Откройте для себя 150+ профессий, которые будут определять мир в 2035 году. 
+                Каждая профессия — это отдельная вселенная возможностей и знаний.
+            </p>
+            
+            <!-- Поиск -->
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="Найти профессию, навык или отрасль..." id="searchInput">
+            </div>
+        </section>
+
+        <!-- Фильтры -->
+        <section class="filters-section fade-in">
+            <h2 class="filters-title">
+                <i class="fas fa-filter"></i>
+                Фильтры профессий
+            </h2>
+            
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label class="filter-label">Сфера деятельности</label>
+                    <select class="filter-select" id="sphereFilter">
+                        <option value="all">Все сферы</option>
+                        <option value="tech">Технологии и IT</option>
+                        <option value="bio">Биотехнологии и медицина</option>
+                        <option value="eco">Экология и устойчивое развитие</option>
+                        <option value="creative">Креативные индустрии</option>
+                        <option value="science">Наука и исследования</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label">Уровень сложности</label>
+                    <select class="filter-select" id="difficultyFilter">
+                        <option value="all">Любой уровень</option>
+                        <option value="entry">Начальный</option>
+                        <option value="mid">Средний</option>
+                        <option value="senior">Продвинутый</option>
+                        <option value="expert">Эксперт</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label">Рост спроса</label>
+                    <select class="filter-select" id="demandFilter">
+                        <option value="all">Любой рост</option>
+                        <option value="high">Высокий (+200% и выше)</option>
+                        <option value="medium">Средний (+100-200%)</option>
+                        <option value="low">Низкий (до +100%)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Быстрые теги -->
+            <div class="filter-tags">
+                <span class="filter-tag active" data-filter="hot">
+                    <i class="fas fa-fire"></i> Трендовые
+                </span>
+                <span class="filter-tag" data-filter="ar">
+                    <i class="fas fa-vr-cardboard"></i> AR/VR
+                </span>
+                <span class="filter-tag" data-filter="ai">
+                    <i class="fas fa-robot"></i> Искусственный интеллект
+                </span>
+                <span class="filter-tag" data-filter="bio">
+                    <i class="fas fa-dna"></i> Биотех
+                </span>
+                <span class="filter-tag" data-filter="eco">
+                    <i class="fas fa-leaf"></i> Экология
+                </span>
+                <span class="filter-tag" data-filter="creative">
+                    <i class="fas fa-palette"></i> Креатив
+                </span>
+            </div>
+        </section>
+
+        <!-- Сетка профессий -->
+        <section class="professions-grid" id="professionsGrid">
+            <!-- Профессии будут загружены через JavaScript -->
+        </section>
+
+        <!-- Пагинация -->
+        <div class="pagination fade-in">
+            <button class="page-btn disabled">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">4</button>
+            <button class="page-btn">5</button>
+            <button class="page-btn">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </main>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Атлас 2035+</h3>
+                <p>Живая экосистема знаний о будущем труда. Исследуйте, обучайтесь, создавайте будущее вместе с нами.</p>
+                <div style="margin-top: 2rem;">
+                    <div style="display: flex; gap: 0.5rem;">
+                        <input type="email" placeholder="Ваш email" style="flex: 1; padding: 0.8rem 1rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(124,77,255,0.3); border-radius: 10px; color: white;">
+                        <button class="btn-outline" style="padding: 0.8rem 1.5rem; background: linear-gradient(135deg, var(--nebula-purple), var(--ai-magenta)); color: white; border: none;">Подписаться</button>
+                    </div>
+                    <p style="font-size: 0.85rem; color: rgba(255,255,255,0.5); margin-top: 0.5rem;">Только полезные новости о будущем</p>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Разделы</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html"><i class="fas fa-chevron-right"></i> Галактика профессий</a></li>
+                    <li><a href="professions.html"><i class="fas fa-chevron-right"></i> Карта профессий</a></li>
+                    <li><a href="career-simulator.html"><i class="fas fa-chevron-right"></i> Симулятор карьеры</a></li>
+                    <li><a href="skills-lab.html"><i class="fas fa-chevron-right"></i> Лаборатория навыков</a></li>
+                    <li><a href="connections.html"><i class="fas fa-chevron-right"></i> Динамические связи</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Партнеры</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Сколково</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> WorldSkills</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> НИУ ВШЭ</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Кружковое движение</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Росатом</a></li>
+                </ul>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-vk"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2024 Атлас новых профессий 2035+. Все права защищены. Будущее создается сегодня.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem;">
+                <a href="#" style="color: rgba(255,255,255,0.5); text-decoration: none; margin: 0 1rem;">Политика конфиденциальности</a>
+                <a href="#" style="color: rgba(255,255,255,0.5); text-decoration: none; margin: 0 1rem;">Условия использования</a>
+                <a href="#" style="color: rgba(255,255,255,0.5); text-decoration: none; margin: 0 1rem;">Контакты</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Модальное окно профессии -->
+    <div class="profession-modal" id="professionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalProfessionTitle">Дизайнер эмоций</h2>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+            <div class="modal-body" id="modalProfessionBody">
+                <!-- Контент будет загружен динамически -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // База данных профессий
+        const professionsData = [
+            {
+                id: 1,
+                name: "Дизайнер эмоций",
+                icon: "fas fa-smile-beam",
+                sphere: "AI и UX",
+                color: "#7c4dff",
+                description: "Специалист по созданию эмоциональных интерфейсов, который проектирует взаимодействие человека с AI-системами через эмоции. Работает на стыке нейронаук, психологии и дизайна.",
+                demand: "+240%",
+                salary: "$120-180k",
+                difficulty: "Средний",
+                growth: "Высокий",
+                features: ["AI интеграция", "Нейроинтерфейсы", "UX/UI", "Психология"],
+                details: {
+                    overview: "Дизайнер эмоций создает системы, которые понимают и реагируют на эмоциональное состояние пользователя. Это ключевая профессия для развития эмоционального искусственного интеллекта.",
+                    skills: ["Эмоциональный интеллект", "UX-исследования", "Работа с AI", "Нейротехнологии", "Психология"],
+                    courses: ["Курс от MIT по эмоциональному AI", "Специализация UX Design от Google", "Нейроинтерфейсы от NeuroTechX"],
+                    demandForecast: "Ожидается рост на 240% к 2030 году",
+                    salaryRange: "$120,000 - $180,000 в год",
+                    companies: ["Affectiva", "Empatica", "Neurosity", "Microsoft Research"]
+                }
+            },
+            {
+                id: 2,
+                name: "Архитектор метавселенных",
+                icon: "fas fa-vr-cardboard",
+                sphere: "VR/AR",
+                color: "#00e5ff",
+                description: "Проектирует и создает цифровые миры в метавселенных. Работает с VR/AR технологиями, блокчейном и 3D-моделированием.",
+                demand: "+320%",
+                salary: "$150-220k",
+                difficulty: "Продвинутый",
+                growth: "Очень высокий",
+                features: ["VR/AR", "Blockchain", "3D Modeling", "Game Dev"],
+                details: {
+                    overview: "Архитектор метавселенных проектирует полностью иммерсивные цифровые пространства, где люди могут работать, учиться и взаимодействовать.",
+                    skills: ["3D-моделирование", "VR разработка", "Blockchain", "Game Design", "UI/UX для VR"],
+                    courses: ["Meta VR Developer", "Unity Certified Programmer", "Blockchain Basics от IBM"],
+                    demandForecast: "Рост на 320% к 2030 году",
+                    salaryRange: "$150,000 - $220,000 в год",
+                    companies: ["Meta", "Microsoft Mesh", "Decentraland", "Roblox", "NVIDIA Omniverse"]
+                }
+            },
+            {
+                id: 3,
+                name: "Генный инженер",
+                icon: "fas fa-dna",
+                sphere: "Биотех",
+                color: "#00ff88",
+                description: "Специалист по редактированию генома и созданию персонализированных медицинских решений. Работает с CRISPR и другими технологиями генного редактирования.",
+                demand: "+180%",
+                salary: "$140-200k",
+                difficulty: "Эксперт",
+                growth: "Высокий",
+                features: ["CRISPR", "Биоинформатика", "Медицина", "Исследования"],
+                details: {
+                    overview: "Генный инженер использует технологии редактирования генома для лечения заболеваний, создания новых материалов и улучшения сельского хозяйства.",
+                    skills: ["Работа с CRISPR", "Биоинформатика", "Клеточная биология", "Молекулярная биология", "Биоэтика"],
+                    courses: ["Генная инженерия от Harvard", "Биоинформатика на Coursera", "CRISPR технологии от EdX"],
+                    demandForecast: "Рост на 180% к 2030 году",
+                    salaryRange: "$140,000 - $200,000 в год",
+                    companies: ["Editas Medicine", "CRISPR Therapeutics", "Intellia", "BioNTech", "Moderna"]
+                }
+            },
+            {
+                id: 4,
+                name: "Экоурбанист",
+                icon: "fas fa-leaf",
+                sphere: "Экология",
+                color: "#ff00d4",
+                description: "Проектирует умные, устойчивые города с нулевым выбросом углерода. Интегрирует зеленые технологии в городскую инфраструктуру.",
+                demand: "+200%",
+                salary: "$110-160k",
+                difficulty: "Средний",
+                growth: "Высокий",
+                features: ["Устойчивость", "Умные города", "Архитектура", "Экология"],
+                details: {
+                    overview: "Экоурбанист создает города будущего, которые гармонично сочетают технологический прогресс с экологической устойчивостью.",
+                    skills: ["Урбанистика", "Экологическое проектирование", "Умные технологии", "Городское планирование", "Возобновляемая энергия"],
+                    courses: ["Устойчивое развитие от SDG Academy", "Умные города от MIT", "Городское планирование от Coursera"],
+                    demandForecast: "Рост на 200% к 2030 году",
+                    salaryRange: "$110,000 - $160,000 в год",
+                    companies: ["Sidewalk Labs", "Arup", "Foster + Partners", "BIG", "Siemens Smart Infrastructure"]
+                }
+            },
+            {
+                id: 5,
+                name: "Киберпсихолог",
+                icon: "fas fa-brain",
+                sphere: "Психология",
+                color: "#ffc107",
+                description: "Изучает взаимодействие человека с цифровым миром и искусственным интеллектом. Помогает создавать безопасные цифровые среды.",
+                demand: "+160%",
+                salary: "$100-150k",
+                difficulty: "Средний",
+                growth: "Средний",
+                features: ["Психология", "Кибербезопасность", "UX Research", "AI Ethics"],
+                details: {
+                    overview: "Киберпсихолог исследует влияние технологий на психическое здоровье и помогает создавать цифровые продукты, которые улучшают качество жизни.",
+                    skills: ["Клиническая психология", "UX исследования", "Этика AI", "Кибербезопасность", "Анализ данных"],
+                    courses: ["Киберпсихология от APAI", "Digital Wellbeing от Google", "Ethics in AI от Oxford"],
+                    demandForecast: "Рост на 160% к 2030 году",
+                    salaryRange: "$100,000 - $150,000 в год",
+                    companies: ["Google Wellbeing Lab", "Center for Humane Technology", "Digital Wellness Institute", "Microsoft Research"]
+                }
+            },
+            {
+                id: 6,
+                name: "Биохакинг-консультант",
+                icon: "fas fa-user-md",
+                sphere: "Биохакинг",
+                color: "#7c4dff",
+                description: "Помогает людям оптимизировать здоровье и когнитивные способности с помощью данных, технологий и персонализированных подходов.",
+                demand: "+280%",
+                salary: "$95-140k",
+                difficulty: "Продвинутый",
+                growth: "Очень высокий",
+                features: ["Биометрия", "Нутрициология", "Фитнес", "Данные"],
+                details: {
+                    overview: "Биохакинг-консультант использует данные из носимых устройств, генетическое тестирование и современные исследования для создания персонализированных программ здоровья.",
+                    skills: ["Анализ данных здоровья", "Нутрициология", "Спортивная наука", "Генетика", "Коучинг"],
+                    courses: ["Персонализированное питание от Stanford", "Quantified Self от MIT", "Биохакинг на Udemy"],
+                    demandForecast: "Рост на 280% к 2030 году",
+                    salaryRange: "$95,000 - $140,000 в год",
+                    companies: ["Whoop", "Oura", "Levels", "InsideTracker", "Viome"]
+                }
+            },
+            {
+                id: 7,
+                name: "AI-этик",
+                icon: "fas fa-balance-scale",
+                sphere: "Этика",
+                color: "#00e5ff",
+                description: "Разрабатывает этические стандарты и политики для искусственного интеллекта. Обеспечивает безопасное и справедливое развитие AI.",
+                demand: "+220%",
+                salary: "$130-190k",
+                difficulty: "Продвинутый",
+                growth: "Высокий",
+                features: ["Этика", "Политика", "AI Safety", "Регулирование"],
+                details: {
+                    overview: "AI-этик работает на стыке технологии, философии и права, создавая рамки для ответственного развития искусственного интеллекта.",
+                    skills: ["Этическая философия", "Политический анализ", "AI безопасность", "Регуляторные вопросы", "Междисциплинарные исследования"],
+                    courses: ["AI Ethics от Google", "Ethics of Technology от Harvard", "AI Policy от Brookings"],
+                    demandForecast: "Рост на 220% к 2030 году",
+                    salaryRange: "$130,000 - $190,000 в год",
+                    companies: ["OpenAI", "DeepMind Ethics Team", "Partnership on AI", "AI Now Institute", "IEEE"]
+                }
+            },
+            {
+                id: 8,
+                name: "Дизайнер нейроинтерфейсов",
+                icon: "fas fa-head-side-brain",
+                sphere: "Нейротехнологии",
+                color: "#ff2e97",
+                description: "Создает интерфейсы для прямого подключения мозга к компьютерам. Работает над технологиями, которые позволят управлять устройствами силой мысли.",
+                demand: "+300%",
+                salary: "$160-230k",
+                difficulty: "Эксперт",
+                growth: "Очень высокий",
+                features: ["BCI", "Нейробиология", "Инженерия", "UX Design"],
+                details: {
+                    overview: "Дизайнер нейроинтерфейсов разрабатывает технологии, которые преобразуют нейронную активность в цифровые команды, открывая новые возможности для взаимодействия человека с техникой.",
+                    skills: ["Нейробиология", "Инженерное дело", "UI/UX дизайн", "Обработка сигналов", "Машинное обучение"],
+                    courses: ["BCI от EPFL", "Нейротехнологии от NeuroTechX", "Neural Interfaces от Duke University"],
+                    demandForecast: "Рост на 300% к 2030 году",
+                    salaryRange: "$160,000 - $230,000 в год",
+                    companies: ["Neuralink", "Kernel", "CTRL-labs", "OpenBCI", "Emotiv"]
+                }
+            }
+        ];
+
+        // Инициализация страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Частицы фона
+            particlesJS("particles-js", {
+                particles: {
+                    number: { value: 60, density: { enable: true, value_area: 800 } },
+                    color: { value: ["#7c4dff", "#00e5ff", "#00ff88", "#ff00d4"] },
+                    shape: { type: "circle" },
+                    opacity: { value: 0.4, random: true },
+                    size: { value: 3, random: true },
+                    line_linked: {
+                        enable: true,
+                        distance: 120,
+                        color: "#7c4dff",
+                        opacity: 0.2,
+                        width: 1
+                    },
+                    move: {
+                        enable: true,
+                        speed: 1.5,
+                        direction: "none",
+                        random: true,
+                        straight: false,
+                        out_mode: "out",
+                        bounce: false
+                    }
+                },
+                interactivity: {
+                    detect_on: "canvas",
+                    events: {
+                        onhover: { enable: true, mode: "repulse" },
+                        onclick: { enable: true, mode: "push" }
+                    }
+                }
+            });
+
+            // Анимация появления элементов
+            const fadeElements = document.querySelectorAll('.fade-in');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            fadeElements.forEach(el => observer.observe(el));
+
+            // Эффект навигации при скролле
+            window.addEventListener('scroll', () => {
+                const navbar = document.getElementById('navbar');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // Загрузка профессий
+            loadProfessions();
+
+            // Настройка фильтров
+            setupFilters();
+
+            // Настройка поиска
+            setupSearch();
+        });
+
+        // Загрузка профессий в сетку
+        function loadProfessions(filteredData = professionsData) {
+            const grid = document.getElementById('professionsGrid');
+            grid.innerHTML = '';
+
+            filteredData.forEach(profession => {
+                const card = createProfessionCard(profession);
+                grid.appendChild(card);
+            });
+        }
+
+        // Создание карточки профессии
+        function createProfessionCard(profession) {
+            const card = document.createElement('div');
+            card.className = 'profession-card fade-in';
+            card.dataset.id = profession.id;
+            card.dataset.sphere = profession.sphere.toLowerCase();
+            card.dataset.difficulty = profession.difficulty.toLowerCase();
+            card.dataset.demand = profession.demand.replace('+', '').replace('%', '');
+            
+            card.innerHTML = `
+                <div class="profession-header">
+                    <div class="profession-icon" style="background: linear-gradient(135deg, ${profession.color}40, rgba(0, 229, 255, 0.1));">
+                        <i class="${profession.icon}" style="color: ${profession.color}"></i>
+                    </div>
+                    <div>
+                        <h3 class="profession-title">${profession.name}</h3>
+                        <span class="profession-sphere">${profession.sphere}</span>
+                    </div>
+                </div>
+                
+                <p class="profession-description">${profession.description}</p>
+                
+                <div class="profession-stats">
+                    <div class="stat">
+                        <div class="stat-value">${profession.demand}</div>
+                        <div class="stat-label">Рост спроса</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">${profession.salary}</div>
+                        <div class="stat-label">Зарплата</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">${profession.difficulty}</div>
+                        <div class="stat-label">Сложность</div>
+                    </div>
+                </div>
+                
+                <div class="profession-features">
+                    ${profession.features.map(feature => 
+                        `<span class="feature-tag">${feature}</span>`
+                    ).join('')}
+                </div>
+                
+                <button class="card-link" onclick="openProfessionModal(${profession.id})">
+                    Исследовать профессию
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            `;
+
+            // Добавляем анимацию появления
+            setTimeout(() => {
+                card.classList.add('visible');
+            }, 100);
+
+            return card;
+        }
+
+        // Настройка фильтров
+        function setupFilters() {
+            const filterTags = document.querySelectorAll('.filter-tag');
+            const filterSelects = document.querySelectorAll('.filter-select');
+
+            // Обработка тегов фильтров
+            filterTags.forEach(tag => {
+                tag.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    applyFilters();
+                });
+            });
+
+            // Обработка выпадающих фильтров
+            filterSelects.forEach(select => {
+                select.addEventListener('change', applyFilters);
+            });
+        }
+
+        // Применение фильтров
+        function applyFilters() {
+            const sphereFilter = document.getElementById('sphereFilter').value;
+            const difficultyFilter = document.getElementById('difficultyFilter').value;
+            const demandFilter = document.getElementById('demandFilter').value;
+            const activeTags = Array.from(document.querySelectorAll('.filter-tag.active')).map(tag => tag.dataset.filter);
+
+            let filteredData = professionsData.filter(profession => {
+                // Фильтр по сфере
+                if (sphereFilter !== 'all') {
+                    const sphereMap = {
+                        'tech': ['AI и UX', 'VR/AR', 'Нейротехнологии'],
+                        'bio': ['Биотех', 'Биохакинг'],
+                        'eco': ['Экология'],
+                        'creative': ['Психология', 'Этика'],
+                        'science': ['Психология', 'Этика', 'Биотех']
+                    };
+                    if (!sphereMap[sphereFilter]?.includes(profession.sphere)) return false;
+                }
+
+                // Фильтр по сложности
+                if (difficultyFilter !== 'all') {
+                    const difficultyMap = {
+                        'entry': 'Начальный',
+                        'mid': 'Средний',
+                        'senior': 'Продвинутый',
+                        'expert': 'Эксперт'
+                    };
+                    if (profession.difficulty !== difficultyMap[difficultyFilter]) return false;
+                }
+
+                // Фильтр по спросу
+                if (demandFilter !== 'all') {
+                    const demandValue = parseInt(profession.demand.replace('+', '').replace('%', ''));
+                    if (demandFilter === 'high' && demandValue < 200) return false;
+                    if (demandFilter === 'medium' && (demandValue < 100 || demandValue >= 200)) return false;
+                    if (demandFilter === 'low' && demandValue >= 100) return false;
+                }
+
+                // Фильтр по тегам
+                if (activeTags.length > 0) {
+                    const professionTags = profession.features.map(f => f.toLowerCase());
+                    const hasActiveTag = activeTags.some(tag => 
+                        profession.name.toLowerCase().includes(tag) ||
+                        profession.sphere.toLowerCase().includes(tag) ||
+                        professionTags.some(pt => pt.includes(tag))
+                    );
+                    if (!hasActiveTag) return false;
+                }
+
+                return true;
+            });
+
+            loadProfessions(filteredData);
+        }
+
+        // Настройка поиска
+        function setupSearch() {
+            const searchInput = document.getElementById('searchInput');
+            let searchTimeout;
+
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    const searchTerm = this.value.toLowerCase().trim();
+                    
+                    if (searchTerm.length === 0) {
+                        loadProfessions(professionsData);
+                        return;
+                    }
+
+                    const filteredData = professionsData.filter(profession => {
+                        return profession.name.toLowerCase().includes(searchTerm) ||
+                               profession.sphere.toLowerCase().includes(searchTerm) ||
+                               profession.description.toLowerCase().includes(searchTerm) ||
+                               profession.features.some(feature => feature.toLowerCase().includes(searchTerm));
+                    });
+
+                    loadProfessions(filteredData);
+                }, 300);
+            });
+        }
+
+        // Открытие модального окна профессии
+        function openProfessionModal(id) {
+            const profession = professionsData.find(p => p.id === id);
+            if (!profession) return;
+
+            const modal = document.getElementById('professionModal');
+            const title = document.getElementById('modalProfessionTitle');
+            const body = document.getElementById('modalProfessionBody');
+
+            title.textContent = profession.name;
+            body.innerHTML = createModalContent(profession);
+
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                modal.style.opacity = '1';
+                document.querySelector('.modal-content').style.transform = 'scale(1)';
+            }, 10);
+
+            // Блокируем прокрутку фона
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Создание контента модального окна
+        function createModalContent(profession) {
+            return `
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-bottom: 3rem;">
+                    <div>
+                        <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--cyber-green);">Обзор профессии</h3>
+                        <p style="color: rgba(255,255,255,0.8); line-height: 1.7; margin-bottom: 2rem;">${profession.details.overview}</p>
+                        
+                        <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--cyber-green);">Ключевые навыки</h3>
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 2rem;">
+                            ${profession.details.skills.map(skill => 
+                                `<span style="padding: 0.5rem 1rem; background: rgba(124, 77, 255, 0.1); border-radius: 10px; color: rgba(255,255,255,0.9);">${skill}</span>`
+                            ).join('')}
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div style="background: rgba(124, 77, 255, 0.1); padding: 2rem; border-radius: 15px; border: 1px solid rgba(124, 77, 255, 0.3); margin-bottom: 2rem;">
+                            <h4 style="font-size: 1.2rem; margin-bottom: 1rem; color: var(--quantum-blue);">Статистика профессии</h4>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <div>
+                                    <div style="font-size: 1.5rem; font-weight: 700; color: var(--cyber-green);">${profession.demand}</div>
+                                    <div style="font-size: 0.9rem; color: rgba(255,255,255,0.6);">Рост спроса до 2030</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 1.5rem; font-weight: 700; color: var(--cyber-green);">${profession.salary}</div>
+                                    <div style="font-size: 0.9rem; color: rgba(255,255,255,0.6);">Средняя зарплата</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 1.5rem; font-weight: 700; color: var(--cyber-green);">${profession.difficulty}</div>
+                                    <div style="font-size: 0.9rem; color: rgba(255,255,255,0.6);">Уровень входа</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 1.5rem; font-weight: 700; color: var(--cyber-green);">${profession.growth}</div>
+                                    <div style="font-size: 0.9rem; color: rgba(255,255,255,0.6);">Темп роста</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--cyber-green);">Рекомендуемые курсы</h3>
+                        <div style="display: flex; flex-direction: column; gap: 1rem;">
+                            ${profession.details.courses.map(course => 
+                                `<div style="padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 10px; border: 1px solid rgba(124, 77, 255, 0.2);">
+                                    <div style="font-weight: 600; color: white;">${course}</div>
+                                    <button style="margin-top: 0.5rem; padding: 0.5rem 1rem; background: rgba(124, 77, 255, 0.2); border: 1px solid rgba(124, 77, 255, 0.3); color: white; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; font-size: 0.9rem;">
+                                        Изучить курс
+                                    </button>
+                                </div>`
+                            ).join('')}
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, rgba(0, 229, 255, 0.1), rgba(0, 255, 136, 0.05)); padding: 2rem; border-radius: 15px; border: 1px solid rgba(0, 229, 255, 0.3);">
+                    <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--cyber-green);">Компании, где нужны специалисты</h3>
+                    <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
+                        ${profession.details.companies.map(company => 
+                            `<span style="padding: 0.8rem 1.5rem; background: rgba(0, 229, 255, 0.1); border-radius: 10px; color: white; border: 1px solid rgba(0, 229, 255, 0.3);">${company}</span>`
+                        ).join('')}
+                    </div>
+                </div>
+                
+                <div style="margin-top: 3rem; text-align: center;">
+                    <button style="padding: 1rem 3rem; background: linear-gradient(135deg, var(--nebula-purple), var(--ai-magenta)); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: var(--glow-effect); font-size: 1.1rem;">
+                        <i class="fas fa-play-circle"></i> Начать обучение по этой профессии
+                    </button>
+                    <p style="margin-top: 1rem; color: rgba(255,255,255,0.6); font-size: 0.9rem;">
+                        Персональный план развития на 12 месяцев с менторской поддержкой
+                    </p>
+                </div>
+            `;
+        }
+
+        // Закрытие модального окна
+        function closeModal() {
+            const modal = document.getElementById('professionModal');
+            modal.style.opacity = '0';
+            document.querySelector('.modal-content').style.transform = 'scale(0.9)';
+            
+            setTimeout(() => {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }, 300);
+        }
+
+        // Функции для кнопок
+        function openModal(type) {
+            if (type === 'login') {
+                alert('Форма входа (будет реализовано в полной версии)');
+            } else {
+                alert('Форма регистрации (будет реализовано в полной версии)');
+            }
+        }
+
+        // Закрытие модального окна при клике вне его
+        document.getElementById('professionModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Закрытие модального окна на Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

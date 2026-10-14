@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark-theme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Атлас новых профессий 2035+ | Живая экосистема будущего труда</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Обновленная цветовая палитра */
+            --cosmic-black: #0a0a1a;
+            --deep-space: #121230;
+            --nebula-purple: #7c4dff;
+            --quantum-blue: #00e5ff;
+            --cyber-green: #00ff88;
+            --ai-magenta: #ff00d4;
+            --bio-gold: #ffc107;
+            --neon-pink: #ff2e97;
+            --star-white: #ffffff;
+            --cosmic-dust: rgba(255, 255, 255, 0.1);
+            
+            /* Градиенты */
+            --galaxy-gradient: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 50%, #0a0a1a 100%);
+            --hero-gradient: linear-gradient(120deg, var(--nebula-purple), var(--quantum-blue), var(--cyber-green));
+            --card-gradient: linear-gradient(145deg, rgba(124, 77, 255, 0.1), rgba(0, 229, 255, 0.05));
+            
+            /* Эффекты */
+            --glow-effect: 0 0 30px rgba(124, 77, 255, 0.5);
+            --soft-glow: 0 0 60px rgba(0, 229, 255, 0.3);
+            --hover-glow: 0 0 40px rgba(0, 255, 136, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--cosmic-black);
+            color: var(--star-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(124, 77, 255, 0.15) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, rgba(0, 229, 255, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 40% 80%, rgba(255, 46, 151, 0.08) 0%, transparent 20%);
+        }
+
+        /* Анимированный фон */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: var(--galaxy-gradient);
+            overflow: hidden;
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--nebula-purple), transparent);
+            filter: blur(40px);
+            opacity: 0.3;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .shape:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+            background: radial-gradient(circle, var(--quantum-blue), transparent);
+        }
+
+        .shape:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            top: 60%;
+            right: 10%;
+            animation-delay: -5s;
+            background: radial-gradient(circle, var(--ai-magenta), transparent);
+        }
+
+        .shape:nth-child(3) {
+            width: 200px;
+            height: 200px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: -10s;
+            background: radial-gradient(circle, var(--cyber-green), transparent);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            33% { transform: translateY(-30px) rotate(120deg); }
+            66% { transform: translateY(30px) rotate(240deg); }
+        }
+
+        /* Частицы */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Навигация */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 10, 26, 0.8);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(124, 77, 255, 0.3);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .navbar.scrolled {
+            padding: 0.8rem 5%;
+            background: rgba(10, 10, 26, 0.95);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--nebula-purple), var(--quantum-blue));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: logoFloat 3s ease-in-out infinite;
+            box-shadow: var(--glow-effect);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--nebula-purple), var(--quantum-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-link:hover {
+            background: rgba(124, 77, 255, 0.15);
+            color: var(--star-white);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background: linear-gradient(135deg, rgba(124, 77, 255, 0.3), rgba(0, 229, 255, 0.2));
+            color: var(--star-white);
+            box-shadow: var(--glow-effect);
+            border: 1px solid rgba(124, 77, 255, 0.5);
+        }
+
+        .nav-link i {
+            font-size: 1.1rem;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-left: 2rem;
+        }
+
+        .btn-outline {
+            padding: 0.8rem 1.8rem;
+            background: transparent;
+            border: 2px solid var(--quantum-blue);
+            color: var(--quantum-blue);
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline:hover {
+            background: rgba(0, 229, 255, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 229, 255, 0.3);
+        }
+
+        .btn-primary {
+            padding: 0.8rem 1.8rem;
+            background: linear-gradient(135deg, var(--nebula-purple), var(--ai-magenta));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--glow-effect);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(124, 77, 255, 0.4);
+        }
+
+        /* Основной контент */
+        .main-container {
+            margin-top: 100px;
+            padding: 2rem 5%;
+        }
+
+        /* Герой секция */
+        .hero-section {
+            text-align: center;
+            margin: 6rem auto 8rem;
+            max-width: 1200px;
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: 4.5rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            background: linear-gradient(90deg, var(--quantum-blue), var(--cyber-green), var(--ai-magenta));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 200% auto;
+            animation: gradientFlow 3s ease-in-out infinite;
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes gradientFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero-subtitle {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.85);
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--quantum-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 3rem;
+        }
+
+        .btn-hero {
+            padding: 1.2rem 3rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.7s ease;
+        }
+
+        .btn-hero:hover::before {
+            left: 100%;
+        }
+
+        .btn-explore {
+            background: linear-gradient(135deg, var(--nebula-purple), var(--ai-magenta));
+            color: white;
+            border: none;
+            box-shadow: var(--glow-effect);
+        }
+
+        .btn-explore:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(124, 77, 255, 0.5);
+        }
+
+        .btn-watch {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid rgba(124, 77, 255, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-watch:hover {
+            background: rgba(124, 77, 255, 0.2);
+            transform: translateY(-3px);
+            border-color: var(--nebula-purple);
+        }
+
+        /* Галактика профессий */
+        .galaxy-section {
+            margin: 8rem 0;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--quantum-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .galaxy-container {
+            position: relative;
+            width: 100%;
+            height: 700px;
+            margin: 3rem auto;
+            border-radius: 25px;
+            overflow: hidden;
+            background: rgba(18, 18, 48, 0.6);
+            border: 1px solid rgba(124, 77, 255, 0.3);
+            backdrop-filter: blur(10px);
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        #galaxy-canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .galaxy-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(124, 77, 255, 0.2) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(0, 229, 255, 0.15) 0%, transparent 40%);
+        }
+
+        /* Карточки разделов */
+        .sections-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin: 6rem 0;
+        }
+
+        .section-card {
+            background: var(--card-gradient);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(124, 77, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+        }
+
+        .section-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--nebula-purple), var(--quantum-blue));
+        }
+
+        .section-card:hover {
+            transform: translateY(-15px);
+            border-color: var(--nebula-purple);
+            box-shadow: 
+                var(--hover-glow),
+                0 25px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            background: linear-gradient(135deg, rgba(124, 77, 255, 0.2), rgba(0, 229, 255, 0.1));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-icon::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--nebula-purple), var(--quantum-blue));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .section-card:hover .card-icon::before {
+            opacity: 1;
+        }
+
+        .card-icon i {
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .section-card:hover .card-icon i {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        .card-1 .card-icon i { color: var(--nebula-purple); }
+        .card-2 .card-icon i { color: var(--quantum-blue); }
+        .card-3 .card-icon i { color: var(--cyber-green); }
+        .card-4 .card-icon i { color: var(--ai-magenta); }
+
+        .section-card:hover .card-1 .card-icon i,
+        .section-card:hover .card-2 .card-icon i,
+        .section-card:hover .card-3 .card-icon i,
+        .section-card:hover .card-4 .card-icon i {
+            color: white;
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            color: var(--star-white);
+        }
+
+        .card-desc {
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 1.7;
+            margin-bottom: 2rem;
+            font-size: 1.05rem;
+        }
+
+        .card-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-tag {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--quantum-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .card-link:hover {
+            gap: 1rem;
+            color: var(--cyber-green);
+        }
+
+        /* Анимированный раздел */
+        .feature-showcase {
+            margin: 8rem 0;
+            padding: 4rem;
+            background: linear-gradient(135deg, rgba(124, 77, 255, 0.1), rgba(0, 229, 255, 0.05));
+            border-radius: 30px;
+            border: 1px solid rgba(124, 77, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-showcase::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(124, 77, 255, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Футер */
+        .footer {
+            margin-top: 8rem;
+            padding: 5rem 5% 3rem;
+            background: rgba(10, 10, 26, 0.9);
+            border-top: 1px solid rgba(124, 77, 255, 0.3);
+            position: relative;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-section h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1.8rem;
+            color: var(--cyber-green);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--quantum-blue);
+            transform: translateX(5px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .social-link:hover {
+            background: var(--nebula-purple);
+            transform: translateY(-5px);
+            box-shadow: var(--glow-effect);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Анимации появления */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Мобильная адаптация */
+        @media (max-width: 1024px) {
+            .hero-title {
+                font-size: 3.5rem;
+            }
+            
+            .galaxy-container {
+                height: 500px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+                flex-wrap: wrap;
+            }
+
+            .nav-links {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .auth-buttons {
+                margin-left: 0;
+                order: 2;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-stats {
+                gap: 2rem;
+            }
+
+            .stat-number {
+                font-size: 2.5rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn-hero {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+
+            .sections-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-showcase {
+                padding: 2rem;
+            }
+        }
+
+        /* Специальные эффекты */
+        .neon-text {
+            text-shadow: 
+                0 0 10px currentColor,
+                0 0 20px currentColor,
+                0 0 40px currentColor;
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Скроллбар */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(10, 10, 26, 0.8);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--nebula-purple), var(--quantum-blue));
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(var(--quantum-blue), var(--cyber-green));
+        }
+    </style>
+</head>
+<body>
+    <!-- Анимированный фон -->
+    <div class="animated-bg">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+    </div>
+    <div id="particles-js"></div>
+
+    <!-- Навигация -->
+    <nav class="navbar" id="navbar">
+        <div class="logo" onclick="scrollToTop()">
+            <div class="logo-icon">
+                <i class="fas fa-rocket"></i>
+            </div>
+            <div class="logo-text">Атлас 2035+</div>
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link active"><i class="fas fa-home"></i> Галактика</a>
+            <a href="professions.html" class="nav-link"><i class="fas fa-user-astronaut"></i> Профессии</a>
+            <a href="career-simulator.html" class="nav-link"><i class="fas fa-chess-board"></i> Симулятор</a>
+            <a href="skills-lab.html" class="nav-link"><i class="fas fa-brain"></i> Навыки</a>
+            <a href="industries.html" class="nav-link"><i class="fas fa-industry"></i> Индустрии</a>
+            <a href="connections.html" class="nav-link"><i class="fas fa-project-diagram"></i> Связи</a>
+        </div>
+        <div class="auth-buttons">
+            <button class="btn-outline" onclick="openModal('login')">Войти</button>
+            <button class="btn-primary" onclick="openModal('register')">Начать бесплатно</button>
+        </div>
+    </nav>
+
+    <!-- Основной контент -->
+    <main class="main-container">
+        <!-- Герой секция -->
+        <section class="hero-section fade-in">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    Профессии будущего уже <span class="neon-text" style="color: var(--cyber-green);">здесь</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Исследуйте живую экосистему из 150+ профессий будущего, симуляторы карьеры, 
+                    интерактивные навыки и динамические связи между технологиями, людьми и рынком труда.
+                </p>
+                
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number pulse">150+</div>
+                        <div class="stat-label">Профессий будущего</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number pulse">500+</div>
+                        <div class="stat-label">Навыков для освоения</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number pulse">1000+</div>
+                        <div class="stat-label">Динамических связей</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number pulse">24/7</div>
+                        <div class="stat-label">Живые обновления</div>
+                    </div>
+                </div>
+
+                <div class="cta-buttons">
+                    <button class="btn-hero btn-explore" onclick="startExploration()">
+                        <i class="fas fa-play-circle"></i>
+                        Исследовать галактику
+                    </button>
+                    <button class="btn-hero btn-watch" onclick="playIntroVideo()">
+                        <i class="fas fa-play"></i>
+                        Смотреть интро
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Галактика профессий -->
+        <section class="galaxy-section fade-in">
+            <div class="section-header">
+                <h2 class="section-title">Интерактивная галактика профессий</h2>
+                <p class="section-subtitle">
+                    Наведите на звезду, чтобы увидеть профессию. Кликните, чтобы погрузиться в детали
+                </p>
+            </div>
+            
+            <div class="galaxy-container">
+                <canvas id="galaxy-canvas"></canvas>
+                <div class="galaxy-overlay"></div>
+                
+                <div class="galaxy-controls" style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; gap: 1rem; padding: 1rem 2rem; background: rgba(10, 10, 26, 0.8); backdrop-filter: blur(20px); border-radius: 15px; border: 1px solid rgba(124, 77, 255, 0.3);">
+                    <button class="control-btn" onclick="zoomIn()" style="padding: 0.8rem 1.5rem; background: rgba(124, 77, 255, 0.1); border: 1px solid rgba(124, 77, 255, 0.3); color: white; border-radius: 10px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-search-plus"></i> Приблизить
+                    </button>
+                    <button class="control-btn" onclick="autoRotateGalaxy()" style="padding: 0.8rem 1.5rem; background: linear-gradient(135deg, rgba(124, 77, 255, 0.3), rgba(0, 229, 255, 0.2)); border: none; color: white; border-radius: 10px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 0.5rem; box-shadow: var(--glow-effect);">
+                        <i class="fas fa-sync-alt"></i> Автоповорот
+                    </button>
+                    <button class="control-btn" onclick="showAllConnections()" style="padding: 0.8rem 1.5rem; background: rgba(0, 229, 255, 0.1); border: 1px solid rgba(0, 229, 255, 0.3); color: white; border-radius: 10px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-project-diagram"></i> Показать связи
+                    </button>
+                </div>
+                
+                <div class="galaxy-info" id="galaxy-info" style="position: absolute; top: 30px; right: 30px; max-width: 350px; padding: 1.5rem; background: rgba(10, 10, 26, 0.95); backdrop-filter: blur(20px); border-radius: 15px; border: 1px solid rgba(124, 77, 255, 0.3); display: none; animation: slideInRight 0.5s ease;">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h3 id="profession-title" style="font-size: 1.4rem; font-weight: 700; margin: 0;">Дизайнер эмоций</h3>
+                        <button onclick="closeInfo()" style="background: none; border: none; color: rgba(255,255,255,0.5); cursor: pointer; font-size: 1.2rem;">×</button>
+                    </div>
+                    <p id="profession-desc" style="color: rgba(255,255,255,0.8); margin-bottom: 1rem;">Создает эмоциональные интерфейсы для AI-систем нового поколения</p>
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+                        <span style="background: rgba(124, 77, 255, 0.2); padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.85rem;"><i class="fas fa-chart-line"></i> +240% спрос</span>
+                        <span style="background: rgba(0, 229, 255, 0.2); padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.85rem;"><i class="fas fa-graduation-cap"></i> 3.5 года</span>
+                        <span style="background: rgba(0, 255, 136, 0.2); padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.85rem;"><i class="fas fa-money-bill-wave"></i> $120k</span>
+                    </div>
+                    <button onclick="exploreProfession()" style="width: 100%; padding: 0.8rem; background: linear-gradient(135deg, var(--nebula-purple), var(--ai-magenta)); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: var(--glow-effect);">
+                        Исследовать профессию <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Карточки разделов -->
+        <section class="sections-grid">
+            <div class="section-card card-1 fade-in" onclick="navigateTo('professions.html')">
+                <div class="card-icon">
+                    <i class="fas fa-user-astronaut"></i>
+                </div>
+                <h3 class="card-title">Карта профессий</h3>
+                <p class="card-desc">
+                    Полная энциклопедия профессий будущего с AR-примерами, видео-интервью с пионерами направлений, 
+                    подборками курсов и реальными вакансиями.
+                </p>
+                <div class="card-features">
+                    <span class="feature-tag">AR/VR примеры</span>
+                    <span class="feature-tag">Интервью</span>
+                    <span class="feature-tag">Карьерные треки</span>
+                    <span class="feature-tag">Вакансии</span>
+                </div>
+                <a href="professions.html" class="card-link">
+                    Перейти в раздел
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="section-card card-2 fade-in" onclick="navigateTo('career-simulator.html')">
+                <div class="card-icon">
+                    <i class="fas fa-chess-board"></i>
+                </div>
+                <h3 class="card-title">Симулятор карьеры</h3>
+                <p class="card-desc">
+                    Выберите глобальный вызов человечества и постройте стратегию его решения. 
+                    Персонализированный AI-анализ и roadmap развития на 10 лет вперед.
+                </p>
+                <div class="card-features">
+                    <span class="feature-tag">7 сценариев</span>
+                    <span class="feature-tag">AI-анализ</span>
+                    <span class="feature-tag">Roadmap</span>
+                    <span class="feature-tag">Геймификация</span>
+                </div>
+                <a href="career-simulator.html" class="card-link">
+                    Пройти симуляцию
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="section-card card-3 fade-in" onclick="navigateTo('skills-lab.html')">
+                <div class="card-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3 class="card-title">Лаборатория навыков</h3>
+                <p class="card-desc">
+                    Освойте 50+ навыков будущего через микро-курсы, интерактивные тесты и практические задачи. 
+                    Трекер прогресса с геймификацией обучения.
+                </p>
+                <div class="card-features">
+                    <span class="feature-tag">Микро-курсы</span>
+                    <span class="feature-tag">Тесты</span>
+                    <span class="feature-tag">Геймификация</span>
+                    <span class="feature-tag">Трекер прогресса</span>
+                </div>
+                <a href="skills-lab.html" class="card-link">
+                    Изучить навыки
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="section-card card-4 fade-in" onclick="navigateTo('connections.html')">
+                <div class="card-icon">
+                    <i class="fas fa-project-diagram"></i>
+                </div>
+                <h3 class="card-title">Динамические связи</h3>
+                <p class="card-desc">
+                    Визуализация живой экосистемы знаний. Увидьте связи между профессиями, навыками, 
+                    курсами и вакансиями в реальном времени.
+                </p>
+                <div class="card-features">
+                    <span class="feature-tag">1000+ связей</span>
+                    <span class="feature-tag">Real-time</span>
+                    <span class="feature-tag">AI-анализ</span>
+                    <span class="feature-tag">Интерактив</span>
+                </div>
+                <a href="connections.html" class="card-link">
+                    Исследовать связи
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </section>
+
+        <!-- Дополнительный раздел -->
+        <div class="feature-showcase fade-in">
+            <div style="position: relative; z-index: 2; text-align: center;">
+                <h2 style="font-size: 2.5rem; margin-bottom: 1rem; color: white;">Готовы к будущему?</h2>
+                <p style="font-size: 1.2rem; color: rgba(255,255,255,0.8); max-width: 700px; margin: 0 auto 2rem;">
+                    Присоединяйтесь к сообществу из 50,000+ исследователей будущего, получайте персональные 
+                    рекомендации и будьте первыми, кто узнает о новых профессиях.
+                </p>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <button class="btn-primary" style="padding: 1rem 2.5rem; font-size: 1.1rem;" onclick="openModal('register')">
+                        <i class="fas fa-user-plus"></i> Присоединиться бесплатно
+                    </button>
+                    <button class="btn-outline" style="padding: 1rem 2.5rem; font-size: 1.1rem;" onclick="navigateTo('community.html')">
+                        <i class="fas fa-users"></i> Сообщество
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Атлас 2035+</h3>
+                <p>Живая экосистема знаний о будущем труда. Исследуйте, обучайтесь, создавайте будущее вместе с нами.</p>
+                <div class="newsletter-form" style="margin-top: 2rem;">
+                    <div style="display: flex; gap: 0.5rem;">
+                        <input type="email" placeholder="Ваш email" style="flex: 1; padding: 0.8rem 1rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(124,77,255,0.3); border-radius: 10px; color: white;">
+                        <button class="btn-primary" style="padding: 0.8rem 1.5rem;">Подписаться</button>
+                    </div>
+                    <p style="font-size: 0.85rem; color: rgba(255,255,255,0.5); margin-top: 0.5rem;">Только полезные новости о будущем</p>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Разделы</h3>
+                <ul class="footer-links">
+                    <li><a href="professions.html"><i class="fas fa-chevron-right"></i> Карта профессий</a></li>
+                    <li><a href="career-simulator.html"><i class="fas fa-chevron-right"></i> Симулятор карьеры</a></li>
+                    <li><a href="skills-lab.html"><i class="fas fa-chevron-right"></i> Лаборатория навыков</a></li>
+                    <li><a href="industries.html"><i class="fas fa-chevron-right"></i> Будущее индустрий</a></li>
+                    <li><a href="connections.html"><i class="fas fa-chevron-right"></i> Динамические связи</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Партнеры</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Сколково</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> WorldSkills</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> НИУ ВШЭ</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Кружковое движение</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Росатом</a></li>
+                </ul>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-vk"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2024 Атлас новых профессий 2035+. Все права защищены. Будущее создается сегодня.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem;">
+                <a href="#" style="color: rgba(255,255,255,0.5); text-decoration: none; margin: 0 1rem;">Политика конфиденциальности</a>
+                <a href="#" style="color: rgba(255,255,255,0.5); text-decoration: none; margin: 0 1rem;">Условия использования</a>
+                <a href="#" style="color: rgba(255,255,255,0.5); text-decoration: none; margin: 0 1rem;">Контакты</a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Инициализация частиц
+        document.addEventListener('DOMContentLoaded', function() {
+            // Частицы фона
+            particlesJS("particles-js", {
+                particles: {
+                    number: { value: 80, density: { enable: true, value_area: 800 } },
+                    color: { value: ["#7c4dff", "#00e5ff", "#00ff88", "#ff00d4"] },
+                    shape: { type: "circle" },
+                    opacity: { value: 0.5, random: true },
+                    size: { value: 3, random: true },
+                    line_linked: {
+                        enable: true,
+                        distance: 150,
+                        color: "#7c4dff",
+                        opacity: 0.2,
+                        width: 1
+                    },
+                    move: {
+                        enable: true,
+                        speed: 2,
+                        direction: "none",
+                        random: true,
+                        straight: false,
+                        out_mode: "out",
+                        bounce: false
+                    }
+                },
+                interactivity: {
+                    detect_on: "canvas",
+                    events: {
+                        onhover: { enable: true, mode: "repulse" },
+                        onclick: { enable: true, mode: "push" }
+                    }
+                }
+            });
+
+            // Анимация появления элементов
+            const fadeElements = document.querySelectorAll('.fade-in');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            fadeElements.forEach(el => observer.observe(el));
+
+            // Эффект навигации при скролле
+            window.addEventListener('scroll', () => {
+                const navbar = document.getElementById('navbar');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // Инициализация галактики
+            initGalaxy();
+        });
+
+        // Улучшенная галактика профессий
+        function initGalaxy() {
+            const canvas = document.getElementById('galaxy-canvas');
+            const ctx = canvas.getContext('2d');
+            const infoPanel = document.getElementById('galaxy-info');
+            
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+
+            // Профессии будущего с деталями
+            const professions = [
+                { 
+                    name: "Дизайнер эмоций", 
+                    x: 300, y: 200, 
+                    radius: 25, 
+                    color: "#7c4dff",
+                    connections: 8,
+                    demand: "+240%",
+                    salary: "$120k",
+                    description: "Создает эмоциональные интерфейсы для AI-систем нового поколения",
+                    sphere: "AI"
+                },
+                { 
+                    name: "Архитектор метавселенных", 
+                    x: 500, y: 300, 
+                    radius: 30, 
+                    color: "#00e5ff",
+                    connections: 12,
+                    demand: "+320%",
+                    salary: "$150k",
+                    description: "Проектирует цифровые миры и пространства виртуальной реальности",
+                    sphere: "VR/AR"
+                },
+                { 
+                    name: "Генный инженер", 
+                    x: 200, y: 400, 
+                    radius: 28, 
+                    color: "#00ff88",
+                    connections: 10,
+                    demand: "+180%",
+                    salary: "$140k",
+                    description: "Разрабатывает персонализированные медицинские решения на основе ДНК",
+                    sphere: "Биотех"
+                },
+                { 
+                    name: "Экоурбанист", 
+                    x: 400, y: 100, 
+                    radius: 22, 
+                    color: "#ff00d4",
+                    connections: 6,
+                    demand: "+200%",
+                    salary: "$110k",
+                    description: "Создает устойчивые и умные городские экосистемы",
+                    sphere: "Экология"
+                },
+                { 
+                    name: "Киберпсихолог", 
+                    x: 600, y: 200, 
+                    radius: 26, 
+                    color: "#ffc107",
+                    connections: 9,
+                    demand: "+160%",
+                    salary: "$100k",
+                    description: "Изучает взаимодействие человека с искусственным интеллектом",
+                    sphere: "Психология"
+                },
+                { 
+                    name: "Биохакинг-консультант", 
+                    x: 350, y: 350, 
+                    radius: 20, 
+                    color: "#7c4dff",
+                    connections: 5,
+                    demand: "+280%",
+                    salary: "$95k",
+                    description: "Помогает оптимизировать здоровье через технологии и данные",
+                    sphere: "Биохакинг"
+                },
+                { 
+                    name: "AI-этик", 
+                    x: 450, y: 450, 
+                    radius: 32, 
+                    color: "#00e5ff",
+                    connections: 11,
+                    demand: "+220%",
+                    salary: "$130k",
+                    description: "Разрабатывает этические стандарты для искусственного интеллекта",
+                    sphere: "Этика"
+                }
+            ];
+
+            let scale = 1;
+            let offsetX = 0;
+            let offsetY = 0;
+            let isDragging = false;
+            let lastX = 0;
+            let lastY = 0;
+            let rotation = 0;
+            let autoRotate = false;
+            let showConnections = true;
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Фоновый градиент
+                const bgGradient = ctx.createRadialGradient(
+                    canvas.width/2, canvas.height/2, 0,
+                    canvas.width/2, canvas.height/2, Math.max(canvas.width, canvas.height)/2
+                );
+                bgGradient.addColorStop(0, 'rgba(18, 18, 48, 0.8)');
+                bgGradient.addColorStop(1, 'rgba(10, 10, 26, 0.9)');
+                ctx.fillStyle = bgGradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Сферы влияния
+                const spheres = [
+                    { x: 300, y: 250, radius: 120, color: 'rgba(124, 77, 255, 0.05)' },
+                    { x: 500, y: 300, radius: 140, color: 'rgba(0, 229, 255, 0.05)' },
+                    { x: 400, y: 450, radius: 100, color: 'rgba(0, 255, 136, 0.05)' }
+                ];
+
+                spheres.forEach(sphere => {
+                    ctx.beginPath();
+                    ctx.arc(
+                        sphere.x + offsetX + Math.cos(rotation/100) * 20,
+                        sphere.y + offsetY + Math.sin(rotation/100) * 20,
+                        sphere.radius * scale, 0, Math.PI * 2
+                    );
+                    ctx.fillStyle = sphere.color;
+                    ctx.fill();
+                });
+
+                // Связи между профессиями
+                if (showConnections) {
+                    ctx.strokeStyle = 'rgba(124, 77, 255, 0.3)';
+                    ctx.lineWidth = 1.5;
+                    ctx.setLineDash([5, 5]);
+                    
+                    professions.forEach((prof, i) => {
+                        professions.slice(i + 1).forEach(otherProf => {
+                            const distance = Math.sqrt(
+                                Math.pow(prof.x - otherProf.x, 2) + 
+                                Math.pow(prof.y - otherProf.y, 2)
+                            );
+                            
+                            if (distance < 200) {
+                                ctx.beginPath();
+                                ctx.moveTo(prof.x + offsetX, prof.y + offsetY);
+                                ctx.lineTo(otherProf.x + offsetX, otherProf.y + offsetY);
+                                ctx.stroke();
+                            }
+                        });
+                    });
+                    
+                    ctx.setLineDash([]);
+                }
+
+                // Профессии (звезды)
+                professions.forEach(prof => {
+                    const x = prof.x + offsetX;
+                    const y = prof.y + offsetY;
+                    const radius = prof.radius * scale;
+                    
+                    // Свечение
+                    const glow = ctx.createRadialGradient(x, y, 0, x, y, radius * 2);
+                    glow.addColorStop(0, prof.color + '80');
+                    glow.addColorStop(1, 'transparent');
+                    
+                    ctx.beginPath();
+                    ctx.arc(x, y, radius * 2, 0, Math.PI * 2);
+                    ctx.fillStyle = glow;
+                    ctx.fill();
+                    
+                    // Звезда
+                    const starGradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
+                    starGradient.addColorStop(0, 'white');
+                    starGradient.addColorStop(0.5, prof.color);
+                    starGradient.addColorStop(1, 'rgba(124, 77, 255, 0.3)');
+                    
+                    ctx.beginPath();
+                    ctx.arc(x, y, radius, 0, Math.PI * 2);
+                    ctx.fillStyle = starGradient;
+                    ctx.fill();
+                    
+                    // Обводка
+                    ctx.strokeStyle = prof.color;
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                    
+                    // Количество связей
+                    ctx.fillStyle = 'white';
+                    ctx.font = `${Math.max(12 * scale, 8)}px Inter`;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(prof.connections.toString(), x, y);
+                });
+
+                if (autoRotate) {
+                    rotation += 0.5;
+                    offsetX = Math.cos(rotation/50) * 50;
+                    offsetY = Math.sin(rotation/50) * 30;
+                }
+            }
+
+            // Интерактивность
+            canvas.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                lastX = e.offsetX;
+                lastY = e.offsetY;
+            });
+
+            canvas.addEventListener('mousemove', (e) => {
+                if (!isDragging) {
+                    // Подсветка при наведении
+                    const mouseX = e.offsetX;
+                    const mouseY = e.offsetY;
+                    
+                    professions.forEach(prof => {
+                        const distance = Math.sqrt(
+                            Math.pow(mouseX - (prof.x + offsetX), 2) + 
+                            Math.pow(mouseY - (prof.y + offsetY), 2)
+                        );
+                        
+                        if (distance < prof.radius * scale) {
+                            canvas.style.cursor = 'pointer';
+                            return;
+                        } else {
+                            canvas.style.cursor = 'grab';
+                        }
+                    });
+                    return;
+                }
+                
+                offsetX += e.offsetX - lastX;
+                offsetY += e.offsetY - lastY;
+                lastX = e.offsetX;
+                lastY = e.offsetY;
+                draw();
+            });
+
+            canvas.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+
+            canvas.addEventListener('click', (e) => {
+                const mouseX = e.offsetX;
+                const mouseY = e.offsetY;
+                
+                professions.forEach(prof => {
+                    const distance = Math.sqrt(
+                        Math.pow(mouseX - (prof.x + offsetX), 2) + 
+                        Math.pow(mouseY - (prof.y + offsetY), 2)
+                    );
+                    
+                    if (distance < prof.radius * scale) {
+                        showProfessionInfo(prof);
+                    }
+                });
+            });
+
+            canvas.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                const zoomIntensity = 0.1;
+                const mouseX = e.offsetX;
+                const mouseY = e.offsetY;
+                
+                const worldMouseX = (mouseX - offsetX) / scale;
+                const worldMouseY = (mouseY - offsetY) / scale;
+                
+                scale += e.deltaY > 0 ? -zoomIntensity : zoomIntensity;
+                scale = Math.max(0.3, Math.min(3, scale));
+                
+                offsetX = mouseX - worldMouseX * scale;
+                offsetY = mouseY - worldMouseY * scale;
+                
+                draw();
+            });
+
+            function showProfessionInfo(prof) {
+                const info = document.getElementById('galaxy-info');
+                const title = document.getElementById('profession-title');
+                const desc = document.getElementById('profession-desc');
+                
+                title.textContent = prof.name;
+                desc.textContent = prof.description;
+                info.style.display = 'block';
+                
+                // Анимация появления
+                info.style.animation = 'none';
+                setTimeout(() => {
+                    info.style.animation = 'slideInRight 0.5s ease';
+                }, 10);
+            }
+
+            // Управление
+            window.zoomIn = function() {
+                scale = Math.min(3, scale * 1.2);
+                draw();
+            };
+
+            window.zoomOut = function() {
+                scale = Math.max(0.3, scale / 1.2);
+                draw();
+            };
+
+            window.autoRotateGalaxy = function() {
+                autoRotate = !autoRotate;
+                draw();
+            };
+
+            window.showAllConnections = function() {
+                showConnections = !showConnections;
+                draw();
+            };
+
+            window.closeInfo = function() {
+                document.getElementById('galaxy-info').style.display = 'none';
+            };
+
+            window.exploreProfession = function() {
+                navigateTo('professions.html');
+            };
+
+            // Начальная отрисовка
+            draw();
+            
+            // Адаптация при изменении размера окна
+            window.addEventListener('resize', () => {
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+                draw();
+            });
+        }
+
+        // Навигация
+        function navigateTo(page) {
+            document.body.style.opacity = '0.8';
+            setTimeout(() => {
+                window.location.href = page;
+            }, 300);
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function startExploration() {
+            const hero = document.querySelector('.hero-section');
+            hero.style.transform = 'scale(0.9)';
+            hero.style.opacity = '0';
+            
+            setTimeout(() => {
+                navigateTo('professions.html');
+            }, 500);
+        }
+
+        function playIntroVideo() {
+            // В реальном проекте здесь будет модальное окно с видео
+            alert('Демонстрационное видео о проекте');
+        }
+
+        function openModal(type) {
+            // В реальном проекте здесь будут модальные окна
+            if (type === 'login') {
+                alert('Форма входа');
+            } else {
+                alert('Форма регистрации');
+            }
+        }
+
+        // Анимация статистики
+        function animateCounter(element, target, duration = 2000) {
+            const start = 0;
+            const increment = target / (duration / 16);
+            let current = start;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target + '+';
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current) + '+';
+                }
+            }, 16);
+        }
+
+        // Запуск анимации статистики при загрузке
+        window.addEventListener('load', () => {
+            const stats = document.querySelectorAll('.stat-number');
+            stats.forEach(stat => {
+                const target = parseInt(stat.textContent);
+                animateCounter(stat, target);
+            });
+        });
+    </script>
+</body>
+</html>

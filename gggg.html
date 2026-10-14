@@ -1,0 +1,2358 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark-theme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Симулятор карьеры | Атлас новых профессий 2035+</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Цветовая палитра из предыдущих страниц */
+            --cosmic-black: #0a0a1a;
+            --deep-space: #121230;
+            --nebula-purple: #7c4dff;
+            --quantum-blue: #00e5ff;
+            --cyber-green: #00ff88;
+            --ai-magenta: #ff00d4;
+            --bio-gold: #ffc107;
+            --neon-pink: #ff2e97;
+            --star-white: #ffffff;
+            --cosmic-dust: rgba(255, 255, 255, 0.1);
+            
+            --galaxy-gradient: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 50%, #0a0a1a 100%);
+            --hero-gradient: linear-gradient(120deg, var(--nebula-purple), var(--quantum-blue), var(--cyber-green));
+            --card-gradient: linear-gradient(145deg, rgba(124, 77, 255, 0.1), rgba(0, 229, 255, 0.05));
+            
+            --glow-effect: 0 0 30px rgba(124, 77, 255, 0.5);
+            --soft-glow: 0 0 60px rgba(0, 229, 255, 0.3);
+            --hover-glow: 0 0 40px rgba(0, 255, 136, 0.4);
+            --success-glow: 0 0 40px rgba(0, 255, 136, 0.6);
+            --warning-glow: 0 0 40px rgba(255, 193, 7, 0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--cosmic-black);
+            color: var(--star-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 5% 15%, rgba(124, 77, 255, 0.15) 0%, transparent 25%),
+                radial-gradient(circle at 95% 85%, rgba(0, 229, 255, 0.1) 0%, transparent 25%),
+                radial-gradient(circle at 25% 75%, rgba(255, 46, 151, 0.08) 0%, transparent 25%);
+        }
+
+        /* Анимированный фон */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: var(--galaxy-gradient);
+            overflow: hidden;
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--nebula-purple), transparent);
+            filter: blur(40px);
+            opacity: 0.15;
+            animation: float 30s infinite ease-in-out;
+        }
+
+        .shape:nth-child(1) {
+            width: 400px;
+            height: 400px;
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+            background: radial-gradient(circle, var(--quantum-blue), transparent);
+        }
+
+        .shape:nth-child(2) {
+            width: 300px;
+            height: 300px;
+            top: 60%;
+            right: 10%;
+            animation-delay: -10s;
+            background: radial-gradient(circle, var(--ai-magenta), transparent);
+        }
+
+        .shape:nth-child(3) {
+            width: 350px;
+            height: 350px;
+            bottom: 15%;
+            left: 30%;
+            animation-delay: -20s;
+            background: radial-gradient(circle, var(--cyber-green), transparent);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+            33% { transform: translateY(-40px) rotate(120deg) scale(1.1); }
+            66% { transform: translateY(40px) rotate(240deg) scale(0.9); }
+        }
+
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Навигация */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 10, 26, 0.85);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(124, 77, 255, 0.3);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .navbar.scrolled {
+            padding: 0.8rem 5%;
+            background: rgba(10, 10, 26, 0.95);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--nebula-purple), var(--quantum-blue));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: logoFloat 3s ease-in-out infinite;
+            box-shadow: var(--glow-effect);
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--nebula-purple), var(--quantum-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-link:hover {
+            background: rgba(124, 77, 255, 0.15);
+            color: var(--star-white);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background: linear-gradient(135deg, rgba(124, 77, 255, 0.3), rgba(0, 229, 255, 0.2));
+            color: var(--star-white);
+            box-shadow: var(--glow-effect);
+            border: 1px solid rgba(124, 77, 255, 0.5);
+        }
+
+        .nav-link i {
+            font-size: 1.1rem;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-left: 2rem;
+        }
+
+        .btn-outline {
+            padding: 0.8rem 1.8rem;
+            background: transparent;
+            border: 2px solid var(--quantum-blue);
+            color: var(--quantum-blue);
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline:hover {
+            background: rgba(0, 229, 255, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 229, 255, 0.3);
+        }
+
+        /* Основной контент */
+        .main-container {
+            margin-top: 100px;
+            padding: 2rem 5%;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Хедер страницы */
+        .page-header {
+            text-align: center;
+            margin: 3rem auto 4rem;
+            max-width: 900px;
+        }
+
+        .page-title {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            background: linear-gradient(90deg, var(--quantum-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 200% auto;
+            animation: gradientFlow 3s ease-in-out infinite;
+        }
+
+        @keyframes gradientFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .page-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.85);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+
+        /* Индикатор прогресса */
+        .progress-container {
+            margin: 4rem auto;
+            max-width: 800px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--star-white);
+        }
+
+        .progress-stats {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .progress-stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--quantum-blue);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 0.3rem;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--nebula-purple), var(--quantum-blue));
+            border-radius: 5px;
+            width: 0%;
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: progressShine 2s infinite;
+        }
+
+        @keyframes progressShine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(200%); }
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-top: 2rem;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(124, 77, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .step.active .step-number {
+            background: linear-gradient(135deg, var(--nebula-purple), var(--ai-magenta));
+            border-color: transparent;
+            box-shadow: var(--glow-effect);
+            transform: scale(1.2);
+        }
+
+        .step.completed .step-number {
+            background: linear-gradient(135deg, var(--cyber-green), var(--quantum-blue));
+            border-color: transparent;
+        }
+
+        .step-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            max-width: 120px;
+        }
+
+        .step.active .step-label {
+            color: var(--star-white);
+            font-weight: 600;
+        }
+
+        .progress-steps::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 50px;
+            right: 50px;
+            height: 2px;
+            background: rgba(124, 77, 255, 0.3);
+            z-index: 1;
+        }
+
+        /* Контейнер симулятора */
+        .simulator-container {
+            background: rgba(18, 18, 48, 0.6);
+            border-radius: 25px;
+            border: 1px solid rgba(124, 77, 255, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            margin: 3rem 0;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .simulator-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(124, 77, 255, 0.05) 0%, transparent 70%);
+            animation: rotate 30s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Шаги симулятора */
+        .simulator-step {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            flex: 1;
+        }
+
+        .simulator-step.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .step-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .step-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--quantum-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .step-description {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Варианты выбора */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .option-card {
+            background: var(--card-gradient);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid rgba(124, 77, 255, 0.2);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .option-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--quantum-blue);
+            box-shadow: var(--hover-glow);
+        }
+
+        .option-card.selected {
+            border-color: var(--cyber-green);
+            background: linear-gradient(145deg, rgba(0, 255, 136, 0.1), rgba(0, 229, 255, 0.05));
+            box-shadow: var(--success-glow);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: var(--success-glow); }
+            50% { box-shadow: 0 0 60px rgba(0, 255, 136, 0.8); }
+        }
+
+        .option-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            background: linear-gradient(135deg, rgba(124, 77, 255, 0.2), rgba(0, 229, 255, 0.1));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-card.selected .option-icon {
+            background: linear-gradient(135deg, var(--cyber-green), var(--quantum-blue));
+        }
+
+        .option-icon i {
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .option-card.selected .option-icon i {
+            color: white;
+            transform: scale(1.2);
+        }
+
+        .option-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--star-white);
+        }
+
+        .option-description {
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 1.7;
+            margin-bottom: 2rem;
+            flex-grow: 1;
+        }
+
+        .option-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-bottom: 2rem;
+        }
+
+        .feature-tag {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .option-card.selected .feature-tag {
+            background: rgba(0, 255, 136, 0.2);
+            border-color: var(--cyber-green);
+            color: var(--cyber-green);
+        }
+
+        .select-indicator {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .option-card.selected .select-indicator {
+            background: var(--cyber-green);
+            border-color: var(--cyber-green);
+            box-shadow: 0 0 15px var(--cyber-green);
+        }
+
+        .option-card.selected .select-indicator::after {
+            content: '✓';
+            color: white;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Управление симулятором */
+        .simulator-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 3rem;
+            padding-top: 3rem;
+            border-top: 1px solid rgba(124, 77, 255, 0.2);
+        }
+
+        .control-btn {
+            padding: 1rem 2.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            border: none;
+        }
+
+        .btn-prev {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(124, 77, 255, 0.3);
+        }
+
+        .btn-prev:hover {
+            background: rgba(124, 77, 255, 0.2);
+            transform: translateX(-5px);
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, var(--nebula-purple), var(--ai-magenta));
+            color: white;
+            box-shadow: var(--glow-effect);
+        }
+
+        .btn-next:hover {
+            transform: translateX(5px);
+            box-shadow: 0 10px 30px rgba(124, 77, 255, 0.5);
+        }
+
+        .btn-finish {
+            background: linear-gradient(135deg, var(--cyber-green), var(--quantum-blue));
+            color: white;
+            box-shadow: var(--success-glow);
+        }
+
+        .btn-finish:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 255, 136, 0.5);
+        }
+
+        .btn-disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-disabled:hover {
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        .step-counter {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 500;
+        }
+
+        /* Результаты симуляции */
+        .results-container {
+            text-align: center;
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .results-header {
+            margin-bottom: 3rem;
+        }
+
+        .results-title {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--quantum-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .results-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .result-card {
+            background: var(--card-gradient);
+            border-radius: 20px;
+            padding: 2.5rem;
+            border: 1px solid rgba(124, 77, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .result-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(var(--cyber-green), var(--quantum-blue));
+        }
+
+        .result-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 229, 255, 0.1));
+            color: var(--cyber-green);
+        }
+
+        .result-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--star-white);
+        }
+
+        .result-description {
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 1.6;
+        }
+
+        .result-list {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+
+        .result-list li {
+            margin-bottom: 0.8rem;
+            color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .result-list li i {
+            color: var(--cyber-green);
+            font-size: 0.9rem;
+        }
+
+        /* Карьерная дорожная карта */
+        .roadmap-container {
+            margin: 4rem 0;
+            background: rgba(18, 18, 48, 0.6);
+            border-radius: 20px;
+            padding: 3rem;
+            border: 1px solid rgba(124, 77, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .roadmap-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            color: var(--star-white);
+            text-align: center;
+        }
+
+        .roadmap-timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .roadmap-timeline::before {
+            content: '';
+            position: absolute;
+            left: 50px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, var(--nebula-purple), var(--quantum-blue));
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            padding-left: 100px;
+        }
+
+        .timeline-year {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--nebula-purple), var(--ai-magenta));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.2rem;
+            box-shadow: var(--glow-effect);
+        }
+
+        .timeline-content {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid rgba(124, 77, 255, 0.2);
+        }
+
+        .timeline-content h4 {
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            color: var(--quantum-blue);
+        }
+
+        .timeline-content p {
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 1.6;
+        }
+
+        /* Действия с результатами */
+        .results-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 1rem 2.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            text-decoration: none;
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, var(--quantum-blue), var(--nebula-purple));
+            color: white;
+            border: none;
+            box-shadow: var(--glow-effect);
+        }
+
+        .btn-download:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 229, 255, 0.5);
+        }
+
+        .btn-share {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(124, 77, 255, 0.3);
+        }
+
+        .btn-share:hover {
+            background: rgba(124, 77, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .btn-restart {
+            background: transparent;
+            color: var(--quantum-blue);
+            border: 2px solid var(--quantum-blue);
+        }
+
+        .btn-restart:hover {
+            background: rgba(0, 229, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        /* Футер */
+        .footer {
+            margin-top: 8rem;
+            padding: 5rem 5% 3rem;
+            background: rgba(10, 10, 26, 0.9);
+            border-top: 1px solid rgba(124, 77, 255, 0.3);
+            position: relative;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-section h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1.8rem;
+            color: var(--cyber-green);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--quantum-blue);
+            transform: translateX(5px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .social-link:hover {
+            background: var(--nebula-purple);
+            transform: translateY(-5px);
+            box-shadow: var(--glow-effect);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Анимации */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Мобильная адаптация */
+        @media (max-width: 1024px) {
+            .page-title {
+                font-size: 3rem;
+            }
+            
+            .options-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+            
+            .roadmap-timeline::before {
+                left: 35px;
+            }
+            
+            .timeline-item {
+                padding-left: 70px;
+            }
+            
+            .timeline-year {
+                width: 60px;
+                height: 60px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+                flex-wrap: wrap;
+            }
+
+            .nav-links {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .auth-buttons {
+                margin-left: 0;
+                order: 2;
+            }
+
+            .page-title {
+                font-size: 2.5rem;
+            }
+
+            .simulator-container {
+                padding: 2rem;
+                min-height: 500px;
+            }
+
+            .step-title {
+                font-size: 2rem;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .simulator-controls {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .control-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .step-counter {
+                order: -1;
+                margin-bottom: 1rem;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .roadmap-container {
+                padding: 2rem;
+            }
+
+            .results-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .action-btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+        }
+
+        /* Скроллбар */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(10, 10, 26, 0.8);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--nebula-purple), var(--quantum-blue));
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(var(--quantum-blue), var(--cyber-green));
+        }
+
+        /* Таймер выбора */
+        .timer-container {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .timer {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--quantum-blue);
+            text-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+            font-family: monospace;
+        }
+
+        .timer-warning {
+            color: var(--bio-gold) !important;
+            animation: pulse 1s infinite;
+        }
+
+        .timer-critical {
+            color: var(--neon-pink) !important;
+            animation: pulse 0.5s infinite;
+        }
+
+        /* Конфиденциальность */
+        .privacy-notice {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1rem;
+            background: rgba(124, 77, 255, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(124, 77, 255, 0.3);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Анимированный фон -->
+    <div class="animated-bg">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+    </div>
+    <div id="particles-js"></div>
+
+    <!-- Навигация -->
+    <nav class="navbar" id="navbar">
+        <a href="index.html" class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-rocket"></i>
+            </div>
+            <div class="logo-text">Атлас 2035+</div>
+        </a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link"><i class="fas fa-home"></i> Галактика</a>
+            <a href="professions.html" class="nav-link"><i class="fas fa-user-astronaut"></i> Профессии</a>
+            <a href="career-simulator.html" class="nav-link active"><i class="fas fa-chess-board"></i> Симулятор</a>
+            <a href="skills-lab.html" class="nav-link"><i class="fas fa-brain"></i> Навыки</a>
+            <a href="industries.html" class="nav-link"><i class="fas fa-industry"></i> Индустрии</a>
+            <a href="connections.html" class="nav-link"><i class="fas fa-project-diagram"></i> Связи</a>
+        </div>
+        <div class="auth-buttons">
+            <button class="btn-outline" onclick="openModal('login')">Войти</button>
+            <button class="btn-outline" onclick="openModal('register')" style="background: linear-gradient(135deg, var(--nebula-purple), var(--ai-magenta)); color: white; border: none;">Регистрация</button>
+        </div>
+    </nav>
+
+    <!-- Основной контент -->
+    <main class="main-container">
+        <!-- Заголовок страницы -->
+        <section class="page-header fade-in">
+            <h1 class="page-title">Симулятор карьеры будущего</h1>
+            <p class="page-subtitle">
+                Пройдите интерактивный квиз и постройте персональную карьерную траекторию до 2035 года. 
+                Выберите вызовы, которые хотите решить, и узнайте, какие профессии вам подходят.
+            </p>
+        </section>
+
+        <!-- Индикатор прогресса -->
+        <section class="progress-container fade-in">
+            <div class="progress-header">
+                <h2 class="progress-title">Ваш карьерный путь</h2>
+                <div class="progress-stats">
+                    <div class="progress-stat">
+                        <div class="stat-number" id="currentStep">1</div>
+                        <div class="stat-label">Текущий шаг</div>
+                    </div>
+                    <div class="progress-stat">
+                        <div class="stat-number">5</div>
+                        <div class="stat-label">Всего шагов</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 20%"></div>
+            </div>
+            
+            <div class="progress-steps">
+                <div class="step active" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Выбор сценария</div>
+                </div>
+                <div class="step" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Ваши интересы</div>
+                </div>
+                <div class="step" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Навыки и опыт</div>
+                </div>
+                <div class="step" data-step="4">
+                    <div class="step-number">4</div>
+                    <div class="step-label">Приоритеты</div>
+                </div>
+                <div class="step" data-step="5">
+                    <div class="step-number">5</div>
+                    <div class="step-label">Результаты</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Контейнер симулятора -->
+        <div class="simulator-container">
+            <!-- Шаг 1: Выбор сценария -->
+            <div class="simulator-step active" id="step1">
+                <div class="step-header">
+                    <h2 class="step-title">Какой вызов хотите решить?</h2>
+                    <p class="step-description">
+                        Выберите глобальный вызов, который вас вдохновляет. Это определит направление 
+                        вашей карьерной траектории и профессии, которые будут наиболее востребованы.
+                    </p>
+                </div>
+                
+                <div class="options-grid">
+                    <div class="option-card" data-value="climate">
+                        <div class="select-indicator"></div>
+                        <div class="option-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <h3 class="option-title">Климатический кризис</h3>
+                        <p class="option-description">
+                            Решение проблем изменения климата, переход на зеленую энергетику, 
+                            создание устойчивых экосистем и городов будущего.
+                        </p>
+                        <div class="option-features">
+                            <span class="feature-tag">Экология</span>
+                            <span class="feature-tag">Зеленая энергетика</span>
+                            <span class="feature-tag">Устойчивость</span>
+                        </div>
+                    </div>
+                    
+                    <div class="option-card" data-value="tech">
+                        <div class="select-indicator"></div>
+                        <div class="option-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3 class="option-title">Технологическая революция</h3>
+                        <p class="option-description">
+                            Развитие искусственного интеллекта, квантовых вычислений, 
+                            метавселенных и других прорывных технологий.
+                        </p>
+                        <div class="option-features">
+                            <span class="feature-tag">AI</span>
+                            <span class="feature-tag">VR/AR</span>
+                            <span class="feature-tag">Инновации</span>
+                        </div>
+                    </div>
+                    
+                    <div class="option-card" data-value="health">
+                        <div class="select-indicator"></div>
+                        <div class="option-icon">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <h3 class="option-title">Здравоохранение будущего</h3>
+                        <p class="option-description">
+                            Персонализированная медицина, борьба с пандемиями, 
+                            генная инженерия и продление здоровой жизни.
+                        </p>
+                        <div class="option-features">
+                            <span class="feature-tag">Медицина</span>
+                            <span class="feature-tag">Биотех</span>
+                            <span class="feature-tag">Долголетие</span>
+                        </div>
+                    </div>
+                    
+                    <div class="option-card" data-value="social">
+                        <div class="select-indicator"></div>
+                        <div class="option-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3 class="option-title">Социальная трансформация</h3>
+                        <p class="option-description">
+                            Создание инклюзивного общества, образование будущего, 
+                            этика технологий и психологическое благополучие.
+                        </p>
+                        <div class="option-features">
+                            <span class="feature-tag">Образование</span>
+                            <span class="feature-tag">Этика</span>
+                            <span class="feature-tag">Психология</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Таймер выбора -->
+                <div class="timer-container">
+                    <div class="timer" id="step1Timer">02:00</div>
+                    <p style="color: rgba(255,255,255,0.6); margin-top: 0.5rem;">Время на выбор сценария</p>
+                </div>
+                
+                <div class="simulator-controls">
+                    <div></div> <!-- Пустой div для выравнивания -->
+                    <button class="control-btn btn-next" id="nextStep1" onclick="nextStep()" disabled>
+                        Продолжить
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Шаг 2: Ваши интересы -->
+            <div class="simulator-step" id="step2">
+                <div class="step-header">
+                    <h2 class="step-title">Что вас вдохновляет?</h2>
+                    <p class="step-description">
+                        Выберите до 3 сфер, которые вас больше всего интересуют. 
+                        Это поможет точнее определить подходящие профессии.
+                    </p>
+                </div>
+                
+                <div class="options-grid" id="interestsGrid">
+                    <!-- Интересы будут загружены через JS -->
+                </div>
+                
+                <div class="counter-container" style="text-align: center; margin: 2rem 0;">
+                    <div style="font-size: 1.2rem; color: var(--quantum-blue); font-weight: 600;">
+                        Выбрано: <span id="selectedCount">0</span> из 3
+                    </div>
+                </div>
+                
+                <div class="simulator-controls">
+                    <button class="control-btn btn-prev" onclick="prevStep()">
+                        <i class="fas fa-arrow-left"></i>
+                        Назад
+                    </button>
+                    <button class="control-btn btn-next" id="nextStep2" onclick="nextStep()" disabled>
+                        Продолжить
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Шаг 3: Навыки и опыт -->
+            <div class="simulator-step" id="step3">
+                <div class="step-header">
+                    <h2 class="step-title">Ваши сильные стороны</h2>
+                    <p class="step-description">
+                        Оцените свои текущие навыки и опыт. Это поможет определить оптимальный 
+                        стартовый уровень и план развития.
+                    </p>
+                </div>
+                
+                <div class="skills-assessment" style="max-width: 800px; margin: 0 auto;">
+                    <div class="skill-item" style="margin-bottom: 2rem; background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 15px; border: 1px solid rgba(124,77,255,0.2);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <h4 style="font-size: 1.2rem; color: white;">Технические навыки</h4>
+                            <div style="display: flex; gap: 0.5rem;" id="techSkillRating">
+                                <!-- Звезды рейтинга будут добавлены через JS -->
+                            </div>
+                        </div>
+                        <p style="color: rgba(255,255,255,0.7); font-size: 0.95rem;">
+                            Программирование, анализ данных, работа с AI, техническое понимание
+                        </p>
+                    </div>
+                    
+                    <div class="skill-item" style="margin-bottom: 2rem; background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 15px; border: 1px solid rgba(124,77,255,0.2);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <h4 style="font-size: 1.2rem; color: white;">Творческие способности</h4>
+                            <div style="display: flex; gap: 0.5rem;" id="creativeSkillRating">
+                                <!-- Звезды рейтинга будут добавлены через JS -->
+                            </div>
+                        </div>
+                        <p style="color: rgba(255,255,255,0.7); font-size: 0.95rem;">
+                            Дизайн-мышление, креативность, визуализация, решение нестандартных задач
+                        </p>
+                    </div>
+                    
+                    <div class="skill-item" style="margin-bottom: 2rem; background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 15px; border: 1px solid rgba(124,77,255,0.2);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <h4 style="font-size: 1.2rem; color: white;">Социальные навыки</h4>
+                            <div style="display: flex; gap: 0.5rem;" id="socialSkillRating">
+                                <!-- Звезды рейтинга будут добавлены через JS -->
+                            </div>
+                        </div>
+                        <p style="color: rgba(255,255,255,0.7); font-size: 0.95rem;">
+                            Коммуникация, лидерство, работа в команде, эмоциональный интеллект
+                        </p>
+                    </div>
+                    
+                    <div class="experience-level" style="text-align: center; margin: 3rem 0;">
+                        <h4 style="font-size: 1.3rem; margin-bottom: 1.5rem; color: white;">Ваш текущий опыт</h4>
+                        <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                            <button class="experience-btn" data-level="beginner" style="padding: 1rem 2rem; background: rgba(124,77,255,0.1); border: 1px solid rgba(124,77,255,0.3); color: white; border-radius: 10px; cursor: pointer; transition: all 0.3s ease;">
+                                Начинающий
+                            </button>
+                            <button class="experience-btn" data-level="intermediate" style="padding: 1rem 2rem; background: rgba(124,77,255,0.1); border: 1px solid rgba(124,77,255,0.3); color: white; border-radius: 10px; cursor: pointer; transition: all 0.3s ease;">
+                                Опытный
+                            </button>
+                            <button class="experience-btn" data-level="expert" style="padding: 1rem 2rem; background: rgba(124,77,255,0.1); border: 1px solid rgba(124,77,255,0.3); color: white; border-radius: 10px; cursor: pointer; transition: all 0.3s ease;">
+                                Эксперт
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="simulator-controls">
+                    <button class="control-btn btn-prev" onclick="prevStep()">
+                        <i class="fas fa-arrow-left"></i>
+                        Назад
+                    </button>
+                    <button class="control-btn btn-next" id="nextStep3" onclick="nextStep()">
+                        Продолжить
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Шаг 4: Приоритеты -->
+            <div class="simulator-step" id="step4">
+                <div class="step-header">
+                    <h2 class="step-title">Что для вас важно?</h2>
+                    <p class="step-description">
+                        Расставьте приоритеты в вашей будущей карьере. Это поможет выбрать оптимальный 
+                        баланс между разными аспектами работы.
+                    </p>
+                </div>
+                
+                <div class="priorities-container" style="max-width: 800px; margin: 0 auto;">
+                    <div class="priority-item" style="margin-bottom: 1.5rem; background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 15px; border: 1px solid rgba(124,77,255,0.2);">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h4 style="font-size: 1.2rem; color: white; margin-bottom: 0.5rem;">Баланс работы и жизни</h4>
+                                <p style="color: rgba(255,255,255,0.7); font-size: 0.95rem;">
+                                    Гибкий график, возможность удаленной работы
+                                </p>
+                            </div>
+                            <div class="priority-slider">
+                                <input type="range" min="1" max="5" value="3" class="priority-slider-input" data-priority="balance" style="width: 200px;">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="priority-item" style="margin-bottom: 1.5rem; background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 15px; border: 1px solid rgba(124,77,255,0.2);">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h4 style="font-size: 1.2rem; color: white; margin-bottom: 0.5rem;">Уровень дохода</h4>
+                                <p style="color: rgba(255,255,255,0.7); font-size: 0.95rem;">
+                                    Потенциал заработка и финансовый рост
+                                </p>
+                            </div>
+                            <div class="priority-slider">
+                                <input type="range" min="1" max="5" value="3" class="priority-slider-input" data-priority="income" style="width: 200px;">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="priority-item" style="margin-bottom: 1.5rem; background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 15px; border: 1px solid rgba(124,77,255,0.2);">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h4 style="font-size: 1.2rem; color: white; margin-bottom: 0.5rem;">Социальное влияние</h4>
+                                <p style="color: rgba(255,255,255,0.7); font-size: 0.95rem;">
+                                    Возможность вносить вклад в решение глобальных проблем
+                                </p>
+                            </div>
+                            <div class="priority-slider">
+                                <input type="range" min="1" max="5" value="3" class="priority-slider-input" data-priority="impact" style="width: 200px;">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="priority-item" style="margin-bottom: 1.5rem; background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 15px; border: 1px solid rgba(124,77,255,0.2);">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h4 style="font-size: 1.2rem; color: white; margin-bottom: 0.5rem;">Творческая свобода</h4>
+                                <p style="color: rgba(255,255,255,0.7); font-size: 0.95rem;">
+                                    Возможность реализовывать собственные идеи и проекты
+                                </p>
+                            </div>
+                            <div class="priority-slider">
+                                <input type="range" min="1" max="5" value="3" class="priority-slider-input" data-priority="creativity" style="width: 200px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="simulator-controls">
+                    <button class="control-btn btn-prev" onclick="prevStep()">
+                        <i class="fas fa-arrow-left"></i>
+                        Назад
+                    </button>
+                    <button class="control-btn btn-finish" onclick="showResults()">
+                        <i class="fas fa-chart-line"></i>
+                        Получить результаты
+                    </button>
+                </div>
+            </div>
+
+            <!-- Шаг 5: Результаты -->
+            <div class="simulator-step" id="step5">
+                <div class="results-container">
+                    <div class="results-header">
+                        <h2 class="results-title">Ваша карьерная траектория</h2>
+                        <p class="results-subtitle">
+                            На основе ваших ответов мы построили персональную дорожную карту 
+                            до 2035 года. Вот что мы рекомендуем:
+                        </p>
+                    </div>
+                    
+                    <div class="results-grid">
+                        <div class="result-card">
+                            <div class="result-icon">
+                                <i class="fas fa-user-astronaut"></i>
+                            </div>
+                            <h3 class="result-title">Рекомендуемые профессии</h3>
+                            <p class="result-description">
+                                Профессии, которые лучше всего соответствуют вашим интересам и навыкам:
+                            </p>
+                            <ul class="result-list" id="recommendedProfessions">
+                                <!-- Будет заполнено через JS -->
+                            </ul>
+                        </div>
+                        
+                        <div class="result-card">
+                            <div class="result-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <h3 class="result-title">План развития</h3>
+                            <p class="result-description">
+                                Ключевые шаги для достижения успеха в выбранном направлении:
+                            </p>
+                            <ul class="result-list" id="developmentPlan">
+                                <!-- Будет заполнено через JS -->
+                            </ul>
+                        </div>
+                        
+                        <div class="result-card">
+                            <div class="result-icon">
+                                <i class="fas fa-bullseye"></i>
+                            </div>
+                            <h3 class="result-title">Ваши сильные стороны</h3>
+                            <p class="result-description">
+                                Навыки, которые следует развивать в первую очередь:
+                            </p>
+                            <ul class="result-list" id="strengthsList">
+                                <!-- Будет заполнено через JS -->
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Дорожная карта -->
+                    <div class="roadmap-container">
+                        <h3 class="roadmap-title">Ваша дорожная карта до 2035 года</h3>
+                        <div class="roadmap-timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-year">2024</div>
+                                <div class="timeline-content">
+                                    <h4>Освоение базовых навыков</h4>
+                                    <p>Начало обучения по выбранным направлениям, первые проекты и стажировки.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-year">2026</div>
+                                <div class="timeline-content">
+                                    <h4>Специализация</h4>
+                                    <p>Углубление знаний в выбранной области, получение сертификаций, первые работы.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-year">2029</div>
+                                <div class="timeline-content">
+                                    <h4>Экспертный уровень</h4>
+                                    <p>Работа над сложными проектами, руководство командами, консалтинг.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-year">2032</div>
+                                <div class="timeline-content">
+                                    <h4>Лидерство и инновации</h4>
+                                    <p>Создание собственных проектов, менторство, влияние на индустрию.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-year">2035</div>
+                                <div class="timeline-content">
+                                    <h4>Достижение целей</h4>
+                                    <p>Реализация амбициозных проектов, вклад в решение глобальных вызовов.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Действия с результатами -->
+                    <div class="results-actions">
+                        <button class="action-btn btn-download" onclick="downloadResults()">
+                            <i class="fas fa-download"></i>
+                            Скачать PDF-отчет
+                        </button>
+                        <button class="action-btn btn-share" onclick="shareResults()">
+                            <i class="fas fa-share-alt"></i>
+                            Поделиться результатами
+                        </button>
+                        <button class="action-btn btn-restart" onclick="restartSimulator()">
+                            <i class="fas fa-redo"></i>
+                            Пройти заново
+                        </button>
+                    </div>
+                    
+                    <!-- Конфиденциальность -->
+                    <div class="privacy-notice">
+                        <i class="fas fa-lock"></i> Ваши ответы сохраняются анонимно и используются только 
+                        для улучшения рекомендаций. Мы не передаем ваши данные третьим лицам.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Атлас 2035+</h3>
+                <p>Живая экосистема знаний о будущем труда. Исследуйте, обучайтесь, создавайте будущее вместе с нами.</p>
+                <div style="margin-top: 2rem;">
+                    <div style="display: flex; gap: 0.5rem;">
+                        <input type="email" placeholder="Ваш email" style="flex: 1; padding: 0.8rem 1rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(124,77,255,0.3); border-radius: 10px; color: white;">
+                        <button class="btn-outline" style="padding: 0.8rem 1.5rem; background: linear-gradient(135deg, var(--nebula-purple), var(--ai-magenta)); color: white; border: none;">Подписаться</button>
+                    </div>
+                    <p style="font-size: 0.85rem; color: rgba(255,255,255,0.5); margin-top: 0.5rem;">Только полезные новости о будущем</p>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Разделы</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html"><i class="fas fa-chevron-right"></i> Галактика профессий</a></li>
+                    <li><a href="professions.html"><i class="fas fa-chevron-right"></i> Карта профессий</a></li>
+                    <li><a href="career-simulator.html"><i class="fas fa-chevron-right"></i> Симулятор карьеры</a></li>
+                    <li><a href="skills-lab.html"><i class="fas fa-chevron-right"></i> Лаборатория навыков</a></li>
+                    <li><a href="connections.html"><i class="fas fa-chevron-right"></i> Динамические связи</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Партнеры</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Сколково</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> WorldSkills</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> НИУ ВШЭ</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Кружковое движение</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Росатом</a></li>
+                </ul>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-vk"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2024 Атлас новых профессий 2035+. Все права защищены. Будущее создается сегодня.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem;">
+                <a href="#" style="color: rgba(255,255,255,0.5); text-decoration: none; margin: 0 1rem;">Политика конфиденциальности</a>
+                <a href="#" style="color: rgba(255,255,255,0.5); text-decoration: none; margin: 0 1rem;">Условия использования</a>
+                <a href="#" style="color: rgba(255,255,255,0.5); text-decoration: none; margin: 0 1rem;">Контакты</a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Данные симулятора
+        const simulatorData = {
+            currentStep: 1,
+            selectedScenario: null,
+            selectedInterests: [],
+            skillRatings: {
+                technical: 3,
+                creative: 3,
+                social: 3
+            },
+            experienceLevel: null,
+            priorities: {
+                balance: 3,
+                income: 3,
+                impact: 3,
+                creativity: 3
+            },
+            timer: {
+                step1: 120, // 2 минуты в секундах
+                interval: null
+            }
+        };
+
+        // Инициализация страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Частицы фона
+            particlesJS("particles-js", {
+                particles: {
+                    number: { value: 70, density: { enable: true, value_area: 800 } },
+                    color: { value: ["#7c4dff", "#00e5ff", "#00ff88", "#ff00d4"] },
+                    shape: { type: "circle" },
+                    opacity: { value: 0.3, random: true },
+                    size: { value: 3, random: true },
+                    line_linked: {
+                        enable: true,
+                        distance: 100,
+                        color: "#7c4dff",
+                        opacity: 0.2,
+                        width: 1
+                    },
+                    move: {
+                        enable: true,
+                        speed: 1,
+                        direction: "none",
+                        random: true,
+                        straight: false,
+                        out_mode: "out",
+                        bounce: false
+                    }
+                },
+                interactivity: {
+                    detect_on: "canvas",
+                    events: {
+                        onhover: { enable: true, mode: "repulse" },
+                        onclick: { enable: true, mode: "push" }
+                    }
+                }
+            });
+
+            // Анимация появления элементов
+            const fadeElements = document.querySelectorAll('.fade-in');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            fadeElements.forEach(el => observer.observe(el));
+
+            // Эффект навигации при скролле
+            window.addEventListener('scroll', () => {
+                const navbar = document.getElementById('navbar');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // Инициализация симулятора
+            initSimulator();
+        });
+
+        // Инициализация симулятора
+        function initSimulator() {
+            // Настройка выбора сценария
+            const scenarioCards = document.querySelectorAll('#step1 .option-card');
+            scenarioCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // Сброс выбора у всех карточек
+                    scenarioCards.forEach(c => c.classList.remove('selected'));
+                    
+                    // Выбор текущей карточки
+                    this.classList.add('selected');
+                    simulatorData.selectedScenario = this.dataset.value;
+                    
+                    // Активация кнопки "Продолжить"
+                    document.getElementById('nextStep1').disabled = false;
+                });
+            });
+
+            // Загрузка интересов
+            loadInterests();
+
+            // Настройка рейтинга навыков
+            setupSkillRatings();
+
+            // Настройка уровня опыта
+            setupExperienceLevels();
+
+            // Настройка слайдеров приоритетов
+            setupPrioritySliders();
+
+            // Запуск таймера для шага 1
+            startStep1Timer();
+        }
+
+        // Загрузка интересов
+        function loadInterests() {
+            const interests = [
+                {
+                    id: 'ai',
+                    title: 'Искусственный интеллект',
+                    icon: 'fas fa-brain',
+                    description: 'Разработка AI систем, машинное обучение, нейросети',
+                    color: '#7c4dff'
+                },
+                {
+                    id: 'biotech',
+                    title: 'Биотехнологии',
+                    icon: 'fas fa-dna',
+                    description: 'Генная инженерия, биохакинг, персонализированная медицина',
+                    color: '#00ff88'
+                },
+                {
+                    id: 'sustainability',
+                    title: 'Устойчивое развитие',
+                    icon: 'fas fa-leaf',
+                    description: 'Зеленая энергетика, циркулярная экономика, экология',
+                    color: '#00e5ff'
+                },
+                {
+                    id: 'metaverse',
+                    title: 'Метавселенные',
+                    icon: 'fas fa-vr-cardboard',
+                    description: 'VR/AR, цифровые миры, виртуальная реальность',
+                    color: '#ff00d4'
+                },
+                {
+                    id: 'neuro',
+                    title: 'Нейротехнологии',
+                    icon: 'fas fa-head-side-brain',
+                    description: 'Нейроинтерфейсы, BCI, улучшение когнитивных способностей',
+                    color: '#ff2e97'
+                },
+                {
+                    id: 'education',
+                    title: 'Образование будущего',
+                    icon: 'fas fa-graduation-cap',
+                    description: 'EdTech, персонализированное обучение, микро-степы',
+                    color: '#ffc107'
+                },
+                {
+                    id: 'space',
+                    title: 'Космические технологии',
+                    icon: 'fas fa-rocket',
+                    description: 'Космический туризм, колонизация планет, спутниковые системы',
+                    color: '#00e5ff'
+                },
+                {
+                    id: 'ethics',
+                    title: 'Этика технологий',
+                    icon: 'fas fa-balance-scale',
+                    description: 'AI безопасность, цифровая этика, регулирование технологий',
+                    color: '#7c4dff'
+                }
+            ];
+
+            const interestsGrid = document.getElementById('interestsGrid');
+            interests.forEach(interest => {
+                const card = document.createElement('div');
+                card.className = 'option-card interest-card';
+                card.dataset.id = interest.id;
+                
+                card.innerHTML = `
+                    <div class="select-indicator"></div>
+                    <div class="option-icon" style="background: linear-gradient(135deg, ${interest.color}40, rgba(0, 229, 255, 0.1));">
+                        <i class="${interest.icon}" style="color: ${interest.color}"></i>
+                    </div>
+                    <h3 class="option-title">${interest.title}</h3>
+                    <p class="option-description">${interest.description}</p>
+                `;
+                
+                card.addEventListener('click', function() {
+                    this.classList.toggle('selected');
+                    
+                    if (this.classList.contains('selected')) {
+                        simulatorData.selectedInterests.push(interest.id);
+                    } else {
+                        const index = simulatorData.selectedInterests.indexOf(interest.id);
+                        if (index > -1) {
+                            simulatorData.selectedInterests.splice(index, 1);
+                        }
+                    }
+                    
+                    // Обновление счетчика
+                    const selectedCount = simulatorData.selectedInterests.length;
+                    document.getElementById('selectedCount').textContent = selectedCount;
+                    
+                    // Проверка лимита
+                    if (selectedCount > 3) {
+                        // Снимаем выбор с первой выбранной карточки
+                        const firstSelected = document.querySelector('.interest-card.selected');
+                        firstSelected.classList.remove('selected');
+                        simulatorData.selectedInterests.shift();
+                        document.getElementById('selectedCount').textContent = 3;
+                    }
+                    
+                    // Активация кнопки "Продолжить"
+                    document.getElementById('nextStep2').disabled = selectedCount === 0;
+                });
+                
+                interestsGrid.appendChild(card);
+            });
+        }
+
+        // Настройка рейтинга навыков
+        function setupSkillRatings() {
+            ['tech', 'creative', 'social'].forEach(skillType => {
+                const container = document.getElementById(`${skillType}SkillRating`);
+                container.innerHTML = '';
+                
+                for (let i = 1; i <= 5; i++) {
+                    const star = document.createElement('i');
+                    star.className = 'fas fa-star';
+                    star.style.color = i <= simulatorData.skillRatings[skillType] ? '#ffc107' : 'rgba(255,255,255,0.3)';
+                    star.style.cursor = 'pointer';
+                    star.style.transition = 'all 0.3s ease';
+                    star.style.fontSize = '1.5rem';
+                    
+                    star.addEventListener('mouseover', function() {
+                        highlightStars(skillType, i);
+                    });
+                    
+                    star.addEventListener('mouseout', function() {
+                        resetStars(skillType);
+                    });
+                    
+                    star.addEventListener('click', function() {
+                        simulatorData.skillRatings[skillType] = i;
+                        updateStars(skillType);
+                    });
+                    
+                    container.appendChild(star);
+                }
+            });
+        }
+
+        function highlightStars(skillType, rating) {
+            const container = document.getElementById(`${skillType}SkillRating`);
+            const stars = container.querySelectorAll('.fa-star');
+            stars.forEach((star, index) => {
+                star.style.color = index < rating ? '#ffc107' : 'rgba(255,255,255,0.3)';
+                if (index < rating) {
+                    star.style.transform = 'scale(1.2)';
+                }
+            });
+        }
+
+        function resetStars(skillType) {
+            const container = document.getElementById(`${skillType}SkillRating`);
+            const stars = container.querySelectorAll('.fa-star');
+            stars.forEach((star, index) => {
+                star.style.color = index < simulatorData.skillRatings[skillType] ? '#ffc107' : 'rgba(255,255,255,0.3)';
+                star.style.transform = 'scale(1)';
+            });
+        }
+
+        function updateStars(skillType) {
+            const container = document.getElementById(`${skillType}SkillRating`);
+            const stars = container.querySelectorAll('.fa-star');
+            stars.forEach((star, index) => {
+                star.style.color = index < simulatorData.skillRatings[skillType] ? '#ffc107' : 'rgba(255,255,255,0.3)';
+            });
+        }
+
+        // Настройка уровня опыта
+        function setupExperienceLevels() {
+            const buttons = document.querySelectorAll('.experience-btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Сброс стилей у всех кнопок
+                    buttons.forEach(b => {
+                        b.style.background = 'rgba(124,77,255,0.1)';
+                        b.style.borderColor = 'rgba(124,77,255,0.3)';
+                        b.style.color = 'white';
+                    });
+                    
+                    // Применение стилей к выбранной кнопке
+                    this.style.background = 'linear-gradient(135deg, var(--nebula-purple), var(--ai-magenta))';
+                    this.style.borderColor = 'transparent';
+                    this.style.boxShadow = 'var(--glow-effect)';
+                    
+                    simulatorData.experienceLevel = this.dataset.level;
+                });
+            });
+        }
+
+        // Настройка слайдеров приоритетов
+        function setupPrioritySliders() {
+            const sliders = document.querySelectorAll('.priority-slider-input');
+            sliders.forEach(slider => {
+                slider.addEventListener('input', function() {
+                    const priority = this.dataset.priority;
+                    const value = parseInt(this.value);
+                    simulatorData.priorities[priority] = value;
+                    
+                    // Визуальная обратная связь
+                    this.style.background = `linear-gradient(90deg, 
+                        var(--cyber-green) 0%, 
+                        var(--cyber-green) ${(value-1)*25}%, 
+                        rgba(255,255,255,0.1) ${(value-1)*25}%, 
+                        rgba(255,255,255,0.1) 100%)`;
+                });
+                
+                // Инициализация градиентов
+                slider.style.background = `linear-gradient(90deg, 
+                    var(--cyber-green) 0%, 
+                    var(--cyber-green) ${(slider.value-1)*25}%, 
+                    rgba(255,255,255,0.1) ${(slider.value-1)*25}%, 
+                    rgba(255,255,255,0.1) 100%)`;
+            });
+        }
+
+        // Таймер для шага 1
+        function startStep1Timer() {
+            const timerElement = document.getElementById('step1Timer');
+            
+            simulatorData.timer.interval = setInterval(() => {
+                simulatorData.timer.step1--;
+                
+                const minutes = Math.floor(simulatorData.timer.step1 / 60);
+                const seconds = simulatorData.timer.step1 % 60;
+                
+                timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                // Визуальная обратная связь
+                if (simulatorData.timer.step1 <= 30) {
+                    timerElement.classList.add('timer-warning');
+                    timerElement.classList.remove('timer-critical');
+                }
+                
+                if (simulatorData.timer.step1 <= 10) {
+                    timerElement.classList.add('timer-critical');
+                    timerElement.classList.remove('timer-warning');
+                }
+                
+                if (simulatorData.timer.step1 <= 0) {
+                    clearInterval(simulatorData.timer.interval);
+                    timerElement.textContent = '00:00';
+                    
+                    // Автоматический выбор случайного сценария
+                    const cards = document.querySelectorAll('#step1 .option-card');
+                    const randomCard = cards[Math.floor(Math.random() * cards.length)];
+                    randomCard.click();
+                }
+            }, 1000);
+        }
+
+        // Навигация по шагам
+        function nextStep() {
+            if (simulatorData.currentStep < 5) {
+                // Скрытие текущего шага
+                const currentStep = document.getElementById(`step${simulatorData.currentStep}`);
+                currentStep.classList.remove('active');
+                
+                // Увеличение шага
+                simulatorData.currentStep++;
+                
+                // Обновление индикатора прогресса
+                updateProgress();
+                
+                // Показ следующего шага
+                const nextStep = document.getElementById(`step${simulatorData.currentStep}`);
+                nextStep.classList.add('active');
+                
+                // Остановка таймера при выходе из шага 1
+                if (simulatorData.currentStep > 1 && simulatorData.timer.interval) {
+                    clearInterval(simulatorData.timer.interval);
+                }
+            }
+        }
+
+        function prevStep() {
+            if (simulatorData.currentStep > 1) {
+                // Скрытие текущего шага
+                const currentStep = document.getElementById(`step${simulatorData.currentStep}`);
+                currentStep.classList.remove('active');
+                
+                // Уменьшение шага
+                simulatorData.currentStep--;
+                
+                // Обновление индикатора прогресса
+                updateProgress();
+                
+                // Показ предыдущего шага
+                const prevStep = document.getElementById(`step${simulatorData.currentStep}`);
+                prevStep.classList.add('active');
+            }
+        }
+
+        function updateProgress() {
+            // Обновление шагов
+            document.querySelectorAll('.step').forEach(step => {
+                const stepNumber = parseInt(step.dataset.step);
+                step.classList.remove('active', 'completed');
+                
+                if (stepNumber < simulatorData.currentStep) {
+                    step.classList.add('completed');
+                } else if (stepNumber === simulatorData.currentStep) {
+                    step.classList.add('active');
+                }
+            });
+            
+            // Обновление прогресс-бара
+            const progressPercentage = ((simulatorData.currentStep - 1) / 4) * 100;
+            document.getElementById('progressFill').style.width = `${progressPercentage}%`;
+            
+            // Обновление текущего шага
+            document.getElementById('currentStep').textContent = simulatorData.currentStep;
+        }
+
+        // Показать результаты
+        function showResults() {
+            // Переход к шагу 5
+            while (simulatorData.currentStep < 5) {
+                nextStep();
+            }
+            
+            // Генерация рекомендаций
+            generateRecommendations();
+        }
+
+        // Генерация рекомендаций
+        function generateRecommendations() {
+            // Рекомендуемые профессии
+            const professionsList = document.getElementById('recommendedProfessions');
+            professionsList.innerHTML = '';
+            
+            const professions = getRecommendedProfessions();
+            professions.forEach(profession => {
+                const li = document.createElement('li');
+                li.innerHTML = `<i class="fas fa-check"></i> ${profession}`;
+                professionsList.appendChild(li);
+            });
+            
+            // План развития
+            const planList = document.getElementById('developmentPlan');
+            planList.innerHTML = '';
+            
+            const plan = getDevelopmentPlan();
+            plan.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `<i class="fas fa-arrow-right"></i> ${item}`;
+                planList.appendChild(li);
+            });
+            
+            // Сильные стороны
+            const strengthsList = document.getElementById('strengthsList');
+            strengthsList.innerHTML = '';
+            
+            const strengths = getStrengths();
+            strengths.forEach(strength => {
+                const li = document.createElement('li');
+                li.innerHTML = `<i class="fas fa-star"></i> ${strength}`;
+                strengthsList.appendChild(li);
+            });
+        }
+
+        function getRecommendedProfessions() {
+            const professions = {
+                climate: [
+                    'Экоурбанист',
+                    'Инженер по зеленой энергетике',
+                    'Аналитик углеродного следа',
+                    'Дизайнер устойчивых систем'
+                ],
+                tech: [
+                    'Архитектор метавселенных',
+                    'AI-этик',
+                    'Инженер квантовых вычислений',
+                    'Специалист по кибербезопасности'
+                ],
+                health: [
+                    'Генный инженер',
+                    'Биохакинг-консультант',
+                    'Специалист по персонализированной медицине',
+                    'Разработчик нейроинтерфейсов'
+                ],
+                social: [
+                    'Дизайнер эмоций',
+                    'Киберпсихолог',
+                    'Специалист по образовательным технологиям',
+                    'Консультант по цифровому благополучию'
+                ]
+            };
+            
+            return professions[simulatorData.selectedScenario] || professions.tech;
+        }
+
+        function getDevelopmentPlan() {
+            const plan = [
+                'Пройти базовые курсы по выбранному направлению',
+                'Принять участие в проектах или стажировках',
+                'Получить специализированные сертификации',
+                'Создать портфолио из реальных проектов',
+                'Найти ментора в выбранной области',
+                'Постоянно изучать новые технологии и тренды'
+            ];
+            
+            return plan;
+        }
+
+        function getStrengths() {
+            const strengths = [];
+            
+            // Анализ технических навыков
+            if (simulatorData.skillRatings.technical >= 4) {
+                strengths.push('Сильные аналитические способности');
+            }
+            
+            // Анализ творческих навыков
+            if (simulatorData.skillRatings.creative >= 4) {
+                strengths.push('Высокий уровень креативности');
+            }
+            
+            // Анализ социальных навыков
+            if (simulatorData.skillRatings.social >= 4) {
+                strengths.push('Отличные коммуникативные навыки');
+            }
+            
+            // Анализ опыта
+            if (simulatorData.experienceLevel === 'expert') {
+                strengths.push('Богатый профессиональный опыт');
+            }
+            
+            // Дополнительные сильные стороны
+            if (simulatorData.selectedInterests.length >= 2) {
+                strengths.push('Широкий кругозор и разнообразные интересы');
+            }
+            
+            if (strengths.length === 0) {
+                strengths.push('Мотивация к развитию и обучению');
+                strengths.push('Готовность к изменениям и новым вызовам');
+            }
+            
+            return strengths.slice(0, 3);
+        }
+
+        // Действия с результатами
+        function downloadResults() {
+            alert('PDF-отчет будет скачан (в полной версии)');
+        }
+
+        function shareResults() {
+            alert('Результаты можно будет поделиться (в полной версии)');
+        }
+
+        function restartSimulator() {
+            // Сброс данных
+            simulatorData.currentStep = 1;
+            simulatorData.selectedScenario = null;
+            simulatorData.selectedInterests = [];
+            simulatorData.skillRatings = {
+                technical: 3,
+                creative: 3,
+                social: 3
+            };
+            simulatorData.experienceLevel = null;
+            simulatorData.priorities = {
+                balance: 3,
+                income: 3,
+                impact: 3,
+                creativity: 3
+            };
+            
+            // Сброс UI
+            document.querySelectorAll('.option-card.selected').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            document.querySelectorAll('.interest-card.selected').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            document.querySelectorAll('.experience-btn').forEach(btn => {
+                btn.style.background = 'rgba(124,77,255,0.1)';
+                btn.style.borderColor = 'rgba(124,77,255,0.3)';
+                btn.style.color = 'white';
+            });
+            
+            document.getElementById('selectedCount').textContent = '0';
+            document.getElementById('nextStep1').disabled = true;
+            document.getElementById('nextStep2').disabled = true;
+            
+            // Переход к первому шагу
+            document.querySelectorAll('.simulator-step').forEach(step => {
+                step.classList.remove('active');
+            });
+            
+            document.getElementById('step1').classList.add('active');
+            
+            // Сброс прогресса
+            updateProgress();
+            
+            // Перезапуск таймера
+            simulatorData.timer.step1 = 120;
+            clearInterval(simulatorData.timer.interval);
+            startStep1Timer();
+            
+            // Прокрутка к началу
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Функции для кнопок
+        function openModal(type) {
+            if (type === 'login') {
+                alert('Форма входа (будет реализовано в полной версии)');
+            } else {
+                alert('Форма регистрации (будет реализовано в полной версии)');
+            }
+        }
+    </script>
+</body>
+</html>

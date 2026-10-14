@@ -1,0 +1,1837 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark-theme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Динамические связи | Атлас новых профессий 2035+</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Цветовая палитра из предыдущих страниц */
+            --cosmic-black: #0a0a1a;
+            --deep-space: #121230;
+            --nebula-purple: #7c4dff;
+            --quantum-blue: #00e5ff;
+            --cyber-green: #00ff88;
+            --ai-magenta: #ff00d4;
+            --bio-gold: #ffc107;
+            --neon-pink: #ff2e97;
+            --star-white: #ffffff;
+            --cosmic-dust: rgba(255, 255, 255, 0.1);
+            
+            --galaxy-gradient: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 50%, #0a0a1a 100%);
+            --hero-gradient: linear-gradient(120deg, var(--nebula-purple), var(--quantum-blue), var(--cyber-green));
+            --card-gradient: linear-gradient(145deg, rgba(124, 77, 255, 0.1), rgba(0, 229, 255, 0.05));
+            
+            --glow-effect: 0 0 30px rgba(124, 77, 255, 0.5);
+            --soft-glow: 0 0 60px rgba(0, 229, 255, 0.3);
+            --hover-glow: 0 0 40px rgba(0, 255, 136, 0.4);
+            --success-glow: 0 0 40px rgba(0, 255, 136, 0.6);
+            --warning-glow: 0 0 40px rgba(255, 193, 7, 0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--cosmic-black);
+            color: var(--star-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(124, 77, 255, 0.15) 0%, transparent 25%),
+                radial-gradient(circle at 90% 80%, rgba(0, 229, 255, 0.1) 0%, transparent 25%),
+                radial-gradient(circle at 30% 70%, rgba(255, 46, 151, 0.08) 0%, transparent 25%);
+        }
+
+        /* Анимированный фон */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: var(--galaxy-gradient);
+            overflow: hidden;
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--nebula-purple), transparent);
+            filter: blur(40px);
+            opacity: 0.15;
+            animation: float 25s infinite ease-in-out;
+        }
+
+        .shape:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: 15%;
+            left: 10%;
+            animation-delay: 0s;
+            background: radial-gradient(circle, var(--quantum-blue), transparent);
+        }
+
+        .shape:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            top: 65%;
+            right: 15%;
+            animation-delay: -8s;
+            background: radial-gradient(circle, var(--ai-magenta), transparent);
+        }
+
+        .shape:nth-child(3) {
+            width: 250px;
+            height: 250px;
+            bottom: 25%;
+            left: 25%;
+            animation-delay: -16s;
+            background: radial-gradient(circle, var(--cyber-green), transparent);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+            33% { transform: translateY(-40px) rotate(120deg) scale(1.1); }
+            66% { transform: translateY(40px) rotate(240deg) scale(0.9); }
+        }
+
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Навигация */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 10, 26, 0.85);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(124, 77, 255, 0.3);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .navbar.scrolled {
+            padding: 0.8rem 5%;
+            background: rgba(10, 10, 26, 0.95);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--nebula-purple), var(--quantum-blue));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: logoFloat 3s ease-in-out infinite;
+            box-shadow: var(--glow-effect);
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--nebula-purple), var(--quantum-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-link:hover {
+            background: rgba(124, 77, 255, 0.15);
+            color: var(--star-white);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background: linear-gradient(135deg, rgba(124, 77, 255, 0.3), rgba(0, 229, 255, 0.2));
+            color: var(--star-white);
+            box-shadow: var(--glow-effect);
+            border: 1px solid rgba(124, 77, 255, 0.5);
+        }
+
+        .nav-link i {
+            font-size: 1.1rem;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-left: 2rem;
+        }
+
+        .btn-outline {
+            padding: 0.8rem 1.8rem;
+            background: transparent;
+            border: 2px solid var(--quantum-blue);
+            color: var(--quantum-blue);
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline:hover {
+            background: rgba(0, 229, 255, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 229, 255, 0.3);
+        }
+
+        .btn-primary {
+            padding: 0.8rem 1.8rem;
+            background: linear-gradient(135deg, var(--nebula-purple), var(--ai-magenta));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--glow-effect);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(124, 77, 255, 0.4);
+        }
+
+        /* Основной контент */
+        .main-container {
+            margin-top: 100px;
+            padding: 2rem 5%;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Хедер страницы */
+        .page-header {
+            text-align: center;
+            margin: 3rem auto 5rem;
+            max-width: 1000px;
+        }
+
+        .page-title {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            background: linear-gradient(90deg, var(--quantum-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 200% auto;
+            animation: gradientFlow 3s ease-in-out infinite;
+        }
+
+        @keyframes gradientFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .page-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.85);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+
+        /* Контейнер для графа связей */
+        .graph-container {
+            margin: 4rem 0;
+            background: rgba(18, 18, 48, 0.6);
+            border-radius: 25px;
+            border: 1px solid rgba(124, 77, 255, 0.3);
+            backdrop-filter: blur(10px);
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            height: 700px;
+            padding: 1rem;
+        }
+
+        #network-graph {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Панель управления графом */
+        .graph-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            padding: 0.8rem 1.5rem;
+            background: rgba(124, 77, 255, 0.1);
+            border: 1px solid rgba(124, 77, 255, 0.3);
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .control-btn:hover {
+            background: rgba(124, 77, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .control-btn.active {
+            background: linear-gradient(135deg, var(--nebula-purple), var(--ai-magenta));
+            border-color: transparent;
+            box-shadow: var(--glow-effect);
+        }
+
+        /* Панель информации */
+        .info-panel {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            width: 350px;
+            max-height: 80%;
+            overflow-y: auto;
+            background: rgba(10, 10, 26, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 15px;
+            border: 1px solid rgba(124, 77, 255, 0.3);
+            padding: 1.5rem;
+            display: none;
+            z-index: 100;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .info-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(124, 77, 255, 0.2);
+        }
+
+        .info-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--star-white);
+        }
+
+        .info-close {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .info-close:hover {
+            color: var(--neon-pink);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .info-content {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+
+        .info-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .info-stat {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(124, 77, 255, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(124, 77, 255, 0.2);
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--quantum-blue);
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Фильтры и поиск */
+        .filters-section {
+            margin: 3rem 0;
+            padding: 2.5rem;
+            background: rgba(18, 18, 48, 0.6);
+            border-radius: 25px;
+            border: 1px solid rgba(124, 77, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .filters-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .filters-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--cyber-green);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .search-container {
+            position: relative;
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.8rem 1rem 0.8rem 3rem;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(124, 77, 255, 0.3);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--quantum-blue);
+        }
+
+        .filter-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+        }
+
+        .filter-tag {
+            padding: 0.6rem 1.2rem;
+            background: rgba(124, 77, 255, 0.1);
+            border: 1px solid rgba(124, 77, 255, 0.3);
+            border-radius: 20px;
+            color: rgba(255, 255, 255, 0.9);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-tag:hover {
+            background: rgba(124, 77, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .filter-tag.active {
+            background: linear-gradient(135deg, var(--nebula-purple), var(--ai-magenta));
+            color: white;
+            border-color: transparent;
+            box-shadow: var(--glow-effect);
+        }
+
+        /* Статистика связей */
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .stat-card {
+            background: var(--card-gradient);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(124, 77, 255, 0.3);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--nebula-purple), var(--quantum-blue));
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, rgba(124, 77, 255, 0.2), rgba(0, 229, 255, 0.1));
+            color: var(--quantum-blue);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--quantum-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Легенда графа */
+        .legend-section {
+            margin: 3rem 0;
+            padding: 2rem;
+            background: rgba(18, 18, 48, 0.6);
+            border-radius: 20px;
+            border: 1px solid rgba(124, 77, 255, 0.2);
+        }
+
+        .legend-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--cyber-green);
+        }
+
+        .legend-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+
+        .legend-text {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+        }
+
+        /* Примеры кластеров */
+        .clusters-section {
+            margin: 6rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--quantum-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .clusters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .cluster-card {
+            background: var(--card-gradient);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(124, 77, 255, 0.2);
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cluster-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--quantum-blue);
+            box-shadow: var(--hover-glow);
+        }
+
+        .cluster-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.4rem 0.8rem;
+            background: linear-gradient(135deg, var(--cyber-green), var(--quantum-blue));
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .cluster-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            background: linear-gradient(135deg, rgba(124, 77, 255, 0.2), rgba(0, 229, 255, 0.1));
+            color: var(--quantum-blue);
+        }
+
+        .cluster-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--star-white);
+        }
+
+        .cluster-stats {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .cluster-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .cluster-description {
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Футер */
+        .footer {
+            margin-top: 8rem;
+            padding: 5rem 5% 3rem;
+            background: rgba(10, 10, 26, 0.9);
+            border-top: 1px solid rgba(124, 77, 255, 0.3);
+            position: relative;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-section h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1.8rem;
+            color: var(--cyber-green);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--quantum-blue);
+            transform: translateX(5px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .social-link:hover {
+            background: var(--nebula-purple);
+            transform: translateY(-5px);
+            box-shadow: var(--glow-effect);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Анимации */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Адаптация */
+        @media (max-width: 1024px) {
+            .page-title {
+                font-size: 3rem;
+            }
+            
+            .graph-container {
+                height: 500px;
+            }
+            
+            .info-panel {
+                width: 300px;
+            }
+            
+            .clusters-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+                flex-wrap: wrap;
+            }
+
+            .nav-links {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .auth-buttons {
+                margin-left: 0;
+                order: 2;
+            }
+
+            .page-title {
+                font-size: 2.5rem;
+            }
+
+            .graph-container {
+                height: 400px;
+            }
+
+            .info-panel {
+                width: calc(100% - 2rem);
+                top: 20px;
+                right: 1rem;
+                left: 1rem;
+            }
+
+            .filters-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-container {
+                max-width: 100%;
+            }
+
+            .graph-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .control-btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+
+            .clusters-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Скроллбар */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(10, 10, 26, 0.8);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--nebula-purple), var(--quantum-blue));
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(var(--quantum-blue), var(--cyber-green));
+        }
+    </style>
+</head>
+<body>
+    <!-- Анимированный фон -->
+    <div class="animated-bg">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+    </div>
+    <div id="particles-js"></div>
+
+    <!-- Навигация -->
+    <nav class="navbar" id="navbar">
+        <a href="index.html" class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-rocket"></i>
+            </div>
+            <div class="logo-text">Атлас 2035+</div>
+        </a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link"><i class="fas fa-home"></i> Галактика</a>
+            <a href="professions.html" class="nav-link"><i class="fas fa-user-astronaut"></i> Профессии</a>
+            <a href="career-simulator.html" class="nav-link"><i class="fas fa-chess-board"></i> Симулятор</a>
+            <a href="skills-lab.html" class="nav-link"><i class="fas fa-brain"></i> Навыки</a>
+            <a href="industries.html" class="nav-link"><i class="fas fa-industry"></i> Индустрии</a>
+            <a href="connections.html" class="nav-link active"><i class="fas fa-project-diagram"></i> Связи</a>
+        </div>
+        <div class="auth-buttons">
+            <button class="btn-outline" onclick="openModal('login')">Войти</button>
+            <button class="btn-primary" onclick="openModal('register')">Регистрация</button>
+        </div>
+    </nav>
+
+    <!-- Основной контент -->
+    <main class="main-container">
+        <!-- Заголовок страницы -->
+        <section class="page-header fade-in">
+            <h1 class="page-title">Динамические связи</h1>
+            <p class="page-subtitle">
+                Исследуйте живую экосистему знаний. Увидьте скрытые связи между профессиями будущего, 
+                ключевыми навыками, образовательными программами и технологическими трендами.
+            </p>
+        </section>
+
+        <!-- Статистика связей -->
+        <section class="stats-section fade-in">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-project-diagram"></i>
+                </div>
+                <div class="stat-value" id="totalConnections">1,247</div>
+                <div class="stat-label">Динамических связей</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-network-wired"></i>
+                </div>
+                <div class="stat-value" id="activeNodes">156</div>
+                <div class="stat-label">Активных узлов</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <div class="stat-value" id="realTimeUpdates">24/7</div>
+                <div class="stat-label">Живые обновления</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div class="stat-value" id="aiPredictions">89%</div>
+                <div class="stat-label">Точность AI-прогнозов</div>
+            </div>
+        </section>
+
+        <!-- Фильтры и поиск -->
+        <section class="filters-section fade-in">
+            <div class="filters-header">
+                <h2 class="filters-title">
+                    <i class="fas fa-filter"></i>
+                    Исследование связей
+                </h2>
+                
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-input" placeholder="Найти профессию, навык или технологию..." id="graphSearch">
+                </div>
+            </div>
+            
+            <div class="filter-tags">
+                <span class="filter-tag active" data-filter="all">
+                    <i class="fas fa-globe"></i> Все связи
+                </span>
+                <span class="filter-tag" data-filter="professions">
+                    <i class="fas fa-user-astronaut"></i> Профессии
+                </span>
+                <span class="filter-tag" data-filter="skills">
+                    <i class="fas fa-brain"></i> Навыки
+                </span>
+                <span class="filter-tag" data-filter="technologies">
+                    <i class="fas fa-microchip"></i> Технологии
+                </span>
+                <span class="filter-tag" data-filter="trending">
+                    <i class="fas fa-fire"></i> Тренды 2024
+                </span>
+                <span class="filter-tag" data-filter="emerging">
+                    <i class="fas fa-seedling"></i> Возникающие
+                </span>
+            </div>
+        </section>
+
+        <!-- Контейнер графа -->
+        <div class="graph-container fade-in">
+            <div id="network-graph"></div>
+            
+            <!-- Панель управления -->
+            <div class="graph-controls" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);">
+                <button class="control-btn" id="resetView">
+                    <i class="fas fa-expand-arrows-alt"></i>
+                    Сбросить вид
+                </button>
+                <button class="control-btn active" id="physicsToggle">
+                    <i class="fas fa-atom"></i>
+                    Физика включена
+                </button>
+                <button class="control-btn" id="clusterToggle">
+                    <i class="fas fa-object-group"></i>
+                    Группировать
+                </button>
+                <button class="control-btn" id="darkModeToggle">
+                    <i class="fas fa-moon"></i>
+                    Тёмный режим
+                </button>
+            </div>
+            
+            <!-- Панель информации -->
+            <div class="info-panel" id="infoPanel">
+                <div class="info-header">
+                    <h3 class="info-title">Дизайнер эмоций</h3>
+                    <button class="info-close" id="closeInfo">×</button>
+                </div>
+                <div class="info-content">
+                    <p>Создает эмоциональные интерфейсы для AI-систем нового поколения. Работает на стыке психологии, дизайна и искусственного интеллекта.</p>
+                    
+                    <div class="info-stats">
+                        <div class="info-stat">
+                            <div class="stat-value">+240%</div>
+                            <div class="stat-label">Спрос до 2030</div>
+                        </div>
+                        <div class="info-stat">
+                            <div class="stat-value">8.7</div>
+                            <div class="stat-label">Связей в сети</div>
+                        </div>
+                        <div class="info-stat">
+                            <div class="stat-value">5</div>
+                            <div class="stat-label">Ключевых навыков</div>
+                        </div>
+                        <div class="info-stat">
+                            <div class="stat-value">3</div>
+                            <div class="stat-label">Смежные профессии</div>
+                        </div>
+                    </div>
+                    
+                    <h4 style="margin: 1.5rem 0 0.8rem; color: var(--quantum-blue);">Ключевые связи:</h4>
+                    <ul style="padding-left: 1.2rem; color: rgba(255,255,255,0.8);">
+                        <li>AI-этика (сильная связь)</li>
+                        <li>Эмоциональный интеллект (базовый навык)</li>
+                        <li>UX/UI дизайн (смежная область)</li>
+                        <li>Киберпсихология (влияющая область)</li>
+                    </ul>
+                    
+                    <button style="width: 100%; padding: 0.8rem; background: linear-gradient(135deg, var(--nebula-purple), var(--ai-magenta)); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; margin-top: 1.5rem; transition: all 0.3s ease;">
+                        <i class="fas fa-external-link-alt"></i>
+                        Перейти к профессии
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Легенда графа -->
+        <section class="legend-section fade-in">
+            <h3 class="legend-title"><i class="fas fa-key"></i> Легенда графа</h3>
+            <div class="legend-items">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: var(--nebula-purple);"></div>
+                    <div class="legend-text">Профессии будущего</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: var(--quantum-blue);"></div>
+                    <div class="legend-text">Ключевые навыки</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: var(--cyber-green);"></div>
+                    <div class="legend-text">Технологии</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: var(--ai-magenta);"></div>
+                    <div class="legend-text">Образовательные программы</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: var(--bio-gold);"></div>
+                    <div class="legend-text">Индустрии</div>
+                </div>
+                <div class="legend-item">
+                    <div style="width: 30px; height: 2px; background: rgba(124, 77, 255, 0.5);"></div>
+                    <div class="legend-text">Сильные связи</div>
+                </div>
+                <div class="legend-item">
+                    <div style="width: 30px; height: 1px; background: rgba(0, 229, 255, 0.3);"></div>
+                    <div class="legend-text">Слабые связи</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Примеры кластеров -->
+        <section class="clusters-section fade-in">
+            <div class="section-header">
+                <h2 class="section-title">Ключевые кластеры связей</h2>
+                <p class="section-subtitle">
+                    Исследуйте наиболее значимые группы взаимосвязанных элементов в экосистеме будущего
+                </p>
+            </div>
+            
+            <div class="clusters-grid">
+                <div class="cluster-card" onclick="exploreCluster('ai-cluster')">
+                    <div class="cluster-badge">Горячий кластер</div>
+                    <div class="cluster-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3 class="cluster-title">AI & Этический интеллект</h3>
+                    <div class="cluster-stats">
+                        <div class="cluster-stat">
+                            <i class="fas fa-network-wired"></i>
+                            14 профессий
+                        </div>
+                        <div class="cluster-stat">
+                            <i class="fas fa-link"></i>
+                            87 связей
+                        </div>
+                        <div class="cluster-stat">
+                            <i class="fas fa-chart-line"></i>
+                            +320% рост
+                        </div>
+                    </div>
+                    <p class="cluster-description">
+                        Кластер искусственного интеллекта, машинной этики, эмоциональных интерфейсов 
+                        и ответственного внедрения технологий.
+                    </p>
+                </div>
+                
+                <div class="cluster-card" onclick="exploreCluster('bio-cluster')">
+                    <div class="cluster-badge">Быстрый рост</div>
+                    <div class="cluster-icon">
+                        <i class="fas fa-dna"></i>
+                    </div>
+                    <h3 class="cluster-title">Биотех & Долголетие</h3>
+                    <div class="cluster-stats">
+                        <div class="cluster-stat">
+                            <i class="fas fa-network-wired"></i>
+                            11 профессий
+                        </div>
+                        <div class="cluster-stat">
+                            <i class="fas fa-link"></i>
+                            65 связей
+                        </div>
+                        <div class="cluster-stat">
+                            <i class="fas fa-chart-line"></i>
+                            +280% рост
+                        </div>
+                    </div>
+                    <p class="cluster-description">
+                        Связи между генной инженерией, персонализированной медициной, биохакингом 
+                        и технологиями продления жизни.
+                    </p>
+                </div>
+                
+                <div class="cluster-card" onclick="exploreCluster('sustainability-cluster')">
+                    <div class="cluster-badge">Критический</div>
+                    <div class="cluster-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3 class="cluster-title">Устойчивое развитие</h3>
+                    <div class="cluster-stats">
+                        <div class="cluster-stat">
+                            <i class="fas fa-network-wired"></i>
+                            9 профессий
+                        </div>
+                        <div class="cluster-stat">
+                            <i class="fas fa-link"></i>
+                            72 связи
+                        </div>
+                        <div class="cluster-stat">
+                            <i class="fas fa-chart-line"></i>
+                            +350% рост
+                        </div>
+                    </div>
+                    <p class="cluster-description">
+                        Кластер зелёных технологий, циркулярной экономики, экоурбанистики 
+                        и климатических решений.
+                    </p>
+                </div>
+                
+                <div class="cluster-card" onclick="exploreCluster('space-cluster')">
+                    <div class="cluster-badge">Экспериментальный</div>
+                    <div class="cluster-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3 class="cluster-title">Космические технологии</h3>
+                    <div class="cluster-stats">
+                        <div class="cluster-stat">
+                            <i class="fas fa-network-wired"></i>
+                            7 профессий
+                        </div>
+                        <div class="cluster-stat">
+                            <i class="fas fa-link"></i>
+                            48 связей
+                        </div>
+                        <div class="cluster-stat">
+                            <i class="fas fa-chart-line"></i>
+                            +410% рост
+                        </div>
+                    </div>
+                    <p class="cluster-description">
+                        Связи между космическим туризмом, колонизацией планет, спутниковыми 
+                        системами и внеземной добычей ресурсов.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Атлас 2035+</h3>
+                <p>Живая экосистема знаний о будущем труда. Исследуйте, обучайтесь, создавайте будущее вместе с нами.</p>
+                <div style="margin-top: 2rem;">
+                    <div style="display: flex; gap: 0.5rem;">
+                        <input type="email" placeholder="Ваш email" style="flex: 1; padding: 0.8rem 1rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(124,77,255,0.3); border-radius: 10px; color: white;">
+                        <button class="btn-primary" style="padding: 0.8rem 1.5rem;">Подписаться</button>
+                    </div>
+                    <p style="font-size: 0.85rem; color: rgba(255,255,255,0.5); margin-top: 0.5rem;">Только полезные новости о будущем</p>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Разделы</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html"><i class="fas fa-chevron-right"></i> Галактика профессий</a></li>
+                    <li><a href="professions.html"><i class="fas fa-chevron-right"></i> Карта профессий</a></li>
+                    <li><a href="career-simulator.html"><i class="fas fa-chevron-right"></i> Симулятор карьеры</a></li>
+                    <li><a href="skills-lab.html"><i class="fas fa-chevron-right"></i> Лаборатория навыков</a></li>
+                    <li><a href="connections.html"><i class="fas fa-chevron-right"></i> Динамические связи</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Партнеры</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Сколково</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> WorldSkills</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> НИУ ВШЭ</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Кружковое движение</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Росатом</a></li>
+                </ul>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-vk"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2024 Атлас новых профессий 2035+. Все права защищены. Будущее создается сегодня.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem;">
+                <a href="#" style="color: rgba(255,255,255,0.5); text-decoration: none; margin: 0 1rem;">Политика конфиденциальности</a>
+                <a href="#" style="color: rgba(255,255,255,0.5); text-decoration: none; margin: 0 1rem;">Условия использования</a>
+                <a href="#" style="color: rgba(255,255,255,0.5); text-decoration: none; margin: 0 1rem;">Контакты</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Подключаем vis.js для графа -->
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    
+    <script>
+        // Инициализация страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Частицы фона
+            particlesJS("particles-js", {
+                particles: {
+                    number: { value: 90, density: { enable: true, value_area: 800 } },
+                    color: { value: ["#7c4dff", "#00e5ff", "#00ff88", "#ff00d4"] },
+                    shape: { type: "circle" },
+                    opacity: { value: 0.3, random: true },
+                    size: { value: 3, random: true },
+                    line_linked: {
+                        enable: true,
+                        distance: 130,
+                        color: "#7c4dff",
+                        opacity: 0.2,
+                        width: 1
+                    },
+                    move: {
+                        enable: true,
+                        speed: 1.5,
+                        direction: "none",
+                        random: true,
+                        straight: false,
+                        out_mode: "out",
+                        bounce: false
+                    }
+                },
+                interactivity: {
+                    detect_on: "canvas",
+                    events: {
+                        onhover: { enable: true, mode: "repulse" },
+                        onclick: { enable: true, mode: "push" }
+                    }
+                }
+            });
+
+            // Анимация появления элементов
+            const fadeElements = document.querySelectorAll('.fade-in');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            fadeElements.forEach(el => observer.observe(el));
+
+            // Эффект навигации при скролле
+            window.addEventListener('scroll', () => {
+                const navbar = document.getElementById('navbar');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // Инициализация графа связей
+            initNetworkGraph();
+            
+            // Настройка фильтров
+            setupFilters();
+            
+            // Настройка поиска
+            setupSearch();
+            
+            // Настройка управления
+            setupControls();
+        });
+
+        // Инициализация графа сетевых связей
+        function initNetworkGraph() {
+            const container = document.getElementById('network-graph');
+            
+            // Создаем данные для графа
+            const nodes = new vis.DataSet([
+                // Профессии (фиолетовые)
+                { id: 1, label: 'Дизайнер эмоций', group: 'profession', color: '#7c4dff', value: 30 },
+                { id: 2, label: 'AI-этик', group: 'profession', color: '#7c4dff', value: 25 },
+                { id: 3, label: 'Киберпсихолог', group: 'profession', color: '#7c4dff', value: 28 },
+                { id: 4, label: 'Экоурбанист', group: 'profession', color: '#7c4dff', value: 22 },
+                { id: 5, label: 'Генный инженер', group: 'profession', color: '#7c4dff', value: 32 },
+                { id: 6, label: 'Архитектор метавселенных', group: 'profession', color: '#7c4dff', value: 26 },
+                
+                // Навыки (синие)
+                { id: 7, label: 'Эмоциональный интеллект', group: 'skill', color: '#00e5ff', value: 20 },
+                { id: 8, label: 'Критическое мышление', group: 'skill', color: '#00e5ff', value: 24 },
+                { id: 9, label: 'Системное мышление', group: 'skill', color: '#00e5ff', value: 22 },
+                { id: 10, label: 'Цифровая грамотность', group: 'skill', color: '#00e5ff', value: 18 },
+                { id: 11, label: 'Экологическая грамотность', group: 'skill', color: '#00e5ff', value: 20 },
+                
+                // Технологии (зеленые)
+                { id: 12, label: 'Искусственный интеллект', group: 'technology', color: '#00ff88', value: 35 },
+                { id: 13, label: 'Генная инженерия', group: 'technology', color: '#00ff88', value: 28 },
+                { id: 14, label: 'VR/AR', group: 'technology', color: '#00ff88', value: 26 },
+                { id: 15, label: 'Зеленая энергетика', group: 'technology', color: '#00ff88', value: 24 },
+                { id: 16, label: 'Нейроинтерфейсы', group: 'technology', color: '#00ff88', value: 22 },
+                
+                // Образование (маджента)
+                { id: 17, label: 'AI Ethics Course', group: 'education', color: '#ff00d4', value: 16 },
+                { id: 18, label: 'BioTech Masters', group: 'education', color: '#ff00d4', value: 18 },
+                { id: 19, label: 'Sustainable Design', group: 'education', color: '#ff00d4', value: 17 },
+                
+                // Индустрии (золотые)
+                { id: 20, label: 'HealthTech', group: 'industry', color: '#ffc107', value: 25 },
+                { id: 21, label: 'EdTech', group: 'industry', color: '#ffc107', value: 22 },
+                { id: 22, label: 'CleanTech', group: 'industry', color: '#ffc107', value: 23 }
+            ]);
+
+            // Создаем связи между узлами
+            const edges = new vis.DataSet([
+                // Дизайнер эмоций
+                { from: 1, to: 7, value: 3, color: { color: '#7c4dff', opacity: 0.7 } }, // Эмоциональный интеллект
+                { from: 1, to: 12, value: 2, color: { color: '#7c4dff', opacity: 0.5 } }, // AI
+                { from: 1, to: 17, value: 4, color: { color: '#7c4dff', opacity: 0.8 } }, // AI Ethics Course
+                
+                // AI-этик
+                { from: 2, to: 8, value: 4, color: { color: '#7c4dff', opacity: 0.8 } }, // Критическое мышление
+                { from: 2, to: 12, value: 5, color: { color: '#7c4dff', opacity: 0.9 } }, // AI
+                { from: 2, to: 9, value: 3, color: { color: '#7c4dff', opacity: 0.7 } }, // Системное мышление
+                
+                // Киберпсихолог
+                { from: 3, to: 7, value: 4, color: { color: '#7c4dff', opacity: 0.8 } }, // Эмоциональный интеллект
+                { from: 3, to: 16, value: 3, color: { color: '#7c4dff', opacity: 0.7 } }, // Нейроинтерфейсы
+                { from: 3, to: 20, value: 3, color: { color: '#7c4dff', opacity: 0.7 } }, // HealthTech
+                
+                // Экоурбанист
+                { from: 4, to: 11, value: 5, color: { color: '#7c4dff', opacity: 0.9 } }, // Экологическая грамотность
+                { from: 4, to: 15, value: 4, color: { color: '#7c4dff', opacity: 0.8 } }, // Зеленая энергетика
+                { from: 4, to: 22, value: 4, color: { color: '#7c4dff', opacity: 0.8 } }, // CleanTech
+                
+                // Генный инженер
+                { from: 5, to: 13, value: 5, color: { color: '#7c4dff', opacity: 0.9 } }, // Генная инженерия
+                { from: 5, to: 9, value: 3, color: { color: '#7c4dff', opacity: 0.7 } }, // Системное мышление
+                { from: 5, to: 18, value: 4, color: { color: '#7c4dff', opacity: 0.8 } }, // BioTech Masters
+                
+                // Архитектор метавселенных
+                { from: 6, to: 14, value: 5, color: { color: '#7c4dff', opacity: 0.9 } }, // VR/AR
+                { from: 6, to: 10, value: 3, color: { color: '#7c4dff', opacity: 0.7 } }, // Цифровая грамотность
+                { from: 6, to: 21, value: 3, color: { color: '#7c4dff', opacity: 0.7 } }, // EdTech
+                
+                // Связи между навыками и технологиями
+                { from: 7, to: 12, value: 3, color: { color: '#00e5ff', opacity: 0.6 } },
+                { from: 8, to: 12, value: 4, color: { color: '#00e5ff', opacity: 0.7 } },
+                { from: 9, to: 13, value: 3, color: { color: '#00e5ff', opacity: 0.6 } },
+                { from: 11, to: 15, value: 4, color: { color: '#00e5ff', opacity: 0.7 } },
+                
+                // Связи между технологиями
+                { from: 12, to: 16, value: 3, color: { color: '#00ff88', opacity: 0.6 } },
+                { from: 12, to: 14, value: 2, color: { color: '#00ff88', opacity: 0.5 } }
+            ]);
+
+            // Настройки графа
+            const data = { nodes, edges };
+            const options = {
+                nodes: {
+                    shape: 'dot',
+                    size: 25,
+                    font: {
+                        size: 14,
+                        color: '#ffffff',
+                        strokeWidth: 0
+                    },
+                    borderWidth: 2,
+                    borderWidthSelected: 4,
+                    shadow: true
+                },
+                edges: {
+                    width: 2,
+                    color: {
+                        inherit: 'from'
+                    },
+                    smooth: {
+                        type: 'continuous',
+                        roundness: 0.5
+                    },
+                    arrows: {
+                        to: { enabled: false },
+                        middle: { enabled: false },
+                        from: { enabled: false }
+                    },
+                    scaling: {
+                        min: 1,
+                        max: 5
+                    }
+                },
+                physics: {
+                    enabled: true,
+                    stabilization: {
+                        iterations: 200,
+                        updateInterval: 10
+                    },
+                    barnesHut: {
+                        gravitationalConstant: -2000,
+                        springConstant: 0.04,
+                        springLength: 200
+                    }
+                },
+                interaction: {
+                    hover: true,
+                    tooltipDelay: 200,
+                    hideEdgesOnDrag: true,
+                    hideEdgesOnZoom: true
+                },
+                groups: {
+                    profession: {
+                        shape: 'star',
+                        color: '#7c4dff'
+                    },
+                    skill: {
+                        shape: 'triangle',
+                        color: '#00e5ff'
+                    },
+                    technology: {
+                        shape: 'hexagon',
+                        color: '#00ff88'
+                    },
+                    education: {
+                        shape: 'square',
+                        color: '#ff00d4'
+                    },
+                    industry: {
+                        shape: 'diamond',
+                        color: '#ffc107'
+                    }
+                }
+            };
+
+            // Создаем сеть
+            const network = new vis.Network(container, data, options);
+
+            // Обработка кликов на узлы
+            network.on('click', function(params) {
+                if (params.nodes.length > 0) {
+                    const nodeId = params.nodes[0];
+                    const node = nodes.get(nodeId);
+                    
+                    // Показываем информацию о узле
+                    showNodeInfo(node);
+                    
+                    // Выделяем связанные узлы
+                    const connectedNodes = network.getConnectedNodes(nodeId);
+                    nodes.forEach(function(node) {
+                        const isConnected = connectedNodes.includes(node.id);
+                        const isSelected = node.id === nodeId;
+                        
+                        if (isSelected) {
+                            nodes.update({ id: node.id, color: { border: '#ff2e97', background: node.color } });
+                        } else if (isConnected) {
+                            nodes.update({ id: node.id, color: { border: '#00ff88', background: node.color } });
+                        } else {
+                            nodes.update({ id: node.id, color: { border: '#ffffff', background: node.color } });
+                        }
+                    });
+                } else {
+                    // Сброс выделения
+                    nodes.forEach(function(node) {
+                        nodes.update({ id: node.id, color: { border: '#ffffff', background: node.color } });
+                    });
+                    hideNodeInfo();
+                }
+            });
+
+            // Сохраняем сеть в глобальной области видимости для управления
+            window.network = network;
+            window.graphNodes = nodes;
+            window.graphEdges = edges;
+        }
+
+        // Показать информацию об узле
+        function showNodeInfo(node) {
+            const infoPanel = document.getElementById('infoPanel');
+            const title = document.querySelector('.info-title');
+            const content = document.querySelector('.info-content');
+            
+            // Заголовок
+            title.textContent = node.label;
+            
+            // Контент в зависимости от типа узла
+            let infoContent = '';
+            switch(node.group) {
+                case 'profession':
+                    infoContent = `
+                        <p>Одна из ключевых профессий будущего с высоким потенциалом роста до 2035 года.</p>
+                        
+                        <div class="info-stats">
+                            <div class="info-stat">
+                                <div class="stat-value">+${Math.floor(Math.random() * 200) + 150}%</div>
+                                <div class="stat-label">Спрос до 2030</div>
+                            </div>
+                            <div class="info-stat">
+                                <div class="stat-value">${Math.floor(Math.random() * 5) + 3}</div>
+                                <div class="stat-label">Ключевых навыков</div>
+                            </div>
+                            <div class="info-stat">
+                                <div class="stat-value">${Math.floor(Math.random() * 7) + 2}</div>
+                                <div class="stat-label">Связей в сети</div>
+                            </div>
+                            <div class="info-stat">
+                                <div class="stat-value">$${Math.floor(Math.random() * 60) + 80}k</div>
+                                <div class="stat-label">Средняя зарплата</div>
+                            </div>
+                        </div>
+                        
+                        <h4 style="margin: 1.5rem 0 0.8rem; color: var(--quantum-blue);">Связанные элементы:</h4>
+                        <ul style="padding-left: 1.2rem; color: rgba(255,255,255,0.8);">
+                            <li>Технологии: Искусственный интеллект, VR/AR</li>
+                            <li>Навыки: Критическое мышление, Эмоциональный интеллект</li>
+                            <li>Образование: Специализированные курсы</li>
+                            <li>Индустрии: HealthTech, EdTech</li>
+                        </ul>
+                    `;
+                    break;
+                    
+                case 'skill':
+                    infoContent = `
+                        <p>Ключевой навык будущего, необходимый для адаптации к изменениям на рынке труда.</p>
+                        
+                        <div class="info-stats">
+                            <div class="info-stat">
+                                <div class="stat-value">${Math.floor(Math.random() * 30) + 70}%</div>
+                                <div class="stat-label">Профессий требуют</div>
+                            </div>
+                            <div class="info-stat">
+                                <div class="stat-value">${Math.floor(Math.random() * 4) + 2}</div>
+                                <div class="stat-label">Месяцев обучения</div>
+                            </div>
+                            <div class="info-stat">
+                                <div class="stat-value">${Math.floor(Math.random() * 8) + 3}</div>
+                                <div class="stat-label">Связанных профессий</div>
+                            </div>
+                            <div class="info-stat">
+                                <div class="stat-value">+${Math.floor(Math.random() * 25) + 15}%</div>
+                                <div class="stat-label">Влияние на зарплату</div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                default:
+                    infoContent = `
+                        <p>Элемент экосистемы будущего, связанный с другими компонентами через динамические связи.</p>
+                        
+                        <div class="info-stats">
+                            <div class="info-stat">
+                                <div class="stat-value">${Math.floor(Math.random() * 10) + 5}</div>
+                                <div class="stat-label">Связей</div>
+                            </div>
+                            <div class="info-stat">
+                                <div class="stat-value">${Math.floor(Math.random() * 100) + 50}</div>
+                                <div class="stat-label">Активность</div>
+                            </div>
+                        </div>
+                    `;
+            }
+            
+            content.innerHTML = infoContent + `
+                <button style="width: 100%; padding: 0.8rem; background: linear-gradient(135deg, var(--nebula-purple), var(--ai-magenta)); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; margin-top: 1.5rem; transition: all 0.3s ease;" onclick="exploreElement('${node.group}', ${node.id})">
+                    <i class="fas fa-external-link-alt"></i>
+                    Исследовать элемент
+                </button>
+            `;
+            
+            infoPanel.style.display = 'block';
+        }
+
+        // Скрыть информацию об узле
+        function hideNodeInfo() {
+            document.getElementById('infoPanel').style.display = 'none';
+        }
+
+        // Настройка фильтров
+        function setupFilters() {
+            const filterTags = document.querySelectorAll('.filter-tag');
+            
+            filterTags.forEach(tag => {
+                tag.addEventListener('click', function() {
+                    // Обновляем активный тег
+                    filterTags.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Применяем фильтр
+                    const filter = this.dataset.filter;
+                    applyGraphFilter(filter);
+                });
+            });
+        }
+
+        // Применение фильтра графа
+        function applyGraphFilter(filter) {
+            if (!window.graphNodes) return;
+            
+            const nodes = window.graphNodes;
+            const edges = window.graphEdges;
+            
+            // Показываем/скрываем узлы в зависимости от фильтра
+            nodes.forEach(function(node) {
+                let hidden = false;
+                
+                switch(filter) {
+                    case 'professions':
+                        hidden = node.group !== 'profession';
+                        break;
+                    case 'skills':
+                        hidden = node.group !== 'skill';
+                        break;
+                    case 'technologies':
+                        hidden = node.group !== 'technology';
+                        break;
+                    case 'trending':
+                        // Показываем только узлы с высокой ценностью
+                        hidden = node.value < 25;
+                        break;
+                    case 'emerging':
+                        // Показываем только "новые" узлы (меньше связей)
+                        const connectedEdges = edges.get({
+                            filter: function(edge) {
+                                return edge.from === node.id || edge.to === node.id;
+                            }
+                        });
+                        hidden = connectedEdges.length > 3;
+                        break;
+                    // 'all' - показываем все
+                }
+                
+                nodes.update({ id: node.id, hidden: hidden });
+            });
+            
+            // Обновляем граф
+            window.network.redraw();
+        }
+
+        // Настройка поиска
+        function setupSearch() {
+            const searchInput = document.getElementById('graphSearch');
+            let searchTimeout;
+            
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    const searchTerm = this.value.toLowerCase().trim();
+                    
+                    if (searchTerm.length === 0) {
+                        // Показываем все узлы
+                        window.graphNodes.forEach(function(node) {
+                            window.graphNodes.update({ id: node.id, hidden: false });
+                        });
+                        return;
+                    }
+                    
+                    // Фильтруем узлы по поисковому запросу
+                    window.graphNodes.forEach(function(node) {
+                        const matches = node.label.toLowerCase().includes(searchTerm);
+                        window.graphNodes.update({ id: node.id, hidden: !matches });
+                    });
+                    
+                    window.network.redraw();
+                }, 300);
+            });
+        }
+
+        // Настройка управления
+        function setupControls() {
+            // Кнопка сброса вида
+            document.getElementById('resetView').addEventListener('click', function() {
+                window.network.fit();
+            });
+            
+            // Переключение физики
+            document.getElementById('physicsToggle').addEventListener('click', function() {
+                const options = window.network.getOptions();
+                const newPhysicsState = !options.physics.enabled;
+                
+                window.network.setOptions({ physics: { enabled: newPhysicsState } });
+                this.innerHTML = newPhysicsState ? 
+                    '<i class="fas fa-atom"></i> Физика включена' : 
+                    '<i class="fas fa-atom"></i> Физика выключена';
+                this.classList.toggle('active', newPhysicsState);
+            });
+            
+            // Переключение кластеризации
+            document.getElementById('clusterToggle').addEventListener('click', function() {
+                this.classList.toggle('active');
+                // Здесь можно добавить логику кластеризации
+            });
+            
+            // Переключение темного режима
+            document.getElementById('darkModeToggle').addEventListener('click', function() {
+                this.classList.toggle('active');
+                const container = document.querySelector('.graph-container');
+                container.style.filter = this.classList.contains('active') ? 
+                    'invert(0.9) hue-rotate(180deg)' : 
+                    'none';
+            });
+            
+            // Закрытие информационной панели
+            document.getElementById('closeInfo').addEventListener('click', hideNodeInfo);
+        }
+
+        // Функции для кнопок
+        function openModal(type) {
+            if (type === 'login') {
+                alert('Форма входа (будет реализовано в полной версии)');
+            } else {
+                alert('Форма регистрации (будет реализовано в полной версии)');
+            }
+        }
+
+        function exploreCluster(clusterId) {
+            alert(`Исследование кластера: ${clusterId} (будет реализовано в полной версии)`);
+        }
+
+        function exploreElement(type, id) {
+            alert(`Исследование элемента: ${type} #${id} (будет реализовано в полной версии)`);
+        }
+
+        // Автоматическое выделение активной страницы в навигации
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPage = window.location.pathname.split('/').pop();
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            navLinks.forEach(link => {
+                const linkPage = link.getAttribute('href');
+                if (linkPage === currentPage || 
+                    (currentPage === '' && linkPage === 'index.html')) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
